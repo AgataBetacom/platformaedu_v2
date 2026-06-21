@@ -1,0 +1,3636 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>eduPlatform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="shared/tokens.css?v=8"/>
+<style>
+/* ═══════════════════════════════════════════════════════════════════
+   Launcher (index.html) — Shell: sidebar + topbar + content area
+   ═══════════════════════════════════════════════════════════════════ */
+html, body { height: 100%; overflow: hidden; margin: 0; }
+body { display: flex; background: var(--ep-bg); color: var(--ep-text); }
+
+/* ── SIDEBAR ──────────────────────────────────────────────────────── */
+#sidebar{
+  width: 248px; flex-shrink: 0;
+  background: var(--ep-surface);
+  border-right: 1px solid var(--ep-border);
+  display: flex; flex-direction: column;
+  height: 100vh; overflow-y: auto; z-index: 10;
+  padding: 0 14px 18px;
+}
+#sidebar::-webkit-scrollbar { width: 4px; }
+#sidebar::-webkit-scrollbar-thumb { background: var(--ep-border-strong); border-radius: 99px; }
+
+.sb-brand{
+  display: flex; align-items: center; gap: 12px;
+  height: 64px;
+  padding: 0 8px;
+  margin-bottom: 12px;
+  flex-shrink: 0;
+  font-family: var(--ep-font-display);
+  font-size: 17px; font-weight: 800; color: var(--ep-text);
+  letter-spacing: -0.01em;
+}
+.sb-brand-icon{
+  width: 38px; height: 38px; border-radius: 11px;
+  background: linear-gradient(135deg, var(--ep-primary) 0%, var(--ep-primary-600) 100%);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 17px; flex-shrink: 0;
+  box-shadow: var(--ep-shadow-sm), inset 0 1px 0 rgba(255,255,255,0.18);
+}
+.sb-brand-text { display: flex; flex-direction: column; line-height: 1.1; gap: 2px; }
+.sb-brand-text small {
+  font-family: var(--ep-font-sans); font-weight: 500;
+  font-size: 11px; color: var(--ep-text-3); letter-spacing: 0;
+}
+.sb-nav { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.sb-lbl{
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .09em; color: var(--ep-text-4);
+  padding: 14px 12px 6px; font-family: var(--ep-font-sans);
+}
+.sb-item{
+  display: flex; align-items: center; gap: 11px;
+  padding: 10px 12px; border-radius: var(--ep-r-md);
+  cursor: pointer; color: var(--ep-text-2);
+  font-weight: 500; font-size: 14px;
+  transition: background var(--ep-d-fast) var(--ep-ease-soft),
+              color var(--ep-d-fast) var(--ep-ease-soft);
+  border: none; background: transparent; width: 100%; text-align: left;
+  font-family: var(--ep-font-sans); position: relative;
+}
+.sb-item:hover { background: var(--ep-surface-3); color: var(--ep-text); }
+.sb-item.active{
+  background: var(--ep-primary-50);
+  color: var(--ep-primary);
+  font-weight: 600;
+}
+.sb-item.active::before{
+  content: ''; position: absolute; left: 0; top: 10px; bottom: 10px; width: 3px;
+  background: var(--ep-primary); border-radius: 0 3px 3px 0;
+  transform: translateX(-11px);
+}
+.sb-item .sb-ico{
+  width: 20px; height: 20px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  color: currentColor;
+}
+.sb-item .sb-ico svg { width: 100%; height: 100%; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+.sb-footer{
+  border-top: 1px solid var(--ep-divider);
+  padding: 14px 4px 4px;
+  display: flex; align-items: center; gap: 10px;
+}
+.sb-footer-avatar{
+  width: 36px; height: 36px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--ep-primary) 0%, var(--ep-violet) 100%);
+  color: #fff; font-weight: 700; font-size: 13px;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  box-shadow: var(--ep-shadow-xs);
+}
+.sb-footer-name { font-size: 13px; font-weight: 600; color: var(--ep-text); line-height: 1.2; }
+.sb-footer-sub  { font-size: 11px; font-weight: 500; color: var(--ep-text-3); margin-top: 1px; }
+
+/* ── SHELL RIGHT ──────────────────────────────────────────────────── */
+#shell-right { flex: 1; display: flex; flex-direction: column; height: 100vh; overflow: hidden; min-width: 0; }
+
+/* ── TOPBAR ───────────────────────────────────────────────────────── */
+#topbar{
+  height: 56px; flex-shrink: 0;
+  background: var(--ep-surface);
+  border-bottom: 1px solid var(--ep-border);
+  display: flex; align-items: center; padding: 0 20px; gap: 10px;
+}
+#topbar-ham-btn{
+  display: none; width: 36px; height: 36px; border: none; background: transparent;
+  border-radius: var(--ep-r-md); color: var(--ep-text-2); cursor: pointer;
+  align-items: center; justify-content: center; flex-shrink: 0;
+}
+#topbar-ham-btn:hover { background: var(--ep-surface-3); color: var(--ep-text); }
+#topbar-ham-btn svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; }
+
+#topbar-crumbs{
+  flex: 1; min-width: 0; overflow: hidden;
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; font-weight: 500; color: var(--ep-text-3);
+}
+.crumb-current { color: var(--ep-text); font-weight: 700; letter-spacing: -.005em; }
+.crumb-sep {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 14px; height: 14px;
+  color: var(--ep-text-4); flex-shrink: 0;
+}
+.crumb-sep svg{ width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+.tb-btn{
+  width: 36px; height: 36px; border-radius: var(--ep-r-md);
+  background: transparent; border: none;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  color: var(--ep-text-2); flex-shrink: 0;
+  transition: background var(--ep-d-fast) var(--ep-ease-soft), color var(--ep-d-fast) var(--ep-ease-soft);
+}
+.tb-btn:hover { background: var(--ep-surface-3); color: var(--ep-text); }
+.tb-btn svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+.bar-avatar-btn{
+  width: 36px; height: 36px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--ep-primary) 0%, var(--ep-violet) 100%);
+  color: #fff; border: 2px solid var(--ep-surface);
+  font-size: 12px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; box-shadow: var(--ep-shadow-sm);
+  transition: transform var(--ep-d-fast) var(--ep-ease-soft);
+  flex-shrink: 0;
+}
+.bar-avatar-btn:hover { transform: scale(1.06); }
+
+.tb-sep { width: 1px; height: 22px; background: var(--ep-divider); margin: 0 4px; flex-shrink: 0; }
+
+/* ── Topbar pill (crumb badge for active module) ──────────────────── */
+.crumb-pill{
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 10px; border-radius: var(--ep-r-full);
+  background: var(--ep-primary-50);
+  color: var(--ep-primary);
+  font-size: 11.5px; font-weight: 700; letter-spacing: .01em;
+  flex-shrink: 0;
+}
+.crumb-pill .dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+
+/* ── MODULE SEARCHBAR ─────────────────────────────────────────────── */
+#module-searchbar{
+  display: none; height: 56px; flex-shrink: 0;
+  background: var(--ep-surface);
+  border-bottom: 1px solid var(--ep-border);
+  align-items: center; padding: 0 20px; gap: 12px;
+}
+.mod-search-wrap { position: relative; flex: 1; max-width: 520px; }
+.mod-search-input{
+  width: 100%; font-family: var(--ep-font-sans);
+  background: var(--ep-surface-2); border: 1px solid transparent;
+  border-radius: var(--ep-r-md);
+  padding: 9px 14px 9px 40px; font-size: 13px; font-weight: 500;
+  color: var(--ep-text); outline: none;
+  transition: background var(--ep-d-fast), border-color var(--ep-d-fast), box-shadow var(--ep-d-fast);
+}
+.mod-search-input:focus{
+  background: var(--ep-surface); border-color: var(--ep-primary); box-shadow: var(--ep-ring);
+}
+.mod-search-input::placeholder { color: var(--ep-text-4); }
+.mod-search-icon{
+  position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+  color: var(--ep-text-4); pointer-events: none; display: flex;
+}
+.mod-search-icon svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ── SKLEP TABBAR ─────────────────────────────────────────────────── */
+#sklep-tabbar{
+  display: none; height: 52px; flex-shrink: 0;
+  background: var(--ep-surface);
+  border-bottom: 1px solid var(--ep-border);
+  align-items: flex-end; padding: 0 20px; gap: 4px;
+}
+.sklep-tab{
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 0 16px; height: 100%;
+  font-size: 13px; font-weight: 600; cursor: pointer;
+  color: var(--ep-text-3); border: none; background: transparent;
+  border-bottom: 2px solid transparent; margin-bottom: -1px;
+  font-family: var(--ep-font-sans);
+  transition: color var(--ep-d-fast), border-color var(--ep-d-fast);
+}
+.sklep-tab svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.sklep-tab.active { color: var(--ep-primary); border-bottom-color: var(--ep-primary); }
+.sklep-tab:not(.active):hover { color: var(--ep-text); }
+
+/* ── CONTENT AREA ─────────────────────────────────────────────────── */
+#content-area { flex: 1; position: relative; overflow: hidden; background: var(--ep-bg); }
+
+/* ── DASHBOARD ────────────────────────────────────────────────────── */
+#view-dashboard{
+  position: absolute; inset: 0;
+  display: none; flex-direction: column;
+  padding: 48px 28px 32px; overflow-y: auto;
+  background:
+    radial-gradient(ellipse 80% 40% at 20% 0%, var(--ep-primary-50) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 30% at 90% 10%, oklch(0.96 0.04 300) 0%, transparent 60%),
+    var(--ep-bg);
+}
+html.dark #view-dashboard{
+  background:
+    radial-gradient(ellipse 80% 40% at 20% 0%, oklch(0.25 0.08 258) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 30% at 90% 10%, oklch(0.24 0.08 300) 0%, transparent 60%),
+    var(--ep-bg);
+}
+.dash-inner { max-width: 1100px; width: 100%; margin: 0 auto; }
+
+/* ═══ DASHBOARD HERO (tylko powitanie) ═══ */
+.dash-hero{
+  position: relative;
+  padding: 36px 40px 40px;
+  border-radius: var(--ep-r-xl, 18px);
+  margin-bottom: 32px;
+  background:
+    radial-gradient(circle at 88% 30%, rgba(99,102,241,.25), transparent 55%),
+    linear-gradient(135deg, #1e3a8a 0%, #4338ca 55%, #4f46e5 100%);
+  color: #fff;
+  overflow: hidden;
+  box-shadow: 0 12px 32px -12px rgba(30,58,138,.45);
+}
+.dash-hero::before{
+  content: ''; position: absolute; inset: 0;
+  background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,.12) 1px, transparent 0);
+  background-size: 24px 24px; opacity: .4;
+  pointer-events: none;
+}
+.dash-hero::after{
+  content: ''; position: absolute; right: -80px; bottom: -100px;
+  width: 320px; height: 320px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,.1), transparent 65%);
+  pointer-events: none;
+}
+.dash-hero-copy{ position: relative; z-index: 1; max-width: 620px; }
+.dash-hero-eyebrow{
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 11.5px; font-weight: 700; letter-spacing: .08em;
+  text-transform: uppercase;
+  color: rgba(224,231,255,.85);
+  margin-bottom: 12px;
+}
+.dash-hero-dot{
+  width: 7px; height: 7px; border-radius: 50%;
+  background: #86efac;
+  box-shadow: 0 0 0 3px rgba(134,239,172,.25);
+}
+.dash-hero h1, #dash-title{
+  font-family: var(--ep-font-display); font-weight: 800;
+  font-size: clamp(28px, 3.2vw, 40px);
+  letter-spacing: -.02em;
+  margin: 0 0 10px; line-height: 1.1;
+  color: #fff;
+}
+.dash-hero-sub{
+  font-size: 15px; line-height: 1.5; font-weight: 500;
+  color: rgba(226,232,240,.9);
+  margin: 0; max-width: 560px;
+}
+@media (max-width: 640px){
+  .dash-hero{ padding: 28px 22px 30px; }
+}
+
+/* ═══ DASHBOARD HERO (tylko powitanie) ═══ */
+.dash-hero{
+  position: relative;
+  padding: 36px 40px 40px;
+  border-radius: var(--ep-r-xl, 18px);
+  margin-bottom: 32px;
+  background:
+    radial-gradient(circle at 88% 30%, rgba(99,102,241,.25), transparent 55%),
+    linear-gradient(135deg, #1e3a8a 0%, #4338ca 55%, #4f46e5 100%);
+  color: #fff;
+  overflow: hidden;
+  box-shadow: 0 12px 32px -12px rgba(30,58,138,.45);
+}
+.dash-hero::before{
+  content: ''; position: absolute; inset: 0;
+  background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,.12) 1px, transparent 0);
+  background-size: 24px 24px; opacity: .4;
+  pointer-events: none;
+}
+.dash-hero::after{
+  content: ''; position: absolute; right: -80px; bottom: -100px;
+  width: 320px; height: 320px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,.1), transparent 65%);
+  pointer-events: none;
+}
+.dash-hero-copy{ position: relative; z-index: 1; max-width: 620px; }
+.dash-hero-eyebrow{
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 11.5px; font-weight: 700; letter-spacing: .08em;
+  text-transform: uppercase;
+  color: rgba(224,231,255,.85);
+  margin-bottom: 12px;
+}
+.dash-hero-dot{
+  width: 7px; height: 7px; border-radius: 50%;
+  background: #86efac;
+  box-shadow: 0 0 0 3px rgba(134,239,172,.25);
+}
+.dash-hero h1, #dash-title{
+  font-family: var(--ep-font-display); font-weight: 800;
+  font-size: clamp(28px, 3.2vw, 40px);
+  letter-spacing: -.02em;
+  margin: 0 0 10px; line-height: 1.1;
+  color: #fff;
+}
+.dash-hero-sub{
+  font-size: 15px; line-height: 1.5; font-weight: 500;
+  color: rgba(226,232,240,.9);
+  margin: 0; max-width: 560px;
+}
+@media (max-width: 640px){
+  .dash-hero{ padding: 28px 22px 30px; }
+}
+
+/* Dashboard grid */
+.dash-grid{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px; margin-bottom: 18px;
+}
+@media (max-width: 980px) { .dash-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 720px) { .dash-grid { grid-template-columns: 1fr; } }
+
+.tile{
+  cursor: pointer; border: 1px solid var(--ep-border);
+  border-radius: var(--ep-r-xl);
+  background: var(--ep-surface);
+  padding: 26px 26px 24px; text-align: left;
+  transition: transform var(--ep-d-base) var(--ep-ease),
+              box-shadow var(--ep-d-base) var(--ep-ease),
+              border-color var(--ep-d-fast);
+  position: relative; overflow: hidden;
+  box-shadow: var(--ep-shadow-xs);
+  font-family: var(--ep-font-sans);
+  display: flex; flex-direction: column; gap: 16px;
+  min-height: 200px;
+}
+.tile:hover{
+  transform: translateY(-3px);
+  box-shadow: var(--ep-shadow-lg);
+  border-color: var(--ep-border-strong);
+}
+.tile:active { transform: translateY(-1px); }
+
+.tile-head{
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+}
+.tile-icon{
+  width: 48px; height: 48px; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.tile-icon svg { width: 24px; height: 24px; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; fill: none; }
+
+.tile-ib .tile-icon { background: var(--ep-violet-100); color: var(--ep-violet); }
+.tile-ex .tile-icon { background: var(--ep-primary-100); color: var(--ep-primary); }
+.tile-spe .tile-icon { background: var(--ep-success-100); color: var(--ep-success); }
+
+.tile-icon svg { stroke: currentColor; }
+
+.tile-badge{
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 10px; border-radius: var(--ep-r-full);
+  font-size: 11px; font-weight: 600; color: var(--ep-text-3);
+  background: var(--ep-surface-2); border: 1px solid var(--ep-border);
+}
+
+.tile-body { flex: 1; }
+.tile-name{
+  font-family: var(--ep-font-display);
+  font-size: 19px; font-weight: 800; color: var(--ep-text);
+  margin: 0 0 6px; letter-spacing: -0.01em;
+}
+.tile-desc{
+  font-size: 13.5px; color: var(--ep-text-2);
+  line-height: 1.55; font-weight: 400; margin: 0;
+}
+
+.tile-foot{
+  display: flex; align-items: center; justify-content: space-between;
+  padding-top: 14px; border-top: 1px dashed var(--ep-divider);
+}
+.tile-meta{ font-size: 11px; color: var(--ep-text-3); font-weight: 500; display: flex; align-items: center; gap: 6px; }
+.tile-cta{
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 13px; font-weight: 600;
+  color: var(--ep-primary);
+}
+.tile-ib .tile-cta { color: var(--ep-violet); }
+.tile-spe .tile-cta { color: var(--ep-success); }
+.tile-cta svg{ width: 14px; height: 14px; transition: transform var(--ep-d-fast) var(--ep-ease-soft); stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.tile:hover .tile-cta svg { transform: translateX(4px); }
+
+/* Feature tile (Korepetycje) — full width, premium */
+.tile-feature{
+  position: relative; cursor: pointer;
+  border-radius: var(--ep-r-xl);
+  background:
+    linear-gradient(135deg, var(--ep-primary) 0%, oklch(0.42 0.17 278) 70%, oklch(0.48 0.18 295) 100%);
+  border: none; padding: 26px 28px;
+  display: flex; align-items: center; gap: 22px;
+  overflow: hidden;
+  box-shadow: var(--ep-shadow-md);
+  transition: transform var(--ep-d-base) var(--ep-ease), box-shadow var(--ep-d-base) var(--ep-ease);
+  font-family: var(--ep-font-sans);
+}
+.tile-feature::before{
+  content: ''; position: absolute; right: -40px; top: -40px;
+  width: 240px; height: 240px; border-radius: 50%;
+  background: radial-gradient(circle at center, oklch(1 0 0 / 0.14) 0%, transparent 70%);
+  pointer-events: none;
+}
+.tile-feature:hover{ transform: translateY(-3px); box-shadow: var(--ep-shadow-lg); }
+.tile-feature:active { transform: translateY(-1px); }
+
+.feat-icon{
+  width: 56px; height: 56px; border-radius: 16px;
+  background: oklch(1 0 0 / 0.16);
+  backdrop-filter: blur(6px);
+  border: 1px solid oklch(1 0 0 / 0.22);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; color: #fff;
+}
+.feat-icon svg { width: 26px; height: 26px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+.feat-body { flex: 1; color: #fff; position: relative; z-index: 1; }
+.feat-eyebrow{
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  color: oklch(1 0 0 / 0.82);
+  padding: 3px 8px; border-radius: var(--ep-r-full);
+  background: oklch(1 0 0 / 0.14);
+  margin-bottom: 8px;
+}
+.feat-name{
+  font-family: var(--ep-font-display);
+  font-size: 20px; font-weight: 800; color: #fff;
+  letter-spacing: -0.01em; margin: 0 0 5px;
+}
+.feat-desc{
+  font-size: 13px; color: oklch(1 0 0 / 0.82);
+  line-height: 1.5; font-weight: 400; margin: 0; max-width: 520px;
+}
+.feat-cta{
+  display: inline-flex; align-items: center; gap: 8px;
+  background: #fff; color: var(--ep-primary);
+  border: none; border-radius: var(--ep-r-md);
+  padding: 11px 18px; font-family: var(--ep-font-sans);
+  font-size: 13px; font-weight: 700; cursor: pointer; white-space: nowrap;
+  box-shadow: 0 6px 16px oklch(0 0 0 / 0.16);
+  transition: transform var(--ep-d-fast), box-shadow var(--ep-d-fast);
+  position: relative; z-index: 1;
+}
+.feat-cta svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform var(--ep-d-fast) var(--ep-ease-soft); }
+.tile-feature:hover .feat-cta svg { transform: translateX(3px); }
+.feat-note{
+  display: block; margin-top: 8px; font-size: 10.5px;
+  color: oklch(1 0 0 / 0.62); font-weight: 500;
+  text-align: center;
+}
+@media (max-width: 640px){
+  .tile-feature { flex-direction: column; text-align: center; align-items: stretch; }
+  .feat-icon { align-self: center; }
+  .feat-cta { width: 100%; justify-content: center; }
+}
+
+/* Footer */
+.footer{
+  margin-top: 28px; text-align: center;
+  color: var(--ep-text-4); font-size: 11px; font-weight: 500;
+}
+
+/* Stagger anim on mount */
+@keyframes ep-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+#view-dashboard.visible > .dash-inner > *{ animation: ep-in .45s var(--ep-ease) both; }
+#view-dashboard.visible > .dash-inner > *:nth-child(1) { animation-delay: .02s; }
+#view-dashboard.visible > .dash-inner > *:nth-child(2) { animation-delay: .08s; }
+#view-dashboard.visible > .dash-inner > *:nth-child(3) { animation-delay: .14s; }
+#view-dashboard.visible > .dash-inner > *:nth-child(4) { animation-delay: .20s; }
+
+/* ── SPE (Wyzwania / Produkty) ────────────────────────────────────── */
+#view-spe{
+  position: absolute; inset: 0;
+  display: none; flex-direction: column;
+  padding: 40px 28px 40px; overflow-y: auto;
+  background:
+    radial-gradient(ellipse 70% 35% at 15% 0%, var(--ep-success-100) 0%, transparent 60%),
+    radial-gradient(ellipse 55% 25% at 90% 5%, oklch(0.96 0.04 30) 0%, transparent 60%),
+    var(--ep-bg);
+}
+html.dark #view-spe{
+  background:
+    radial-gradient(ellipse 70% 35% at 15% 0%, oklch(0.27 0.06 155) 0%, transparent 60%),
+    radial-gradient(ellipse 55% 25% at 90% 5%, oklch(0.25 0.05 30) 0%, transparent 60%),
+    var(--ep-bg);
+}
+.spe-inner{ max-width: 1180px; width: 100%; margin: 0 auto; }
+
+.spe-head{
+  display: flex; align-items: flex-end; justify-content: space-between; gap: 24px;
+  margin-bottom: 28px; flex-wrap: wrap;
+}
+.spe-head-copy{ max-width: 640px; }
+.spe-eyebrow{
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 11.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--ep-success); margin-bottom: 10px;
+}
+.spe-eyebrow::before{
+  content:''; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--ep-success);
+  box-shadow: 0 0 0 4px oklch(0.85 0.12 155 / .35);
+}
+.spe-title{
+  font-family: var(--ep-font-display);
+  font-size: clamp(22px, 2.2vw, 28px); font-weight: 800;
+  letter-spacing: -.02em; color: var(--ep-text);
+  margin: 0 0 8px; line-height: 1.15;
+}
+.spe-sub{
+  color: var(--ep-text-2); font-size: 14px; line-height: 1.55;
+  margin: 0; text-wrap: pretty;
+}
+.spe-filters{
+  display: flex; gap: 8px; flex-wrap: wrap;
+}
+.spe-chip{
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 13px; border-radius: var(--ep-r-full, 999px);
+  background: var(--ep-surface); border: 1px solid var(--ep-border);
+  color: var(--ep-text-2); font-family: var(--ep-font-sans);
+  font-size: 12.5px; font-weight: 600; cursor: pointer;
+  transition: all .15s ease;
+}
+.spe-chip:hover{ border-color: var(--ep-border-strong); color: var(--ep-text); }
+.spe-chip.active{
+  background: var(--ep-text); border-color: var(--ep-text); color: #fff;
+}
+
+.spe-grid{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  padding-top: 12px;
+}
+@media (max-width: 980px){ .spe-grid{ grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px){ .spe-grid{ grid-template-columns: 1fr; } }
+
+.spe-card{
+  position: relative;
+  background: var(--ep-surface);
+  border: 1px solid var(--ep-border);
+  border-radius: var(--ep-r-xl);
+  padding: 18px 20px 16px;
+  display: flex; flex-direction: column;
+  min-height: 280px;
+  cursor: pointer;
+  font-family: var(--ep-font-sans);
+  text-align: left;
+  box-shadow: var(--ep-shadow-xs, 0 1px 2px rgba(15,23,42,.04));
+  transition: transform .2s var(--ep-ease-soft, ease), box-shadow .2s var(--ep-ease-soft, ease), border-color .2s ease;
+}
+.spe-card:hover{
+  transform: translateY(-2px);
+  border-color: var(--ep-border-strong);
+  box-shadow: 0 1px 2px rgba(15,23,42,.04), 0 16px 36px rgba(15,23,42,.10);
+}
+.spe-card:focus-visible{ outline: 2px solid var(--ep-primary); outline-offset: 2px; }
+
+.spe-card-head{
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 12px; margin-bottom: 14px;
+  min-height: 88px;
+}
+.spe-ce{
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--ep-font-mono, ui-monospace, monospace);
+  font-size: 11px; font-weight: 700; color: var(--ep-text-3);
+  letter-spacing: .04em;
+}
+.spe-ce-md{
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 1px 5px; border: 1px solid var(--ep-border-strong);
+  border-radius: 3px; font-size: 9.5px; color: var(--ep-text-2);
+  letter-spacing: .05em;
+}
+.spe-pattern{
+  width: 92px; height: 76px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.spe-pattern svg{ width: 100%; height: 100%; display: block; }
+
+.spe-card-name{
+  font-family: var(--ep-font-display);
+  font-size: 15.5px; font-weight: 800;
+  letter-spacing: -.005em;
+  color: var(--ep-text);
+  line-height: 1.25;
+  margin: 0 0 10px;
+  text-transform: uppercase;
+  text-wrap: balance;
+  min-height: 38px;
+}
+.spe-card-name.normal-case{ text-transform: none; letter-spacing: -.01em; }
+
+.spe-level{
+  align-self: flex-start;
+  display: inline-flex; align-items: center;
+  padding: 4px 10px;
+  border-radius: var(--ep-r-full, 999px);
+  font-size: 10.5px; font-weight: 800; letter-spacing: .06em;
+  text-transform: uppercase; color: #fff;
+  margin-bottom: 14px;
+}
+
+.spe-card-foot{
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid var(--ep-divider);
+  display: flex; align-items: center; gap: 10px;
+}
+.spe-count{
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 3px 10px; border-radius: 7px;
+  background: var(--ep-primary-50); color: var(--ep-primary);
+  font-size: 13px; font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.spe-foot-text{
+  display: flex; flex-direction: column; gap: 2px;
+  font-size: 11.5px; color: var(--ep-text-3); flex: 1; min-width: 0;
+}
+.spe-foot-text strong{ font-weight: 600; color: var(--ep-text-2); }
+.spe-more{
+  width: 28px; height: 28px; border-radius: 50%;
+  border: none; background: transparent; cursor: pointer;
+  color: var(--ep-text-4);
+  display: flex; align-items: center; justify-content: center;
+  transition: background .15s ease, color .15s ease;
+}
+.spe-more:hover{ background: var(--ep-surface-3); color: var(--ep-text-2); }
+.spe-more svg{ width: 16px; height: 16px; }
+
+/* Aktywna ścieżka — zielony akcent + CTA "Otwórz" */
+.spe-card.current{
+  border: 2px solid var(--ep-success);
+  padding: 17px 19px 15px;
+  box-shadow: 0 0 0 4px oklch(0.85 0.12 155 / .20);
+}
+.spe-card.current::after{
+  content: '';
+  position: absolute; top: -12px; left: 16px;
+  width: 32px; height: 32px; border-radius: 50%;
+  background-color: var(--ep-success);
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 5l7 7-7 7"/><path d="M21 12H5"/></svg>');
+  background-repeat: no-repeat; background-position: center; background-size: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.18);
+  z-index: 5;
+}
+.spe-count-active{
+  background: var(--ep-success-100); color: var(--ep-success);
+}
+.spe-open{
+  margin-left: auto;
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12.5px; font-weight: 700;
+  color: var(--ep-success);
+  padding: 6px 11px; border-radius: var(--ep-r-md);
+  background: var(--ep-success-100);
+  transition: background .15s ease;
+}
+.spe-open svg{ width: 12px; height: 12px; transition: transform .15s ease; }
+.spe-card:hover .spe-open svg{ transform: translateX(2px); }
+
+/* Niedostępne ścieżki — diagonalna tekstura "zablokowane" + stonowany tytuł, CTA do sklepu */
+.spe-card.locked{
+  background: var(--ep-surface);
+  box-shadow: none;
+}
+.spe-card.locked::before{
+  content: ''; position: absolute; inset: 0;
+  background: repeating-linear-gradient(135deg, transparent 0 14px, oklch(0.94 0.005 250 / .35) 14px 15px);
+  pointer-events: none; opacity: .55;
+  border-radius: inherit;
+  clip-path: inset(0 round var(--ep-r-xl));
+}
+.spe-card.locked > *{ position: relative; }
+.spe-card.locked:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 1px 2px rgba(15,23,42,.04), 0 12px 28px rgba(15,23,42,.08);
+  border-color: var(--ep-primary-100);
+}
+.spe-card.locked .spe-card-name{ color: var(--ep-text-3); }
+.spe-card.locked .spe-pattern{ filter: grayscale(.15); opacity: .8; }
+.spe-card.locked .spe-level{ background: var(--ep-text-4) !important; }
+
+.spe-lock-chip{
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 30px; height: 26px; border-radius: 7px;
+  background: var(--ep-surface-3); color: var(--ep-text-3);
+  flex-shrink: 0;
+}
+.spe-lock-chip svg{ width: 13px; height: 13px; }
+
+.spe-buy{
+  margin-left: auto;
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12.5px; font-weight: 700;
+  color: var(--ep-primary);
+  padding: 6px 11px; border-radius: var(--ep-r-md);
+  background: var(--ep-primary-50);
+  transition: background .15s ease;
+}
+.spe-buy svg{ width: 12px; height: 12px; transition: transform .15s ease; }
+.spe-card.locked:hover .spe-buy{ background: var(--ep-primary-100); }
+.spe-card.locked:hover .spe-buy svg{ transform: translateX(2px); }
+
+/* Data wygaśnięcia licencji na kaflu ścieżki */
+.spe-license{
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 8px;
+  margin-top: 12px; padding-top: 10px;
+  border-top: 1px dashed var(--ep-divider);
+  font-family: var(--ep-font-sans);
+  font-size: 11.5px;
+  color: var(--ep-text-3);
+  font-weight: 600;
+}
+.spe-license-label{
+  letter-spacing: .02em;
+}
+.spe-license-date{
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--ep-text-2);
+  font-variant-numeric: tabular-nums;
+}
+.spe-license-date svg{ width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: .7; }
+.spe-card.locked .spe-license-date{ color: var(--ep-text-3); }
+.spe-card.locked .spe-license-date strong{ font-weight: 600; }
+
+/* ── SPE DETAIL (po wejściu w ścieżkę) ──────────────────────────── */
+.spe-detail{ display: none; flex-direction: column; gap: 18px; }
+#view-spe[data-mode="detail"] .spe-head{ display: none; }
+#view-spe[data-mode="detail"] .spe-grid{ display: none; }
+#view-spe[data-mode="detail"] .spe-detail{ display: flex; }
+
+.spe-detail-head{
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 2px;
+}
+.spe-back{
+  display: inline-flex; align-items: center; gap: 8px;
+  height: 36px; padding: 0 14px 0 12px;
+  background: var(--ep-surface); border: 1px solid var(--ep-border);
+  border-radius: var(--ep-r-md); color: var(--ep-text-2);
+  font-family: var(--ep-font-sans); font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: all .15s ease;
+}
+.spe-back:hover{ border-color: var(--ep-border-strong); color: var(--ep-text); background: var(--ep-surface-2); }
+.spe-back svg{ width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.spe-detail-title{
+  font-family: var(--ep-font-display);
+  font-size: 22px; font-weight: 800; letter-spacing: -.015em;
+  color: var(--ep-text); margin: 0;
+}
+.spe-detail-sub{
+  color: var(--ep-text-3); font-size: 12.5px; font-weight: 600;
+  letter-spacing: .02em; margin-top: 1px;
+}
+
+/* Tabs */
+.spe-tabs{
+  display: flex; gap: 4px;
+  border-bottom: 1px solid var(--ep-border);
+  margin-bottom: 4px;
+}
+.spe-tab{
+  position: relative;
+  padding: 12px 18px;
+  background: transparent; border: none;
+  font-family: var(--ep-font-sans);
+  font-size: 13.5px; font-weight: 600;
+  color: var(--ep-text-3); cursor: pointer;
+  transition: color .15s ease;
+}
+.spe-tab:hover{ color: var(--ep-text); }
+.spe-tab.active{ color: var(--ep-primary); font-weight: 700; }
+.spe-tab.active::after{
+  content: ''; position: absolute; left: 12px; right: 12px; bottom: -1px;
+  height: 2.5px; background: var(--ep-primary); border-radius: 2px;
+}
+
+/* Toolbar */
+.spe-toolbar{
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+}
+.spe-select{
+  position: relative;
+  display: inline-flex; align-items: center; gap: 8px;
+  height: 36px; padding: 0 12px 0 14px;
+  background: var(--ep-surface); border: 1px solid var(--ep-border);
+  border-radius: var(--ep-r-md);
+  color: var(--ep-text-2);
+  font-family: var(--ep-font-sans); font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: border-color .15s ease;
+}
+.spe-select:hover{ border-color: var(--ep-border-strong); }
+.spe-select svg{ width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.spe-view-toggle{
+  margin-left: auto; display: inline-flex; gap: 2px;
+  background: var(--ep-surface); border: 1px solid var(--ep-border);
+  border-radius: var(--ep-r-md); padding: 3px;
+}
+.spe-view-btn{
+  width: 30px; height: 28px; border: none; background: transparent;
+  border-radius: 7px; cursor: pointer; color: var(--ep-text-3);
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: background .15s ease, color .15s ease;
+}
+.spe-view-btn:hover{ color: var(--ep-text); }
+.spe-view-btn.active{ background: var(--ep-primary-50); color: var(--ep-primary); }
+.spe-view-btn svg{ width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Body: tree + grid */
+.spe-detail-body{
+  display: grid;
+  grid-template-columns: 264px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+@media (max-width: 900px){ .spe-detail-body{ grid-template-columns: 1fr; } }
+
+.spe-tree{
+  background: var(--ep-surface);
+  border: 1px solid var(--ep-border);
+  border-radius: var(--ep-r-xl);
+  padding: 10px 8px;
+  position: sticky; top: 16px;
+}
+.spe-tree-node{ display: flex; flex-direction: column; }
+.spe-tree-item{
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 10px;
+  border-radius: var(--ep-r-md);
+  cursor: pointer;
+  font-family: var(--ep-font-sans);
+  font-size: 13px; line-height: 1.35; color: var(--ep-text-2);
+  font-weight: 600;
+  border: none; background: transparent;
+  text-align: left; width: 100%;
+  transition: background .15s ease, color .15s ease;
+}
+.spe-tree-item:hover{ background: var(--ep-surface-3); color: var(--ep-text); }
+.spe-tree-item.active{ background: var(--ep-primary-50); color: var(--ep-primary); }
+.spe-tree-chev{
+  width: 14px; height: 14px; color: var(--ep-text-4); flex-shrink: 0;
+  transition: transform .2s ease;
+}
+.spe-tree-chev svg{ width: 100%; height: 100%; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.spe-tree-node.open > .spe-tree-item > .spe-tree-chev{ transform: rotate(90deg); }
+.spe-tree-label{ flex: 1; text-wrap: balance; }
+.spe-tree-count{
+  font-size: 11px; font-weight: 700; color: var(--ep-text-3);
+  background: var(--ep-surface-3);
+  padding: 2px 7px; border-radius: var(--ep-r-full, 999px);
+  font-variant-numeric: tabular-nums;
+}
+.spe-tree-item.active .spe-tree-count{ background: var(--ep-surface); color: var(--ep-primary); }
+.spe-tree-children{
+  display: none; flex-direction: column; gap: 2px;
+  padding-left: 18px;
+  margin: 2px 0 4px;
+  border-left: 1px solid var(--ep-divider);
+  margin-left: 14px;
+}
+.spe-tree-node.open > .spe-tree-children{ display: flex; }
+.spe-tree-node.leaf .spe-tree-chev{ visibility: hidden; }
+
+/* Resource cards grid */
+.spe-res-grid{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+@media (max-width: 1180px){ .spe-res-grid{ grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px){ .spe-res-grid{ grid-template-columns: 1fr; } }
+
+.spe-res-card{
+  position: relative;
+  background: var(--ep-surface);
+  border: 1px solid var(--ep-border);
+  border-radius: var(--ep-r-xl);
+  padding: 12px;
+  display: flex; flex-direction: column;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--ep-font-sans);
+  transition: transform .15s var(--ep-ease-soft, ease), box-shadow .15s ease, border-color .15s ease;
+  box-shadow: var(--ep-shadow-xs, 0 1px 2px rgba(15,23,42,.04));
+  overflow: visible;
+}
+.spe-res-card:hover{
+  transform: translateY(-2px);
+  border-color: var(--ep-border-strong);
+  box-shadow: 0 1px 2px rgba(15,23,42,.04), 0 14px 28px rgba(15,23,42,.10);
+}
+.spe-res-card.selected{
+  border: 2px solid var(--ep-success);
+  padding: 11px;
+  box-shadow: 0 0 0 4px oklch(0.85 0.12 155 / .20);
+}
+.spe-res-card.selected::before{
+  content: '';
+  position: absolute; top: -12px; left: 14px;
+  width: 32px; height: 32px; border-radius: 50%;
+  background-color: var(--ep-success);
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 5l7 7-7 7"/><path d="M21 12H5"/></svg>');
+  background-repeat: no-repeat; background-position: center; background-size: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.18);
+  z-index: 5;
+}
+
+.spe-res-preview{
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--ep-r-lg);
+  background:
+    repeating-linear-gradient(135deg, var(--ep-surface-2) 0 12px, var(--ep-surface-3) 12px 13px);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+.spe-res-preview::after{
+  content: 'PODGLĄD'; position: absolute; bottom: 8px; right: 10px;
+  font-family: var(--ep-font-mono, ui-monospace, monospace);
+  font-size: 9px; letter-spacing: .12em; color: var(--ep-text-4);
+}
+.spe-res-info{
+  position: absolute; top: 8px; left: 8px;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--ep-surface); color: var(--ep-text-3);
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--ep-font-sans); font-size: 12px; font-weight: 700;
+  border: 1px solid var(--ep-border);
+}
+
+.spe-res-title{
+  font-size: 14px; font-weight: 700;
+  color: var(--ep-text); line-height: 1.3;
+  margin: 0 0 10px;
+  text-wrap: balance;
+  min-height: 36px;
+}
+.spe-res-stats{
+  display: flex; align-items: center; gap: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--ep-divider);
+  margin-bottom: 10px;
+}
+.spe-res-stat{
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11.5px; font-weight: 600;
+  color: var(--ep-text-2);
+  font-variant-numeric: tabular-nums;
+}
+.spe-res-stat svg{ width: 14px; height: 14px; }
+
+.spe-res-foot{
+  display: flex; align-items: center; gap: 8px;
+}
+.spe-res-prod{
+  flex: 1;
+  font-size: 10.5px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .03em; color: var(--ep-text-3);
+  line-height: 1.3;
+}
+.spe-res-foot .spe-more{ flex-shrink: 0; }
+
+/* ── SPE EXERCISE (po wejściu w pojedyncze wyzwanie) ──────────────── */
+.spe-exercise{ display: none; flex-direction: column; flex: 1; min-height: 0; gap: 0; position: relative; }
+#view-spe[data-mode="exercise"] .spe-head,
+#view-spe[data-mode="exercise"] .spe-grid,
+#view-spe[data-mode="exercise"] .spe-detail{ display: none; }
+#view-spe[data-mode="exercise"] .spe-exercise{ display: flex; }
+#view-spe[data-mode="exercise"]{
+  padding: 0;
+  background: var(--ep-surface);
+}
+
+/* Pasek górny wyzwania: powrót + tytuł sekcji */
+.spe-ex-topbar{
+  display: flex; align-items: center; gap: 14px;
+  padding: 12px 24px;
+  background: var(--ep-surface);
+  border-bottom: 1px solid var(--ep-border);
+  position: relative; z-index: 2;
+}
+.spe-ex-back{
+  width: 42px; height: 42px; border-radius: 50%;
+  background: var(--ep-primary); color: #fff; border: none;
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 6px 14px -6px var(--ep-primary);
+  transition: background .15s ease, transform .12s ease;
+  flex-shrink: 0;
+}
+.spe-ex-back:hover{ background: var(--ep-primary-600); }
+.spe-ex-back:active{ transform: scale(.94); }
+.spe-ex-back svg{ width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.spe-ex-topbar-title{
+  font-family: var(--ep-font-sans);
+  font-size: 16px; font-weight: 600; color: var(--ep-text);
+  margin: 0; flex: 1; min-width: 0;
+  text-overflow: ellipsis; overflow: hidden; white-space: nowrap;
+}
+
+.spe-ex-head{
+  position: relative;
+  display: flex; align-items: center; gap: 14px;
+  padding: 28px 96px 16px 32px;
+  background: transparent;
+}
+.spe-ex-audio{
+  width: 40px; height: 40px; flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--ep-surface);
+  color: var(--ep-primary);
+  border: 1.5px solid var(--ep-primary-100);
+  cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: background .15s ease, transform .12s ease, border-color .15s ease;
+}
+.spe-ex-audio:hover{ background: var(--ep-primary-50); border-color: var(--ep-primary); }
+.spe-ex-audio:active{ transform: scale(.96); }
+.spe-ex-audio svg{ width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+.spe-ex-question{
+  flex: 1;
+  font-family: var(--ep-font-sans);
+  font-size: 17px; font-weight: 500;
+  color: var(--ep-text);
+  margin: 0; line-height: 1.4;
+  text-wrap: balance;
+}
+
+/* Rozwijany menu "tab" zawieszony pod górną krawędzią */
+.spe-ex-menu{
+  position: absolute; top: 0; right: 24px;
+  z-index: 5;
+}
+.spe-ex-collapse{
+  width: 64px; height: 32px;
+  border-radius: 0 0 18px 18px;
+  background: var(--ep-surface);
+  border: 1px solid var(--ep-border); border-top: none;
+  color: var(--ep-primary); cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: color .15s ease, background .2s ease, height .2s ease, width .2s ease, border-color .2s ease;
+  position: relative; z-index: 2;
+}
+.spe-ex-collapse:hover{ background: var(--ep-primary-50); height: 40px; }
+.spe-ex-collapse svg{ width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; transition: transform .25s ease; }
+
+.spe-ex-menu.open .spe-ex-collapse{
+  background: var(--ep-primary);
+  color: #fff;
+  border-color: var(--ep-primary);
+  width: 78px; height: 42px;
+  border-radius: 0 0 0 18px;
+}
+.spe-ex-menu.open .spe-ex-collapse svg{ transform: rotate(180deg); }
+
+.spe-ex-panel{
+  position: absolute; top: 100%; right: 0;
+  min-width: 240px;
+  background: var(--ep-primary);
+  color: #fff;
+  border-radius: 0 0 0 22px;
+  box-shadow: 0 14px 32px -8px rgba(15,23,42,.28);
+  padding: 14px 12px 18px;
+  display: none;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: -1px;
+  font-family: var(--ep-font-sans);
+}
+.spe-ex-menu.open .spe-ex-panel{ display: flex; animation: ep-in .2s var(--ep-ease) both; }
+.spe-ex-panel-item{
+  display: flex; align-items: center; gap: 14px;
+  padding: 12px 14px;
+  border: none; background: transparent;
+  color: #fff; font-size: 14.5px; font-weight: 600;
+  border-radius: 10px; cursor: pointer;
+  text-align: left;
+  font-family: var(--ep-font-sans);
+  transition: background .15s ease;
+}
+.spe-ex-panel-item:hover{ background: rgba(255,255,255,.14); }
+.spe-ex-panel-item svg{ width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+
+.spe-ex-body{
+  flex: 1; min-height: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 24px 32px 8px;
+  position: relative;
+}
+.spe-ex-options{
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 260px));
+  gap: 36px;
+  width: 100%;
+  max-width: 920px;
+}
+@media (max-width: 720px){ .spe-ex-options{ grid-template-columns: 1fr; max-width: 280px; gap: 18px; } }
+
+.spe-ex-opt{
+  aspect-ratio: 1 / 1;
+  background: var(--ep-surface);
+  border: 1.5px solid var(--ep-border);
+  border-radius: 28px;
+  padding: 22px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 4px rgba(15,23,42,.04), 0 18px 32px -18px rgba(15,23,42,.18);
+  transition: transform .15s var(--ep-ease-soft, ease), box-shadow .15s ease, border-color .15s ease;
+}
+.spe-ex-opt:hover{
+  transform: translateY(-4px) scale(1.02);
+  border-color: var(--ep-primary-100);
+  box-shadow: 0 2px 4px rgba(15,23,42,.04), 0 28px 48px -20px rgba(15,23,42,.25);
+}
+.spe-ex-opt:focus-visible{ outline: 3px solid var(--ep-primary); outline-offset: 4px; }
+.spe-ex-opt.correct{
+  border-color: var(--ep-success);
+  box-shadow: 0 0 0 4px oklch(0.85 0.12 155 / .22), 0 18px 36px -14px oklch(0.55 0.12 155 / .35);
+}
+.spe-ex-opt.wrong{
+  border-color: var(--ep-danger);
+  box-shadow: 0 0 0 4px oklch(0.85 0.14 25 / .22), 0 18px 36px -14px oklch(0.55 0.14 25 / .25);
+  animation: spe-shake .35s ease;
+}
+@keyframes spe-shake{
+  0%,100%{ transform: translateX(0); }
+  20%{ transform: translateX(-6px); }
+  40%{ transform: translateX(5px); }
+  60%{ transform: translateX(-3px); }
+  80%{ transform: translateX(3px); }
+}
+.spe-ex-opt svg{ width: 100%; height: 100%; }
+
+/* Dolny obszar przed stopką: separator + animowany chevron + FAB refresh + grab handle */
+.spe-ex-controls{
+  position: relative;
+  border-top: 1px solid var(--ep-border);
+  height: 70px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--ep-surface);
+}
+.spe-ex-down{
+  width: 32px; height: 32px; border-radius: 50%;
+  background: transparent; border: none; cursor: pointer;
+  color: var(--ep-primary);
+  display: inline-flex; align-items: center; justify-content: center;
+  animation: spe-bounce 1.6s ease-in-out infinite;
+}
+.spe-ex-down svg{ width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+@keyframes spe-bounce{
+  0%,100%{ transform: translateY(-2px); }
+  50%{ transform: translateY(2px); }
+}
+.spe-ex-retry{
+  position: absolute; right: 28px; top: 50%; transform: translateY(-50%);
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--ep-surface); color: var(--ep-primary);
+  border: 1.5px solid var(--ep-primary-100);
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: transform .25s ease, background .15s ease, border-color .15s ease;
+}
+.spe-ex-retry:hover{ background: var(--ep-primary-50); border-color: var(--ep-primary); transform: translateY(-50%) rotate(-90deg); }
+.spe-ex-retry svg{ width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Pigułka "grab handle" w środku dolnej krawędzi */
+.spe-ex-grab{
+  position: absolute; left: 50%; bottom: -8px; transform: translateX(-50%);
+  width: 56px; height: 4px;
+  background: var(--ep-border-strong, oklch(0.85 0.01 250));
+  border-radius: 999px;
+  pointer-events: none;
+}
+
+.spe-ex-foot{
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 24px;
+  background: var(--ep-surface);
+}
+.spe-ex-foot-title{
+  display: flex; align-items: center; gap: 12px;
+  flex: 1; min-width: 0;
+  font-size: 14px; font-weight: 600; color: var(--ep-text-2);
+}
+.spe-ex-foot-title button{
+  width: 32px; height: 32px; border-radius: 8px;
+  border: none; background: transparent; cursor: pointer;
+  color: var(--ep-primary);
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: background .15s ease, color .15s ease;
+}
+.spe-ex-foot-title button:hover{ background: var(--ep-primary-50); }
+.spe-ex-foot-title button svg{ width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+.spe-ex-nav{
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.spe-ex-nav-btn{
+  width: 36px; height: 36px; border-radius: 50%;
+  border: none; background: transparent; color: var(--ep-primary); cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: background .15s ease, color .15s ease;
+}
+.spe-ex-nav-btn:hover{ background: var(--ep-primary-50); }
+.spe-ex-nav-btn:disabled{ color: var(--ep-text-4); cursor: not-allowed; }
+.spe-ex-nav-btn:disabled:hover{ background: transparent; }
+.spe-ex-nav-btn svg{ width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.spe-ex-counter{
+  font-family: var(--ep-font-sans);
+  font-size: 14px; font-weight: 600; color: var(--ep-text-2);
+  min-width: 38px; text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+/* Pseudo-fullscreen wyzwania — działa także w iframe-ach bez allowfullscreen */
+#view-spe.spe-fs{
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 9999 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+}
+#view-spe.spe-fs .spe-ex-topbar{ display: none !important; }
+
+/* ── SPE CREATOR (Kreator komiksów) ─────────────────────────────── */
+.spe-creator{ display: none; flex-direction: column; flex: 1; min-height: 0; background: var(--ep-surface); }
+#view-spe[data-mode="creator"] .spe-head,
+#view-spe[data-mode="creator"] .spe-grid,
+#view-spe[data-mode="creator"] .spe-detail,
+#view-spe[data-mode="creator"] .spe-exercise{ display: none; }
+#view-spe[data-mode="creator"] .spe-creator{ display: flex; }
+#view-spe[data-mode="creator"]{ padding: 0; background: var(--ep-surface); }
+
+.spe-cr-topbar{
+  display: flex; align-items: center; gap: 14px;
+  padding: 12px 24px;
+  background: var(--ep-surface);
+  border-bottom: 1px solid var(--ep-border);
+  flex-shrink: 0;
+}
+.spe-cr-topbar-title{
+  font-family: var(--ep-font-sans);
+  font-size: 16px; font-weight: 600; color: var(--ep-text);
+  margin: 0;
+}
+
+.spe-cr-body{
+  flex: 1; min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.4fr) 72px;
+  gap: 0;
+}
+.spe-cr-col{
+  display: flex; flex-direction: column;
+  padding: 18px 24px;
+  min-width: 0;
+}
+.spe-cr-col + .spe-cr-col{ border-left: 1px solid var(--ep-divider); }
+
+.spe-cr-toolbar{
+  display: flex; align-items: center; gap: 10px;
+  padding: 4px 0 18px;
+  min-height: 56px;
+}
+.spe-cr-toolbar.right{ justify-content: flex-end; padding-right: 4px; }
+.spe-cr-tb-back{
+  width: 36px; height: 36px; border: none; background: transparent;
+  color: var(--ep-primary); cursor: pointer; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  margin-right: 8px;
+  transition: background .15s ease;
+}
+.spe-cr-tb-back:hover{ background: var(--ep-primary-50); }
+.spe-cr-tb-back svg{ width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.spe-cr-tb-gap{ flex: 1; }
+
+.spe-cr-btn{
+  width: 42px; height: 42px; border-radius: 50%;
+  background: var(--ep-surface); color: var(--ep-primary);
+  border: 1px solid var(--ep-primary-100); cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: background .15s ease, border-color .15s ease, transform .12s ease;
+}
+.spe-cr-btn:hover{ background: var(--ep-primary-50); border-color: var(--ep-primary); }
+.spe-cr-btn:active{ transform: scale(.94); }
+.spe-cr-btn svg{ width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+.spe-cr-thumbs{
+  background: oklch(0.92 0.005 250);
+  border-radius: 14px;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  min-height: 280px;
+}
+.spe-cr-thumb{
+  background: var(--ep-surface);
+  border: 1.5px solid transparent;
+  border-radius: 6px;
+  aspect-ratio: 1 / 1;
+  cursor: pointer;
+  transition: border-color .15s ease;
+  display: flex; align-items: center; justify-content: center;
+  color: oklch(0.85 0.01 250);
+}
+.spe-cr-thumb:hover{ border-color: var(--ep-primary-100); }
+.spe-cr-thumb.active{ border-color: var(--ep-primary); }
+.spe-cr-thumb svg{ width: 36px; height: 36px; stroke: currentColor; fill: none; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+.spe-cr-thumb.empty svg{ display: none; }
+
+.spe-cr-orient{
+  display: inline-flex; align-items: center; gap: 12px;
+  padding: 20px 0 0;
+}
+.spe-cr-orient-btn{
+  width: 50px; height: 50px; border-radius: 50%;
+  background: var(--ep-surface);
+  border: 1.5px solid var(--ep-primary-100);
+  color: var(--ep-primary); cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: all .15s ease;
+}
+.spe-cr-orient-btn:hover{ background: var(--ep-primary-50); }
+.spe-cr-orient-btn.active{
+  background: var(--ep-primary); border-color: var(--ep-primary); color: #fff;
+  box-shadow: 0 6px 14px -6px var(--ep-primary);
+}
+.spe-cr-orient-btn svg{ stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.spe-cr-orient-btn.landscape svg{ width: 24px; height: 18px; }
+.spe-cr-orient-btn.portrait svg{ width: 16px; height: 22px; }
+
+.spe-cr-canvas-wrap{
+  flex: 1; min-height: 0;
+  display: flex; align-items: stretch;
+}
+.spe-cr-canvas{
+  flex: 1; min-height: 360px;
+  background: var(--ep-surface);
+  border: 1.5px solid var(--ep-border);
+  border-radius: 4px;
+}
+
+.spe-cr-rail{
+  display: flex; flex-direction: column;
+  align-items: center;
+  padding: 28px 0;
+  gap: 14px;
+  background: var(--ep-surface);
+  border-left: 1px solid var(--ep-divider);
+}
+.spe-cr-rail-spacer{ flex: 1; }
+.spe-cr-rail-btn{
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--ep-surface);
+  border: 1.5px solid var(--ep-primary-100);
+  color: var(--ep-primary); cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: background .15s ease, border-color .15s ease, transform .12s ease;
+}
+.spe-cr-rail-btn:hover{ background: var(--ep-primary-50); border-color: var(--ep-primary); }
+.spe-cr-rail-btn:active{ transform: scale(.94); }
+.spe-cr-rail-btn svg{ width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+
+@media (max-width: 900px){
+  .spe-cr-body{ grid-template-columns: 1fr; }
+  .spe-cr-col + .spe-cr-col{ border-left: none; border-top: 1px solid var(--ep-divider); }
+  .spe-cr-rail{ flex-direction: row; justify-content: center; padding: 14px; border-left: none; border-top: 1px solid var(--ep-divider); }
+  .spe-cr-rail-spacer{ flex: 0; }
+}
+
+/* Spis treści (TOC) wyzwania */
+.spe-ex-toc-backdrop{
+  position: absolute; inset: 0;
+  background: transparent;
+  display: none;
+  z-index: 30;
+}
+.spe-exercise[data-toc="open"] .spe-ex-toc-backdrop{ display: block; }
+.spe-ex-toc{
+  position: absolute;
+  left: 4px; right: 4px; top: 96px; bottom: 88px;
+  background: var(--ep-surface);
+  border: 1px solid var(--ep-border);
+  border-radius: var(--ep-r-xl);
+  box-shadow: 0 6px 24px -10px rgba(15,23,42,.18);
+  padding: 26px 28px 22px;
+  z-index: 31;
+  display: none;
+  animation: ep-in .22s var(--ep-ease, ease) both;
+  overflow-y: auto;
+}
+.spe-exercise[data-toc="open"] .spe-ex-toc{ display: block; }
+.spe-ex-toc-head{
+  display: flex; align-items: flex-start; gap: 14px;
+  margin-bottom: 14px;
+}
+.spe-ex-toc-title{
+  font-family: var(--ep-font-display);
+  font-size: 20px; font-weight: 800; letter-spacing: -.015em;
+  color: var(--ep-text); margin: 0 0 4px;
+  text-wrap: balance;
+}
+.spe-ex-toc-sub{
+  font-family: var(--ep-font-sans);
+  font-size: 14px; font-weight: 700; color: var(--ep-text-2);
+  margin: 0;
+}
+.spe-ex-toc-close{
+  margin-left: auto;
+  width: 36px; height: 36px;
+  border: none; background: transparent;
+  color: var(--ep-primary); cursor: pointer;
+  border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: background .15s ease;
+}
+.spe-ex-toc-close:hover{ background: var(--ep-primary-50); }
+.spe-ex-toc-close svg{ width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+.spe-ex-toc-list{
+  display: flex; flex-direction: column; gap: 8px;
+}
+.spe-ex-toc-item{
+  display: flex; align-items: center; gap: 14px;
+  padding: 12px 18px;
+  border: 1px solid var(--ep-border);
+  border-radius: var(--ep-r-md);
+  background: var(--ep-surface);
+  font-family: var(--ep-font-sans);
+  font-size: 14px; color: var(--ep-text-2);
+  cursor: pointer;
+  text-align: left;
+  transition: border-color .15s ease, color .15s ease, transform .12s ease;
+}
+.spe-ex-toc-item:hover{ border-color: var(--ep-border-strong); color: var(--ep-text); }
+.spe-ex-toc-item.active{
+  border: 2px solid var(--ep-primary);
+  padding: 11px 17px;
+  color: var(--ep-text);
+  font-weight: 600;
+}
+.spe-ex-toc-num{
+  font-weight: 700; color: var(--ep-text);
+  margin-right: 2px;
+  font-variant-numeric: tabular-nums;
+}
+.spe-ex-toc-name{ flex: 1; min-width: 0; }
+.spe-ex-toc-score{
+  display: inline-flex; align-items: center; gap: 8px;
+  padding-left: 16px;
+  border-left: 1px solid var(--ep-divider);
+  font-size: 13.5px; font-weight: 600; color: var(--ep-text-2);
+  font-variant-numeric: tabular-nums;
+  min-width: 96px;
+  justify-content: flex-end;
+}
+.spe-ex-toc-score svg{ width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; color: var(--ep-text-3); }
+.spe-ex-toc-item.done .spe-ex-toc-score{ color: var(--ep-accent, #D97706); }
+.spe-ex-toc-item.done .spe-ex-toc-score svg{ color: var(--ep-accent, #D97706); fill: oklch(0.93 0.13 80); stroke: var(--ep-accent-600, #B45309); stroke-width: 1.4; }
+
+.spe-ex-full{
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--ep-primary); color: #fff; border: none; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  margin-left: 8px;
+  transition: background .15s ease, transform .12s ease;
+  box-shadow: 0 6px 14px -6px var(--ep-primary);
+}
+.spe-ex-full:hover{ background: var(--ep-primary-600); transform: translateY(-1px); }
+.spe-ex-full svg{ width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+#view-spe.visible > .spe-inner > *{ animation: ep-in .45s var(--ep-ease) both; }
+#view-spe.visible .spe-grid > *{ animation: ep-in .5s var(--ep-ease) both; }
+#view-spe.visible .spe-grid > *:nth-child(1){ animation-delay: .04s; }
+#view-spe.visible .spe-grid > *:nth-child(2){ animation-delay: .08s; }
+#view-spe.visible .spe-grid > *:nth-child(3){ animation-delay: .12s; }
+#view-spe.visible .spe-grid > *:nth-child(4){ animation-delay: .16s; }
+#view-spe.visible .spe-grid > *:nth-child(5){ animation-delay: .20s; }
+#view-spe.visible .spe-grid > *:nth-child(6){ animation-delay: .24s; }
+
+/* ── IFRAMES ──────────────────────────────────────────────────────── */
+#fr-ib, #fr-ex{
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  border: none; background: var(--ep-bg);
+  opacity: 0; pointer-events: none;
+  transition: opacity var(--ep-d-base) var(--ep-ease-soft);
+}
+#fr-ib.visible, #fr-ex.visible { opacity: 1; pointer-events: auto; }
+
+/* Loader overlay for iframe transition */
+#frame-loader{
+  position: absolute; inset: 0;
+  display: none; align-items: center; justify-content: center;
+  background: var(--ep-bg);
+  z-index: 5;
+}
+#frame-loader.active { display: flex; }
+.loader-ring{
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 3px solid var(--ep-border);
+  border-top-color: var(--ep-primary);
+  animation: spin .8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── DROPDOWN MENU (topbar ⋯) ─────────────────────────────────────── */
+.tb-menu-wrap { position: relative; }
+.tb-menu-dropdown{
+  display: none;
+  position: absolute; top: calc(100% + 8px); right: 0;
+  min-width: 220px;
+  background: var(--ep-surface);
+  border: 1px solid var(--ep-border);
+  border-radius: var(--ep-r-md);
+  box-shadow: var(--ep-shadow-lg);
+  overflow: hidden; z-index: 400; padding: 6px;
+}
+.tb-menu-dropdown.open{
+  display: block;
+  animation: menuIn .18s var(--ep-ease) both;
+}
+@keyframes menuIn { from { opacity: 0; transform: translateY(-4px) scale(.98); } }
+.tb-menu-dropdown button{
+  display: flex; align-items: center; gap: 10px; width: 100%;
+  padding: 9px 12px; font-size: 13px; font-weight: 500;
+  color: var(--ep-text); background: transparent; border: none;
+  cursor: pointer; text-align: left; border-radius: var(--ep-r-sm);
+  font-family: var(--ep-font-sans); transition: background var(--ep-d-fast);
+}
+.tb-menu-dropdown button:hover { background: var(--ep-surface-3); }
+.tb-menu-dropdown button svg { width: 16px; height: 16px; stroke: var(--ep-text-3); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+
+/* ── MODAL: student picker ────────────────────────────────────────── */
+#student-modal{
+  position: fixed; inset: 0; z-index: 1000;
+  background: oklch(0.20 0.03 258 / 0.55);
+  backdrop-filter: blur(10px);
+  display: flex; align-items: center; justify-content: center; padding: 16px;
+  animation: fadeInModal .22s ease both;
+}
+@keyframes fadeInModal { from { opacity: 0; } }
+@keyframes fadeOutModal { to   { opacity: 0; } }
+@keyframes slideUpModal { from { opacity: 0; transform: translateY(16px) scale(.98); } }
+
+.stu-card{
+  background: var(--ep-surface);
+  border: 1px solid var(--ep-border);
+  border-radius: var(--ep-r-xl); padding: 32px 28px 24px;
+  max-width: 400px; width: 100%;
+  box-shadow: var(--ep-shadow-xl);
+  animation: slideUpModal .26s var(--ep-ease) both;
+  font-family: var(--ep-font-sans);
+}
+.stu-head{ text-align: center; margin-bottom: 24px; }
+.stu-icon{
+  width: 56px; height: 56px; border-radius: 18px;
+  background: linear-gradient(135deg, var(--ep-primary) 0%, var(--ep-primary-600) 100%);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 16px;
+  box-shadow: var(--ep-shadow-md), inset 0 1px 0 rgba(255,255,255,0.22);
+}
+.stu-icon svg { width: 28px; height: 28px; stroke: currentColor; fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.stu-card h2{
+  font-family: var(--ep-font-display);
+  font-size: 20px; font-weight: 800; color: var(--ep-text);
+  letter-spacing: -0.01em; margin: 0 0 6px;
+}
+.stu-sub { font-size: 13px; color: var(--ep-text-3); font-weight: 500; margin: 0; }
+
+.stu-list { display: flex; flex-direction: column; gap: 8px; }
+.stu-item{
+  display: flex; align-items: center; gap: 14px;
+  background: var(--ep-surface); border: 1px solid var(--ep-border);
+  border-radius: var(--ep-r-md); padding: 12px 14px; cursor: pointer;
+  transition: border-color var(--ep-d-fast), background var(--ep-d-fast), transform var(--ep-d-fast);
+  font-family: var(--ep-font-sans); width: 100%; text-align: left;
+}
+.stu-item:hover { border-color: var(--ep-primary); background: var(--ep-primary-50); transform: translateY(-1px); }
+.stu-av{
+  width: 40px; height: 40px; border-radius: 50%;
+  color: #fff; display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700; flex-shrink: 0; font-family: var(--ep-font-display);
+  box-shadow: var(--ep-shadow-xs);
+}
+.stu-av-k { background: linear-gradient(135deg, var(--ep-primary) 0%, var(--ep-info) 100%); }
+.stu-av-a { background: linear-gradient(135deg, var(--ep-violet) 0%, oklch(0.68 0.18 320) 100%); }
+.stu-body { flex: 1; }
+.stu-name { font-size: 14px; font-weight: 700; color: var(--ep-text); line-height: 1.2; }
+.stu-klasa { font-size: 11.5px; color: var(--ep-text-3); font-weight: 500; margin-top: 3px; }
+.stu-chev svg { width: 16px; height: 16px; color: var(--ep-text-4); stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.stu-item:hover .stu-chev svg { color: var(--ep-primary); }
+
+/* ── BOTTOM NAV (mobile only) ─────────────────────────────────────── */
+#bottom-nav{
+  position: fixed; bottom: 0; left: 0; right: 0;
+  height: 64px;
+  background: var(--ep-surface);
+  border-top: 1px solid var(--ep-border);
+  box-shadow: 0 -2px 12px oklch(0.20 0.03 258 / 0.06);
+  z-index: 200; display: none;
+}
+.bn-item{
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 3px;
+  border: none; background: transparent; cursor: pointer;
+  padding: 6px 2px 8px; color: var(--ep-text-3);
+  transition: color var(--ep-d-fast);
+  font-family: var(--ep-font-sans); position: relative;
+  -webkit-tap-highlight-color: transparent; min-height: 44px;
+}
+.bn-item.active { color: var(--ep-primary); }
+.bn-item.active::before{
+  content: ''; position: absolute; top: 0; left: 32%; right: 32%; height: 2.5px;
+  background: currentColor; border-radius: 0 0 3px 3px;
+}
+.bn-item svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.bn-label { font-size: 10.5px; font-weight: 600; letter-spacing: 0.01em; }
+
+/* ── Sidebar backdrop ─────────────────────────────────────────────── */
+#sidebar-backdrop{
+  display: none; position: fixed; inset: 0;
+  background: oklch(0.20 0.03 258 / 0.48);
+  backdrop-filter: blur(3px); z-index: 99;
+}
+#sidebar-backdrop.visible { display: block; animation: fadeInModal .2s ease both; }
+
+/* ─── RESPONSIVE ─────────────────────────────────────────────────── */
+@media (max-width: 1024px) and (min-width: 769px){
+  #sidebar { width: 218px; }
+}
+@media (max-width: 768px) and (min-width: 481px){
+  #sidebar{
+    position: fixed; left: 0; top: 0; bottom: 0; z-index: 100;
+    width: 268px; transform: translateX(-100%);
+    transition: transform .3s var(--ep-ease);
+    box-shadow: none;
+  }
+  #sidebar.mobile-open{
+    transform: translateX(0);
+    box-shadow: var(--ep-shadow-xl);
+  }
+  #topbar-ham-btn { display: inline-flex; }
+  #bottom-nav { display: none; }
+}
+@media (max-width: 480px){
+  #sidebar { display: none !important; }
+  #bottom-nav { display: flex; }
+  #shell-right { padding-bottom: 64px; }
+  #topbar { padding: 0 14px; }
+  #topbar-crumbs { font-size: 12.5px; }
+  #view-dashboard { padding: 28px 18px 24px; }
+  .tile { padding: 20px 20px 18px; min-height: 170px; }
+  .tile-feature { padding: 20px 20px; }
+  .feat-name { font-size: 17px; }
+  .mod-search-input { font-size: 13px; }
+  #sklep-tabbar { height: 48px; padding: 0 12px; }
+  .sklep-tab { font-size: 12.5px; padding: 0 12px; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   COBALT THEME · override warstwa
+   ═══════════════════════════════════════════════════════════════════ */
+:root{
+  --cobalt-shell-bg: #1E3A8A;
+  --cobalt-shell-bg-2: #1E3A8A;
+  --cobalt-shell-text: #FFFFFF;
+  --cobalt-shell-text-dim: #BFDBFE;
+  --cobalt-shell-accent: #A5B4FC;
+  --cobalt-shell-divider: rgba(165,180,252,.18);
+  --cobalt-active-bg: rgba(255,255,255,.16);
+  --cobalt-hover-bg: rgba(255,255,255,.08);
+
+  --ep-bg: #F2F5FC;
+  --ep-primary: #3B5BDB;
+  --ep-primary-600: #2C4ACB;
+  --ep-primary-700: #1E40AF;
+  --ep-primary-50: #EEF3FF;
+  --ep-primary-100: #DBE5FF;
+}
+
+/* SIDEBAR — jednolity Mid Navy */
+#sidebar{
+  background: var(--cobalt-shell-bg) !important;
+  border-right: none !important;
+  color: var(--cobalt-shell-text) !important;
+}
+#sidebar::-webkit-scrollbar-thumb{ background: rgba(255,255,255,.18) !important; }
+
+.sb-brand{ color: var(--cobalt-shell-text) !important; }
+.sb-brand-text small{ color: var(--cobalt-shell-text-dim) !important; }
+.sb-brand-icon{
+  background: rgba(255,255,255,.18) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.25) !important;
+}
+
+.sb-lbl{ color: var(--cobalt-shell-accent) !important; opacity: .85; }
+
+.sb-item{ color: var(--cobalt-shell-text-dim) !important; }
+.sb-item:hover{
+  background: var(--cobalt-hover-bg) !important;
+  color: var(--cobalt-shell-text) !important;
+}
+.sb-item.active{
+  background: var(--cobalt-active-bg) !important;
+  color: var(--cobalt-shell-text) !important;
+  font-weight: 700 !important;
+}
+.sb-item.active::before{
+  background: var(--cobalt-shell-accent) !important;
+}
+
+.sb-footer{ border-top: 1px solid var(--cobalt-shell-divider) !important; }
+.sb-footer-name{ color: var(--cobalt-shell-text) !important; }
+.sb-footer-mail{ color: var(--cobalt-shell-text-dim) !important; }
+
+/* TOPBAR — to samo tło co sidebar, jednolite, bez border (linia oddzielająca powstaje naturalnie z contentu) */
+#topbar{
+  background: var(--cobalt-shell-bg) !important;
+  border-bottom: none !important;
+  color: var(--cobalt-shell-text) !important;
+  height: 64px !important;
+}
+#topbar-ham-btn{ color: var(--cobalt-shell-text-dim) !important; }
+#topbar-ham-btn:hover{ background: var(--cobalt-hover-bg) !important; color: var(--cobalt-shell-text) !important; }
+
+#topbar-crumbs{ color: var(--cobalt-shell-text-dim) !important; }
+.crumb-current{ color: var(--cobalt-shell-text) !important; }
+.crumb-sep{ color: var(--cobalt-shell-accent) !important; opacity: .6; }
+
+.tb-btn{ color: var(--cobalt-shell-text-dim) !important; }
+.tb-btn:hover{ background: var(--cobalt-hover-bg) !important; color: var(--cobalt-shell-text) !important; }
+.tb-sep{ background: var(--cobalt-shell-divider) !important; }
+
+.crumb-pill{
+  background: rgba(255,255,255,.16) !important;
+  color: var(--cobalt-shell-text) !important;
+}
+
+.bar-avatar-btn{
+  border-color: rgba(255,255,255,.3) !important;
+}
+
+/* Topbar dropdown menu — pozostaje na białym tle (czytelne) */
+.tb-menu-dropdown{ color: var(--ep-text); }
+
+
+/* DEMO MODES (?mode=parent | empty | child | full) */
+body.mode-empty  #student-modal,
+body.mode-child  #student-modal,
+body.mode-full   #student-modal{ display: none !important; }
+/* Scenariusz 1 — rodzic z dziećmi: tylko Kursy w nawigacji (Sklep ukryty) */
+body.mode-parent #nav-dashboard,
+body.mode-parent #nav-podreczniki,
+body.mode-parent #nav-spe,
+body.mode-parent #nav-sklep,
+body.mode-parent #bn-dashboard,
+body.mode-parent #bn-podreczniki,
+body.mode-parent #bn-sklep{ display: none !important; }
+/* Scenariusz 3 — uczeń młodszy: bez Sklepu */
+body.mode-child #nav-sklep,
+body.mode-child #bn-sklep{ display: none !important; }
+/* Scenariusz 2 — rodzic bez dziecka: ukryj cały shell */
+body.mode-empty #sidebar,
+body.mode-empty #topbar,
+body.mode-empty #bottom-nav{ display: none !important; }
+body.mode-empty #view-dashboard,
+body.mode-empty #fr-sk,
+body.mode-empty #fr-ib,
+body.mode-empty #fr-ex{ display: none !important; }
+body.mode-empty #shell-right{ margin-left: 0 !important; }
+#view-empty{ display: none; position: absolute; inset: 0; align-items: center; justify-content: center; padding: 32px 24px; overflow-y: auto; font-family: var(--ep-font-sans); background: var(--ep-bg); z-index: 10; }
+body.mode-empty #view-empty{ display: flex; }
+.ve-card{ max-width: 520px; width: 100%; background: var(--ep-surface); border: 1px solid var(--ep-border); border-radius: var(--ep-r-xl); padding: 40px 36px 32px; text-align: center; box-shadow: var(--ep-shadow-xl); }
+.ve-illust{ width: 76px; height: 76px; margin: 0 auto 22px; border-radius: 22px; background: linear-gradient(135deg, #FEF3C7, #FDE68A); color: #B45309; display: flex; align-items: center; justify-content: center; }
+.ve-illust svg{ width: 38px; height: 38px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.ve-title{ font-family: var(--ep-font-display); font-size: 22px; font-weight: 800; letter-spacing: -.01em; color: var(--ep-text); margin: 0 0 10px; }
+.ve-desc{ color: var(--ep-text-2); font-size: 14px; line-height: 1.6; margin: 0 0 24px; }
+.ve-actions{ display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 28px; }
+.ve-btn{ display: inline-flex; align-items: center; gap: 8px; padding: 11px 18px; border-radius: var(--ep-r-md); font-family: var(--ep-font-sans); font-size: 13px; font-weight: 700; cursor: pointer; border: 1px solid transparent; }
+.ve-btn-primary{ background: var(--ep-primary); color: #fff; }
+.ve-btn-primary:hover{ background: var(--ep-primary-600); }
+.ve-btn-secondary{ background: transparent; color: var(--ep-text-2); border-color: var(--ep-border); }
+.ve-btn-secondary:hover{ background: var(--ep-surface-3); color: var(--ep-text); }
+.ve-btn svg{ width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.ve-bullets{ text-align: left; border-top: 1px dashed var(--ep-divider); padding-top: 20px; }
+.ve-bullets-lbl{ font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--ep-text-3); margin-bottom: 10px; }
+.ve-bullet{ display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--ep-text-2); padding: 5px 0; }
+.ve-bullet-dot{ width: 6px; height: 6px; border-radius: 50%; background: var(--ep-primary); flex-shrink: 0; }
+.ve-back{ position: absolute; top: 20px; left: 20px; background: transparent; border: 1px solid var(--ep-border); color: var(--ep-text-2); padding: 8px 14px; border-radius: var(--ep-r-md); font-size: 13px; font-weight: 600; cursor: pointer; font-family: var(--ep-font-sans); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+.ve-back:hover{ background: var(--ep-surface-3); color: var(--ep-text); }
+.ve-back svg{ width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+</style>
+</head>
+<body>
+
+<!-- Backdrop for mobile sidebar -->
+<div id="sidebar-backdrop" onclick="closeMobileSidebar()"></div>
+
+<!-- ═══ SIDEBAR ═══ -->
+<aside id="sidebar">
+  <div class="sb-brand">
+    <div class="sb-brand-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg>
+    </div>
+    <div class="sb-brand-text">
+      eduPlatform
+    </div>
+  </div>
+
+  <nav class="sb-nav">
+    <div class="sb-lbl">Nawigacja</div>
+
+    <button class="sb-item active" id="nav-dashboard" onclick="navTo('dashboard')">
+      <span class="sb-ico">
+        <svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-7h-6v7H4a1 1 0 0 1-1-1z"/></svg>
+      </span>
+      Dashboard
+    </button>
+
+    <button class="sb-item" id="nav-kursy" onclick="navTo('kursy')">
+      <span class="sb-ico">
+        <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      </span>
+      Kursy
+    </button>
+
+    <button class="sb-item" id="nav-podreczniki" onclick="navTo('podreczniki')">
+      <span class="sb-ico">
+        <svg viewBox="0 0 24 24"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+      </span>
+      Podręczniki
+    </button>
+
+    <button class="sb-item" id="nav-spe" onclick="navTo('spe')">
+      <span class="sb-ico">
+        <svg viewBox="0 0 24 24"><path d="M12 2l2.39 4.84L20 8l-4 3.9.94 5.5L12 14.77 7.06 17.4 8 11.9 4 8l5.61-1.16z"/></svg>
+      </span>
+      Spe
+    </button>
+  </nav>
+
+  <div class="sb-footer">
+    <div class="sb-footer-avatar" id="sb-initials">K</div>
+    <div style="flex:1;min-width:0;">
+      <div class="sb-footer-name" id="sb-name">Kuba Nowak</div>
+      <div class="sb-footer-sub" id="sb-sub">Klasa 8A</div>
+    </div>
+  </div>
+</aside>
+
+<!-- ═══ SHELL RIGHT ═══ -->
+<div id="shell-right">
+
+  <!-- Topbar -->
+  <header id="topbar">
+    <button id="topbar-ham-btn" onclick="toggleMobileSidebar()" aria-label="Menu">
+      <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+
+    <div id="topbar-crumbs">
+      <span class="crumb-current" id="crumb-title">Dashboard</span>
+    </div>
+
+
+
+
+    <button class="tb-btn" id="dm-btn" onclick="toggleDarkAll()" title="Tryb ciemny/jasny" aria-label="Przełącz tryb ciemny">
+      <svg id="dm-icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      <svg id="dm-icon-moon" viewBox="0 0 24 24" style="display:none;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+
+    <div class="tb-sep"></div>
+
+    <button class="bar-avatar-btn" id="profile-btn" onclick="openProfileAll()" title="Profil użytkownika">
+      <span id="av-initials">K</span>
+    </button>
+
+    <div class="tb-menu-wrap">
+      <button class="tb-btn" onclick="toggleModMenu(event)" title="Więcej" aria-label="Więcej opcji">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+      </button>
+      <div class="tb-menu-dropdown" id="mod-dots-dropdown">
+        <button onclick="closeModMenu()">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h3"/></svg>
+          Regulamin
+        </button>
+        <button onclick="closeModMenu()">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+          Przewodnik — Kursy
+        </button>
+        <button onclick="closeModMenu()">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+          Przewodnik — Podręczniki
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Module search bar -->
+  <div id="module-searchbar">
+    <div class="mod-search-wrap">
+      <span class="mod-search-icon">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      </span>
+      <input type="text" class="mod-search-input" id="mod-search-input"
+             placeholder="Szukaj zasobów, materiałów..." />
+    </div>
+  </div>
+
+  <!-- Sklep tabbar -->
+  <div id="sklep-tabbar">
+    <button class="sklep-tab active" id="stab-ksiazki" onclick="switchSklepTab('ksiazki')">
+      <svg viewBox="0 0 24 24"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+      Książki
+    </button>
+  </div>
+
+  <!-- Content area -->
+  <div id="content-area">
+
+    <!-- Dashboard -->
+    <div id="view-dashboard">
+      <div class="dash-inner">
+
+        <!-- HERO: powitanie -->
+        <section class="dash-hero">
+          <div class="dash-hero-copy">
+            <div class="dash-hero-eyebrow">
+              <span class="dash-hero-dot"></span>
+              <span>Miłej nauki dziś</span>
+            </div>
+            <h1 id="dash-title">Witaj, Kuba!</h1>
+            <p class="dash-hero-sub">Co dziś chcesz robić? Wybierz moduł, żeby kontynuować naukę lub zajrzyj do sklepu po nowe materiały.</p>
+          </div>
+        </section>
+
+        <!-- Kafle -->
+        <div class="dash-grid">
+          <button class="tile tile-ib" onclick="navTo('podreczniki')">
+            <div class="tile-head">
+              <div class="tile-icon">
+                <svg viewBox="0 0 24 24"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+              </div>
+              <span class="tile-badge">Biblioteka</span>
+            </div>
+            <div class="tile-body">
+              <div class="tile-name">Podręczniki</div>
+              <div class="tile-desc">Cyfrowe podręczniki z hotspotami, notatkami, quizami AI i zaawansowanym czytnikiem.</div>
+            </div>
+            <div class="tile-foot">
+              <span class="tile-meta">Ostatnio otwarte · 2h temu</span>
+              <span class="tile-cta">Otwórz bibliotekę <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+            </div>
+          </button>
+
+          <button class="tile tile-ex" onclick="navTo('kursy')">
+            <div class="tile-head">
+              <div class="tile-icon">
+                <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+              </div>
+              <span class="tile-badge">Egzamin ósmoklasisty</span>
+            </div>
+            <div class="tile-body">
+              <div class="tile-name">Kursy</div>
+              <div class="tile-desc">Przygotuj się do egzaminów z matematyki i języka polskiego. Teoria, filmy, zadania.</div>
+            </div>
+            <div class="tile-foot">
+              <span class="tile-meta">Postęp · 34%</span>
+              <span class="tile-cta">Wybierz kurs <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+            </div>
+          </button>
+
+          <button class="tile tile-spe" onclick="navTo('spe')">
+            <div class="tile-head">
+              <div class="tile-icon">
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.39 4.84L20 8l-4 3.9.94 5.5L12 14.77 7.06 17.4 8 11.9 4 8l5.61-1.16z"/></svg>
+              </div>
+              <span class="tile-badge">Wyzwania</span>
+            </div>
+            <div class="tile-body">
+              <div class="tile-name">Spe</div>
+              <div class="tile-desc">Codzienne wyzwania, które rozwijają samodzielność, koncentrację i dobre nawyki.</div>
+            </div>
+            <div class="tile-foot">
+              <span class="tile-meta">3 nowe wyzwania</span>
+              <span class="tile-cta">Podejmij wyzwanie <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+            </div>
+          </button>
+        </div>
+
+        <div class="footer">eduPlatform · Beta · Prototyp v1.0</div>
+      </div>
+    </div>
+
+    <!-- Spe -->
+    <div id="view-spe">
+      <div class="spe-inner">
+
+        <header class="spe-head">
+          <div class="spe-head-copy">
+            <div class="spe-eyebrow"><span>Wyzwania</span></div>
+            <h1 class="spe-title">Moje wyzwania</h1>
+          </div>
+        </header>
+
+        <div class="spe-grid">
+
+          <!-- LOGOPEDIA PRO Pakiet GOLD -->
+          <div class="spe-card current" role="button" tabindex="0" data-spe-product="logopedia">
+            <div class="spe-card-head">
+              <span class="spe-ce">C E <span class="spe-ce-md">MD</span></span>
+              <div class="spe-pattern" aria-hidden="true">
+                <svg viewBox="0 0 92 76" fill="none">
+                  <g fill="#EC4899">
+                    <circle cx="18" cy="18" r="7"/>
+                    <circle cx="36" cy="14" r="8.5"/>
+                    <circle cx="56" cy="18" r="7.5"/>
+                    <circle cx="74" cy="14" r="6.5"/>
+                    <circle cx="14" cy="36" r="6"/>
+                    <circle cx="32" cy="32" r="8"/>
+                    <circle cx="52" cy="36" r="7"/>
+                    <circle cx="70" cy="32" r="7.5"/>
+                    <circle cx="22" cy="54" r="6.5"/>
+                    <circle cx="42" cy="52" r="7.5"/>
+                    <circle cx="62" cy="56" r="6"/>
+                  </g>
+                </svg>
+              </div>
+            </div>
+            <div class="spe-card-name">Ścieżka 1</div>
+            <div class="spe-card-foot">
+              <span class="spe-count spe-count-active">2297</span>
+              <span class="spe-foot-text">
+                <strong>zasobów</strong>
+                <span>Ostatnio użyty · 27.10.2025</span>
+              </span>
+              <span class="spe-open">Otwórz<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+            </div>
+            <div class="spe-license"><span class="spe-license-label">Data wygaśnięcia licencji</span><span class="spe-license-date"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg>31.08.2026</span></div>
+          </div>
+
+          <!-- PERCEPCJA SŁUCHOWA -->
+          <div class="spe-card locked" role="button" tabindex="0" data-spe-product="percepcja">
+            <div class="spe-card-head">
+              <span class="spe-ce">C E <span class="spe-ce-md">MD</span></span>
+              <div class="spe-pattern" aria-hidden="true">
+                <svg viewBox="0 0 92 76" fill="none">
+                  <g fill="#B91C5C">
+                    <rect x="10" y="22" width="7" height="36" rx="3.5"/>
+                    <rect x="22" y="14" width="7" height="52" rx="3.5"/>
+                    <rect x="34" y="28" width="7" height="24" rx="3.5"/>
+                    <rect x="46" y="10" width="7" height="60" rx="3.5"/>
+                    <rect x="58" y="20" width="7" height="40" rx="3.5"/>
+                    <rect x="70" y="14" width="7" height="48" rx="3.5"/>
+                  </g>
+                </svg>
+              </div>
+            </div>
+            <div class="spe-card-name">Ścieżka 2</div>
+            <div class="spe-card-foot">
+              <span class="spe-lock-chip" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+              </span>
+              <span class="spe-foot-text">
+                <strong>Niedostępna</strong>
+                <span>Odblokuj w sklepie</span>
+              </span>
+              <span class="spe-buy">Kup<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+            </div>
+            <div class="spe-license"><span class="spe-license-label">Data wygaśnięcia licencji</span><span class="spe-license-date"><strong>Brak licencji</strong></span></div>
+          </div>
+
+          <!-- DYSLEKSJA PRO -->
+          <div class="spe-card locked" role="button" tabindex="0" data-spe-product="dysleksja">
+            <div class="spe-card-head">
+              <span class="spe-ce">C E <span class="spe-ce-md">MD</span></span>
+              <div class="spe-pattern" aria-hidden="true">
+                <svg viewBox="0 0 92 76" fill="none">
+                  <g fill="#A3E635">
+                    <circle cx="18" cy="16" r="8"/>
+                    <circle cx="38" cy="14" r="9"/>
+                    <circle cx="60" cy="16" r="8.5"/>
+                    <circle cx="78" cy="14" r="7"/>
+                    <circle cx="14" cy="38" r="7.5"/>
+                    <circle cx="34" cy="36" r="9"/>
+                    <circle cx="56" cy="38" r="8"/>
+                    <circle cx="76" cy="36" r="8"/>
+                    <circle cx="24" cy="60" r="7"/>
+                    <circle cx="46" cy="58" r="8.5"/>
+                  </g>
+                </svg>
+              </div>
+            </div>
+            <div class="spe-card-name">Ścieżka 3</div>
+            <span class="spe-level" style="background: oklch(0.78 0.18 140);">Poziom 2</span>
+            <div class="spe-card-foot">
+              <span class="spe-lock-chip" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+              </span>
+              <span class="spe-foot-text">
+                <strong>Niedostępna</strong>
+                <span>Odblokuj w sklepie</span>
+              </span>
+              <span class="spe-buy">Kup<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+            </div>
+            <div class="spe-license"><span class="spe-license-label">Data wygaśnięcia licencji</span><span class="spe-license-date"><strong>Brak licencji</strong></span></div>
+          </div>
+
+          <!-- Moc Emocji Pro - Poziom 1 -->
+          <div class="spe-card locked" role="button" tabindex="0" data-spe-product="emocje-1">
+            <div class="spe-card-head">
+              <span class="spe-ce">C E <span class="spe-ce-md">MD</span></span>
+              <div class="spe-pattern" aria-hidden="true">
+                <svg viewBox="0 0 92 76" fill="none" stroke="#2563EB" stroke-width="5" stroke-linecap="round">
+                  <path d="M10 18 Q22 8, 34 18 T58 18 T82 18" opacity=".85"/>
+                  <path d="M10 36 Q22 26, 34 36 T58 36 T82 36" opacity=".55"/>
+                  <path d="M10 54 Q22 44, 34 54 T58 54 T82 54"/>
+                </svg>
+              </div>
+            </div>
+            <div class="spe-card-name">Ścieżka 4</div>
+            <span class="spe-level" style="background: #2563EB;">Poziom 1</span>
+            <div class="spe-card-foot">
+              <span class="spe-lock-chip" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+              </span>
+              <span class="spe-foot-text">
+                <strong>Niedostępna</strong>
+                <span>Odblokuj w sklepie</span>
+              </span>
+              <span class="spe-buy">Kup<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+            </div>
+            <div class="spe-license"><span class="spe-license-label">Data wygaśnięcia licencji</span><span class="spe-license-date"><strong>Brak licencji</strong></span></div>
+          </div>
+
+          <!-- Moc Emocji Pro - Poziom 2 -->
+          <div class="spe-card locked" role="button" tabindex="0" data-spe-product="emocje-2">
+            <div class="spe-card-head">
+              <span class="spe-ce">C E <span class="spe-ce-md">MD</span></span>
+              <div class="spe-pattern" aria-hidden="true">
+                <svg viewBox="0 0 92 76" fill="none" stroke="#1D4ED8" stroke-width="5.5" stroke-linecap="round">
+                  <path d="M10 18 Q22 8, 34 18 T58 18 T82 18"/>
+                  <path d="M10 36 Q22 26, 34 36 T58 36 T82 36"/>
+                  <path d="M10 54 Q22 44, 34 54 T58 54 T82 54"/>
+                </svg>
+              </div>
+            </div>
+            <div class="spe-card-name">Ścieżka 5</div>
+            <span class="spe-level" style="background: #1D4ED8;">Poziom 2</span>
+            <div class="spe-card-foot">
+              <span class="spe-lock-chip" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+              </span>
+              <span class="spe-foot-text">
+                <strong>Niedostępna</strong>
+                <span>Odblokuj w sklepie</span>
+              </span>
+              <span class="spe-buy">Kup<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+            </div>
+            <div class="spe-license"><span class="spe-license-label">Data wygaśnięcia licencji</span><span class="spe-license-date"><strong>Brak licencji</strong></span></div>
+          </div>
+
+          <!-- SPEKTRUM AUTYZMU PRO -->
+          <div class="spe-card locked" role="button" tabindex="0" data-spe-product="spektrum">
+            <div class="spe-card-head">
+              <span class="spe-ce">C E <span class="spe-ce-md">MD</span></span>
+              <div class="spe-pattern" aria-hidden="true">
+                <svg viewBox="0 0 92 76" fill="none">
+                  <g fill="#60A5FA">
+                    <circle cx="18" cy="18" r="9"/>
+                    <circle cx="38" cy="18" r="8" opacity=".8"/>
+                    <circle cx="58" cy="18" r="9.5"/>
+                    <circle cx="78" cy="18" r="7.5" opacity=".7"/>
+                    <circle cx="28" cy="38" r="9" opacity=".9"/>
+                    <circle cx="48" cy="38" r="10"/>
+                    <circle cx="68" cy="38" r="8.5" opacity=".8"/>
+                    <circle cx="18" cy="58" r="7.5" opacity=".75"/>
+                    <circle cx="38" cy="58" r="9"/>
+                    <circle cx="58" cy="58" r="8" opacity=".9"/>
+                  </g>
+                </svg>
+              </div>
+            </div>
+            <div class="spe-card-name">Ścieżka 6</div>
+            <span class="spe-level" style="background: #60A5FA;">Poziom 1</span>
+            <div class="spe-card-foot">
+              <span class="spe-lock-chip" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+              </span>
+              <span class="spe-foot-text">
+                <strong>Niedostępna</strong>
+                <span>Odblokuj w sklepie</span>
+              </span>
+              <span class="spe-buy">Kup<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+            </div>
+            <div class="spe-license"><span class="spe-license-label">Data wygaśnięcia licencji</span><span class="spe-license-date"><strong>Brak licencji</strong></span></div>
+          </div>
+
+        </div>
+
+        <!-- Widok szczegółu ścieżki -->
+        <div class="spe-detail">
+          <div class="spe-detail-head">
+            <button class="spe-back" type="button" onclick="speBack()">
+              <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
+              Powrót
+            </button>
+            <div>
+              <h2 class="spe-detail-title" id="spe-detail-title">Ścieżka 1</h2>
+              <div class="spe-detail-sub">Poziom 1 · Twój dostęp</div>
+            </div>
+          </div>
+
+          <div class="spe-tabs" role="tablist">
+            <button class="spe-tab active" type="button" role="tab" aria-selected="true">Wyzwania</button>
+            <button class="spe-tab" type="button" role="tab" style="width: 0px; height: 0px; font-size: 0px; line-height: 0; padding: 0px">
+</button>
+            <button class="spe-tab" type="button" role="tab">Kreator komiksów</button>
+          </div>
+
+          <div class="spe-toolbar">
+            <button class="spe-select" type="button">
+              Filtry merytoryczne
+              <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+            <button class="spe-select" type="button">
+              Typ zasobu
+              <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+            <div class="spe-view-toggle" role="group" aria-label="Układ widoku">
+              <button class="spe-view-btn" type="button" aria-label="Lista">
+                <svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+              </button>
+              <button class="spe-view-btn active" type="button" aria-label="Siatka">
+                <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="spe-detail-body">
+
+            <!-- Drzewo kategorii -->
+            <aside class="spe-tree" aria-label="Kategorie wyzwań">
+              <div class="spe-tree-node open">
+                <button class="spe-tree-item" type="button" onclick="speToggleNode(this)">
+                  <span class="spe-tree-chev"><svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></span>
+                  <span class="spe-tree-label">I. Rozpoznawanie i nazywanie emocji</span>
+                  <span class="spe-tree-count">67</span>
+                </button>
+                <div class="spe-tree-children">
+                  <div class="spe-tree-node open">
+                    <button class="spe-tree-item" type="button" onclick="speToggleNode(this)">
+                      <span class="spe-tree-chev"><svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></span>
+                      <span class="spe-tree-label">1. Rozpoznawanie podstawowych emocji</span>
+                      <span class="spe-tree-count">31</span>
+                    </button>
+                    <div class="spe-tree-children">
+                      <div class="spe-tree-node leaf">
+                        <button class="spe-tree-item active" type="button">
+                          <span class="spe-tree-chev"></span>
+                          <span class="spe-tree-label">1. Radość</span>
+                          <span class="spe-tree-count">6</span>
+                        </button>
+                      </div>
+                      <div class="spe-tree-node leaf">
+                        <button class="spe-tree-item" type="button">
+                          <span class="spe-tree-chev"></span>
+                          <span class="spe-tree-label">2. Złość</span>
+                          <span class="spe-tree-count">6</span>
+                        </button>
+                      </div>
+                      <div class="spe-tree-node leaf">
+                        <button class="spe-tree-item" type="button">
+                          <span class="spe-tree-chev"></span>
+                          <span class="spe-tree-label">3. Strach</span>
+                          <span class="spe-tree-count">6</span>
+                        </button>
+                      </div>
+                      <div class="spe-tree-node leaf">
+                        <button class="spe-tree-item" type="button">
+                          <span class="spe-tree-chev"></span>
+                          <span class="spe-tree-label">4. Smutek</span>
+                          <span class="spe-tree-count">6</span>
+                        </button>
+                      </div>
+                      <div class="spe-tree-node leaf">
+                        <button class="spe-tree-item" type="button">
+                          <span class="spe-tree-chev"></span>
+                          <span class="spe-tree-label">5. Podsumowanie</span>
+                          <span class="spe-tree-count">7</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="spe-tree-node leaf">
+                    <button class="spe-tree-item" type="button">
+                      <span class="spe-tree-chev"><svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></span>
+                      <span class="spe-tree-label">2. Rozpoznawanie pozostałych emocji — 1</span>
+                      <span class="spe-tree-count">27</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="spe-tree-node leaf">
+                <button class="spe-tree-item" type="button">
+                  <span class="spe-tree-chev"><svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></span>
+                  <span class="spe-tree-label">II. Rozumienie emocji</span>
+                  <span class="spe-tree-count">38</span>
+                </button>
+              </div>
+              <div class="spe-tree-node leaf">
+                <button class="spe-tree-item" type="button">
+                  <span class="spe-tree-chev"><svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></span>
+                  <span class="spe-tree-label">III. Wyrażanie emocji</span>
+                  <span class="spe-tree-count">24</span>
+                </button>
+              </div>
+            </aside>
+
+            <!-- Karty zasobów -->
+            <div class="spe-res-grid">
+
+              <!-- 1 -->
+              <div class="spe-res-card" role="button" tabindex="0">
+                <div class="spe-res-preview">
+                  <span class="spe-res-info" aria-hidden="true">i</span>
+                  <svg viewBox="0 0 64 48" width="60%" fill="none" stroke="var(--ep-text-4)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="6" y="6" width="52" height="32" rx="3"/>
+                    <circle cx="20" cy="20" r="4"/>
+                    <path d="M8 36l12-10 8 6 10-8 18 12"/>
+                  </svg>
+                </div>
+                <h3 class="spe-res-title">1. Wprowadzenie — radość</h3>
+                <div class="spe-res-stats">
+                  <span class="spe-res-stat" title="Najlepszy wynik">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M17 4h3v3a3 3 0 0 1-3 3M7 4H4v3a3 3 0 0 0 3 3"/></svg>
+                    100%
+                  </span>
+                  <span class="spe-res-stat" title="Liczba podejść">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15.5-6.3L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15.5 6.3L3 16"/><path d="M3 21v-5h5"/></svg>
+                    1
+                  </span>
+                  <span class="spe-res-stat" title="Ostatnio">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg>
+                    04.03
+                  </span>
+                </div>
+                <div class="spe-res-foot">
+                  <span class="spe-res-prod">Ścieżka 1 · Poziom 1</span>
+                  <button class="spe-more" type="button" aria-label="Więcej" onclick="event.stopPropagation()">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- 2 SELECTED -->
+              <div class="spe-res-card selected" role="button" tabindex="0">
+                <div class="spe-res-preview">
+                  <span class="spe-res-info" aria-hidden="true">i</span>
+                  <svg viewBox="0 0 96 56" width="65%">
+                    <rect x="6" y="6" width="38" height="44" rx="4" fill="oklch(0.95 0.05 80)"/>
+                    <circle cx="25" cy="24" r="8" fill="oklch(0.85 0.16 85)"/>
+                    <path d="M19 30 Q25 36 31 30" stroke="oklch(0.4 0.05 80)" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+                    <rect x="52" y="6" width="38" height="44" rx="4" fill="var(--ep-text)"/>
+                  </svg>
+                </div>
+                <h3 class="spe-res-title">2. Poznawanie nazw emocji — radość</h3>
+                <div class="spe-res-stats">
+                  <span class="spe-res-stat" title="Najlepszy wynik">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M17 4h3v3a3 3 0 0 1-3 3M7 4H4v3a3 3 0 0 0 3 3"/></svg>
+                    100%
+                  </span>
+                  <span class="spe-res-stat">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15.5-6.3L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15.5 6.3L3 16"/><path d="M3 21v-5h5"/></svg>
+                    1
+                  </span>
+                  <span class="spe-res-stat">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg>
+                    05.11
+                  </span>
+                </div>
+                <div class="spe-res-foot">
+                  <span class="spe-res-prod">Ścieżka 1 · Poziom 1</span>
+                  <button class="spe-more" type="button" aria-label="Więcej" onclick="event.stopPropagation()">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- 3 -->
+              <div class="spe-res-card" role="button" tabindex="0">
+                <div class="spe-res-preview">
+                  <span class="spe-res-info" aria-hidden="true">i</span>
+                  <svg viewBox="0 0 120 60">
+                    <circle cx="22" cy="30" r="14" fill="oklch(0.88 0.18 85)"/>
+                    <path d="M16 28 Q22 32 28 28" stroke="oklch(0.35 0.05 80)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                    <circle cx="60" cy="30" r="14" fill="oklch(0.88 0.16 85)"/>
+                    <path d="M54 30 Q60 26 66 30" stroke="oklch(0.35 0.05 80)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                    <circle cx="98" cy="30" r="14" fill="oklch(0.86 0.18 60)"/>
+                    <path d="M92 30 Q98 36 104 30" stroke="oklch(0.35 0.05 80)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                  </svg>
+                </div>
+                <h3 class="spe-res-title">3. Rozpoznawanie emocji — radość</h3>
+                <div class="spe-res-stats">
+                  <span class="spe-res-stat">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M17 4h3v3a3 3 0 0 1-3 3M7 4H4v3a3 3 0 0 0 3 3"/></svg>
+                    100%
+                  </span>
+                  <span class="spe-res-stat">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15.5-6.3L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15.5 6.3L3 16"/><path d="M3 21v-5h5"/></svg>
+                    1
+                  </span>
+                  <span class="spe-res-stat">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg>
+                    04.03
+                  </span>
+                </div>
+                <div class="spe-res-foot">
+                  <span class="spe-res-prod">Ścieżka 1 · Poziom 1</span>
+                  <button class="spe-more" type="button" aria-label="Więcej" onclick="event.stopPropagation()">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- 4 -->
+              <div class="spe-res-card" role="button" tabindex="0">
+                <div class="spe-res-preview">
+                  <span class="spe-res-info" aria-hidden="true">i</span>
+                  <svg viewBox="0 0 60 60">
+                    <circle cx="30" cy="30" r="22" fill="oklch(0.88 0.18 85)"/>
+                    <circle cx="22" cy="25" r="2.5" fill="oklch(0.3 0.05 80)"/>
+                    <circle cx="38" cy="25" r="2.5" fill="oklch(0.3 0.05 80)"/>
+                    <path d="M20 36 Q30 44 40 36" stroke="oklch(0.3 0.05 80)" stroke-width="2" fill="none" stroke-linecap="round"/>
+                  </svg>
+                </div>
+                <h3 class="spe-res-title">4. Quiz emocjonalny — radość</h3>
+                <div class="spe-res-stats">
+                  <span class="spe-res-stat">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M17 4h3v3a3 3 0 0 1-3 3M7 4H4v3a3 3 0 0 0 3 3"/></svg>
+                    80%
+                  </span>
+                  <span class="spe-res-stat">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15.5-6.3L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15.5 6.3L3 16"/><path d="M3 21v-5h5"/></svg>
+                    2
+                  </span>
+                  <span class="spe-res-stat">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg>
+                    02.11
+                  </span>
+                </div>
+                <div class="spe-res-foot">
+                  <span class="spe-res-prod">Ścieżka 1 · Poziom 1</span>
+                  <button class="spe-more" type="button" aria-label="Więcej" onclick="event.stopPropagation()">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- 5 -->
+              <div class="spe-res-card" role="button" tabindex="0">
+                <div class="spe-res-preview">
+                  <span class="spe-res-info" aria-hidden="true">i</span>
+                  <svg viewBox="0 0 120 60">
+                    <g fill="none" stroke="oklch(0.6 0.13 230)" stroke-width="2" stroke-linecap="round">
+                      <path d="M14 20 Q22 12 30 20"/>
+                      <path d="M14 32 Q22 24 30 32"/>
+                      <path d="M14 44 Q22 36 30 44"/>
+                      <path d="M48 20 Q56 12 64 20"/>
+                      <path d="M48 32 Q56 24 64 32"/>
+                      <path d="M82 20 Q90 12 98 20"/>
+                      <path d="M82 32 Q90 24 98 32"/>
+                      <path d="M82 44 Q90 36 98 44"/>
+                    </g>
+                  </svg>
+                </div>
+                <h3 class="spe-res-title">5. Mimika radości</h3>
+                <div class="spe-res-stats">
+                  <span class="spe-res-stat">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M17 4h3v3a3 3 0 0 1-3 3M7 4H4v3a3 3 0 0 0 3 3"/></svg>
+                    —
+                  </span>
+                  <span class="spe-res-stat">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15.5-6.3L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15.5 6.3L3 16"/><path d="M3 21v-5h5"/></svg>
+                    0
+                  </span>
+                  <span class="spe-res-stat">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg>
+                    —
+                  </span>
+                </div>
+                <div class="spe-res-foot">
+                  <span class="spe-res-prod">Ścieżka 1 · Poziom 1</span>
+                  <button class="spe-more" type="button" aria-label="Więcej" onclick="event.stopPropagation()">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- 6 -->
+              <div class="spe-res-card" role="button" tabindex="0">
+                <div class="spe-res-preview">
+                  <span class="spe-res-info" aria-hidden="true">i</span>
+                  <svg viewBox="0 0 120 60">
+                    <g>
+                      <circle cx="22" cy="30" r="14" fill="oklch(0.88 0.18 85)"/>
+                      <circle cx="60" cy="30" r="14" fill="oklch(0.88 0.16 85)"/>
+                      <circle cx="98" cy="30" r="14" fill="oklch(0.88 0.14 95)"/>
+                      <path d="M16 28 Q22 32 28 28" stroke="oklch(0.3 0.05 80)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                      <path d="M54 30 Q60 34 66 30" stroke="oklch(0.3 0.05 80)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                      <path d="M92 28 Q98 34 104 28" stroke="oklch(0.3 0.05 80)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                    </g>
+                  </svg>
+                </div>
+                <h3 class="spe-res-title">6. Buźki radości</h3>
+                <div class="spe-res-stats">
+                  <span class="spe-res-stat">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M17 4h3v3a3 3 0 0 1-3 3M7 4H4v3a3 3 0 0 0 3 3"/></svg>
+                    —
+                  </span>
+                  <span class="spe-res-stat">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15.5-6.3L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15.5 6.3L3 16"/><path d="M3 21v-5h5"/></svg>
+                    0
+                  </span>
+                  <span class="spe-res-stat">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg>
+                    —
+                  </span>
+                </div>
+                <div class="spe-res-foot">
+                  <span class="spe-res-prod">Ścieżka 1 · Poziom 1</span>
+                  <button class="spe-more" type="button" aria-label="Więcej" onclick="event.stopPropagation()">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Widok pojedynczego wyzwania -->
+        <div class="spe-exercise">
+
+          <!-- Pasek górny: powrót + tytuł sekcji -->
+          <div class="spe-ex-topbar">
+            <button class="spe-ex-back" type="button" onclick="speExitExercise()" aria-label="Powrót">
+              <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+            <h2 class="spe-ex-topbar-title" id="spe-ex-section-title">Rozpoznawanie emocji – radość</h2>
+          </div>
+
+          <header class="spe-ex-head">
+            <button class="spe-ex-audio" type="button" aria-label="Odtwórz pytanie">
+              <svg viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15 9a4 4 0 0 1 0 6"/><path d="M18.5 6a8 8 0 0 1 0 12"/></svg>
+            </button>
+            <p class="spe-ex-question" id="spe-ex-question">Wybierz buźkę wyrażającą radość.</p>
+            <div class="spe-ex-menu" id="spe-ex-menu">
+              <button class="spe-ex-collapse" type="button" onclick="speExToggleMenu(event)" aria-label="Otwórz menu" aria-expanded="false">
+                <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+              </button>
+              <div class="spe-ex-panel" role="menu">
+                <button class="spe-ex-panel-item" type="button" role="menuitem">
+                  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                  Ustawienia preferencji
+                </button>
+                <button class="spe-ex-panel-item" type="button" role="menuitem">
+                  <svg viewBox="0 0 24 24"><circle cx="5" cy="9" r="2.2"/><circle cx="11" cy="5" r="2.2"/><circle cx="17" cy="5" r="2.2"/><circle cx="19" cy="11" r="2.2"/><path d="M7.5 14.5c-1.6 1.2-2.5 3-1.7 4.4.9 1.5 3 1.6 4.6.7l1.3-.8c.9-.5 2-.5 2.9 0l1.3.8c1.6.9 3.7.8 4.6-.7.8-1.4-.1-3.2-1.7-4.4-1.4-1-3.4-2.5-5.7-2.5s-4.3 1.5-5.6 2.5z"/></svg>
+                  Zmień towarzysza
+                </button>
+              </div>
+            </div>
+          </header>
+
+          <div class="spe-ex-body">
+            <div class="spe-ex-options" id="spe-ex-options">
+
+              <!-- Buźka 1: zdziwiona / z językiem (silly) -->
+              <button class="spe-ex-opt" type="button" data-spe-answer="wrong">
+                <svg viewBox="0 0 220 220">
+                  <defs>
+                    <radialGradient id="emoYellow1" cx="50%" cy="38%" r="62%">
+                      <stop offset="0%" stop-color="#FDE68A"/>
+                      <stop offset="55%" stop-color="#FBBF24"/>
+                      <stop offset="100%" stop-color="#D97706"/>
+                    </radialGradient>
+                  </defs>
+                  <circle cx="110" cy="110" r="96" fill="url(#emoYellow1)"/>
+                  <!-- brwi (uniesione, grube) -->
+                  <path d="M52 72 Q72 50 96 64" fill="none" stroke="#0B1220" stroke-width="9" stroke-linecap="round"/>
+                  <path d="M168 72 Q148 50 124 64" fill="none" stroke="#0B1220" stroke-width="9" stroke-linecap="round"/>
+                  <!-- oczy -->
+                  <circle cx="80" cy="104" r="20" fill="#fff"/>
+                  <circle cx="80" cy="104" r="14" fill="#1D4ED8"/>
+                  <circle cx="83" cy="100" r="5" fill="#0B1220"/>
+                  <circle cx="86" cy="97" r="2.6" fill="#fff"/>
+                  <circle cx="140" cy="104" r="20" fill="#fff"/>
+                  <circle cx="140" cy="104" r="14" fill="#1D4ED8"/>
+                  <circle cx="143" cy="100" r="5" fill="#0B1220"/>
+                  <circle cx="146" cy="97" r="2.6" fill="#fff"/>
+                  <!-- usta otwarte z językiem -->
+                  <path d="M62 142 Q110 192 158 142 Q138 162 110 162 Q82 162 62 142 Z" fill="#7C2D12"/>
+                  <path d="M62 142 Q110 192 158 142" fill="none" stroke="#0B1220" stroke-width="3" stroke-linecap="round"/>
+                  <path d="M86 160 Q104 192 122 184 Q140 176 134 158 Q120 168 108 166 Q94 164 86 160 Z" fill="#FB7185"/>
+                  <path d="M86 160 Q104 192 122 184" fill="none" stroke="#9F1239" stroke-width="2.5" stroke-linecap="round"/>
+                </svg>
+              </button>
+
+              <!-- Buźka 2: smutna -->
+              <button class="spe-ex-opt" type="button" data-spe-answer="wrong">
+                <svg viewBox="0 0 220 220">
+                  <defs>
+                    <radialGradient id="emoYellow2" cx="50%" cy="38%" r="62%">
+                      <stop offset="0%" stop-color="#FDE68A"/>
+                      <stop offset="55%" stop-color="#FBBF24"/>
+                      <stop offset="100%" stop-color="#D97706"/>
+                    </radialGradient>
+                  </defs>
+                  <circle cx="110" cy="110" r="96" fill="url(#emoYellow2)"/>
+                  <!-- brwi (smutne, opadające ku zewnątrz) -->
+                  <path d="M52 78 Q74 62 96 76" fill="none" stroke="#0B1220" stroke-width="9" stroke-linecap="round"/>
+                  <path d="M168 78 Q146 62 124 76" fill="none" stroke="#0B1220" stroke-width="9" stroke-linecap="round"/>
+                  <!-- oczy -->
+                  <circle cx="80" cy="108" r="20" fill="#fff"/>
+                  <circle cx="80" cy="108" r="14" fill="#1D4ED8"/>
+                  <circle cx="83" cy="104" r="5" fill="#0B1220"/>
+                  <circle cx="86" cy="101" r="2.6" fill="#fff"/>
+                  <circle cx="140" cy="108" r="20" fill="#fff"/>
+                  <circle cx="140" cy="108" r="14" fill="#1D4ED8"/>
+                  <circle cx="143" cy="104" r="5" fill="#0B1220"/>
+                  <circle cx="146" cy="101" r="2.6" fill="#fff"/>
+                  <!-- usta smutne -->
+                  <path d="M78 168 Q110 142 142 168" fill="none" stroke="#0B1220" stroke-width="8" stroke-linecap="round"/>
+                </svg>
+              </button>
+
+              <!-- Buźka 3: radosna -->
+              <button class="spe-ex-opt" type="button" data-spe-answer="correct">
+                <svg viewBox="0 0 220 220">
+                  <defs>
+                    <radialGradient id="emoYellow3" cx="50%" cy="38%" r="62%">
+                      <stop offset="0%" stop-color="#FDE68A"/>
+                      <stop offset="55%" stop-color="#FBBF24"/>
+                      <stop offset="100%" stop-color="#D97706"/>
+                    </radialGradient>
+                  </defs>
+                  <circle cx="110" cy="110" r="96" fill="url(#emoYellow3)"/>
+                  <!-- brwi (uniesione, radosne) -->
+                  <path d="M52 72 Q74 54 96 66" fill="none" stroke="#0B1220" stroke-width="9" stroke-linecap="round"/>
+                  <path d="M168 72 Q146 54 124 66" fill="none" stroke="#0B1220" stroke-width="9" stroke-linecap="round"/>
+                  <!-- oczy radosne, lekko zmrużone na górze -->
+                  <circle cx="80" cy="104" r="20" fill="#fff"/>
+                  <circle cx="80" cy="104" r="14" fill="#1D4ED8"/>
+                  <circle cx="83" cy="100" r="5" fill="#0B1220"/>
+                  <circle cx="86" cy="97" r="2.6" fill="#fff"/>
+                  <circle cx="140" cy="104" r="20" fill="#fff"/>
+                  <circle cx="140" cy="104" r="14" fill="#1D4ED8"/>
+                  <circle cx="143" cy="100" r="5" fill="#0B1220"/>
+                  <circle cx="146" cy="97" r="2.6" fill="#fff"/>
+                  <!-- duży uśmiech otwarty -->
+                  <path d="M58 134 Q110 196 162 134 Q140 168 110 168 Q80 168 58 134 Z" fill="#0B1220"/>
+                  <path d="M76 158 Q98 178 122 174 Q140 170 132 156 Q116 166 102 164 Q88 162 76 158 Z" fill="#FB7185"/>
+                </svg>
+              </button>
+
+            </div>
+          </div>
+
+          <!-- Separator + animowany chevron + FAB Reset + grab handle -->
+          <div class="spe-ex-controls">
+            <button class="spe-ex-down" type="button" aria-label="Przewiń w dół">
+              <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+            <button class="spe-ex-retry" type="button" aria-label="Spróbuj jeszcze raz" onclick="speExReset()">
+              <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 15.5-6.3L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15.5 6.3L3 16"/><path d="M3 21v-5h5"/></svg>
+            </button>
+            <span class="spe-ex-grab" aria-hidden="true"></span>
+          </div>
+
+          <footer class="spe-ex-foot">
+            <div class="spe-ex-foot-title">
+              <button type="button" aria-label="Spis treści" onclick="speExToggleToc()">
+                <svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+              </button>
+              <span id="spe-ex-title">3. Rozpoznawanie emocji – radość</span>
+            </div>
+            <div class="spe-ex-nav">
+              <button class="spe-ex-nav-btn" type="button" aria-label="Poprzednie" onclick="speExNav(-1)">
+                <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
+              </button>
+              <span class="spe-ex-counter" id="spe-ex-counter">3/6</span>
+              <button class="spe-ex-nav-btn" type="button" aria-label="Następne" onclick="speExNav(1)">
+                <svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
+              </button>
+            </div>
+            <button class="spe-ex-full" type="button" aria-label="Pełny ekran" onclick="speExFullscreen()">
+              <svg viewBox="0 0 24 24"><path d="M3 9V3h6"/><path d="M21 9V3h-6"/><path d="M3 15v6h6"/><path d="M21 15v6h-6"/></svg>
+            </button>
+          </footer>
+          <!-- Spis treści wyzwania (TOC) -->
+          <div class="spe-ex-toc-backdrop" onclick="speExToggleToc(false)"></div>
+          <div class="spe-ex-toc" role="dialog" aria-labelledby="spe-ex-toc-title" aria-modal="true">
+            <div class="spe-ex-toc-head">
+              <div>
+                <h3 class="spe-ex-toc-title" id="spe-ex-toc-title">I. Rozpoznawanie i nazywanie emocji</h3>
+                <p class="spe-ex-toc-sub">Rozpoznawanie i nazywanie podstawowych emocji</p>
+              </div>
+              <button class="spe-ex-toc-close" type="button" aria-label="Zamknij spis treści" onclick="speExToggleToc(false)">
+                <svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+              </button>
+            </div>
+            <div class="spe-ex-toc-list">
+              <button class="spe-ex-toc-item" type="button" data-spe-toc="1">
+                <span class="spe-ex-toc-name"><span class="spe-ex-toc-num">1.</span> Wprowadzenie – radość</span>
+                <span class="spe-ex-toc-score">
+                  <svg viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M17 4h3v3a3 3 0 0 1-3 3M7 4H4v3a3 3 0 0 0 3 3"/></svg>
+                  0%
+                </span>
+              </button>
+              <button class="spe-ex-toc-item done" type="button" data-spe-toc="2">
+                <span class="spe-ex-toc-name"><span class="spe-ex-toc-num">2.</span> Poznawanie nazw emocji – radość</span>
+                <span class="spe-ex-toc-score">
+                  <svg viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M17 4h3v3a3 3 0 0 1-3 3M7 4H4v3a3 3 0 0 0 3 3"/></svg>
+                  100%
+                </span>
+              </button>
+              <button class="spe-ex-toc-item active done" type="button" data-spe-toc="3">
+                <span class="spe-ex-toc-name"><span class="spe-ex-toc-num">3.</span> Rozpoznawanie emocji – radość</span>
+                <span class="spe-ex-toc-score">
+                  <svg viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M17 4h3v3a3 3 0 0 1-3 3M7 4H4v3a3 3 0 0 0 3 3"/></svg>
+                  100%
+                </span>
+              </button>
+              <button class="spe-ex-toc-item" type="button" data-spe-toc="4">
+                <span class="spe-ex-toc-name"><span class="spe-ex-toc-num">4.</span> Nazywanie emocji – radość</span>
+                <span class="spe-ex-toc-score">
+                  <svg viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M17 4h3v3a3 3 0 0 1-3 3M7 4H4v3a3 3 0 0 0 3 3"/></svg>
+                  0%
+                </span>
+              </button>
+              <button class="spe-ex-toc-item" type="button" data-spe-toc="5">
+                <span class="spe-ex-toc-name"><span class="spe-ex-toc-num">5.</span> Wyszukiwanie emotikonów – radość</span>
+                <span class="spe-ex-toc-score">
+                  <svg viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M17 4h3v3a3 3 0 0 1-3 3M7 4H4v3a3 3 0 0 0 3 3"/></svg>
+                  0%
+                </span>
+              </button>
+              <button class="spe-ex-toc-item" type="button" data-spe-toc="6">
+                <span class="spe-ex-toc-name"><span class="spe-ex-toc-num">6.</span> Odtwarzanie mimiki – radość</span>
+                <span class="spe-ex-toc-score">
+                  <svg viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M17 4h3v3a3 3 0 0 1-3 3M7 4H4v3a3 3 0 0 0 3 3"/></svg>
+                  0%
+                </span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Widok kreatora komiksów -->
+        <div class="spe-creator">
+
+          <!-- Pasek górny: powrót + tytuł -->
+          <div class="spe-cr-topbar">
+            <button class="spe-ex-back" type="button" onclick="speExitCreator()" aria-label="Powrót">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+            <h2 class="spe-cr-topbar-title">Kreator komiksów</h2>
+          </div>
+
+          <div class="spe-cr-body">
+
+            <!-- Lewa kolumna: miniaturki stron + orientacja -->
+            <div class="spe-cr-col">
+              <div class="spe-cr-toolbar">
+                <button class="spe-cr-tb-back" type="button" aria-label="Cofnij" onclick="speExitCreator()">
+                  <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
+                </button>
+                <button class="spe-cr-btn" type="button" aria-label="Nowy">
+                  <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+                </button>
+                <button class="spe-cr-btn" type="button" aria-label="Importuj">
+                  <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M12 12v6"/><path d="m9 15 3 3 3-3"/></svg>
+                </button>
+                <button class="spe-cr-btn" type="button" aria-label="Eksportuj">
+                  <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 18h7"/><path d="m13 15 3 3-3 3"/></svg>
+                </button>
+                <span class="spe-cr-tb-gap"></span>
+                <button class="spe-cr-btn" type="button" aria-label="Zapisz">
+                  <svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8"/><path d="M7 3v5h8"/></svg>
+                </button>
+              </div>
+
+              <div class="spe-cr-thumbs">
+                <button class="spe-cr-thumb active" type="button" aria-label="Strona 1">
+                  <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
+                </button>
+                <button class="spe-cr-thumb empty" type="button" aria-label="Strona 2"><svg></svg></button>
+                <button class="spe-cr-thumb empty" type="button" aria-label="Strona 3"><svg></svg></button>
+                <button class="spe-cr-thumb empty" type="button" aria-label="Strona 4"><svg></svg></button>
+              </div>
+
+              <div class="spe-cr-orient" role="group" aria-label="Orientacja">
+                <button class="spe-cr-orient-btn landscape active" type="button" aria-label="Pozioma" aria-pressed="true">
+                  <svg viewBox="0 0 24 18"><rect x="1" y="1" width="22" height="16" rx="2"/></svg>
+                </button>
+                <button class="spe-cr-orient-btn portrait" type="button" aria-label="Pionowa" aria-pressed="false">
+                  <svg viewBox="0 0 16 22"><rect x="1" y="1" width="14" height="20" rx="2"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Środkowa kolumna: pasek narzędzi panelu + duża kanwa -->
+            <div class="spe-cr-col">
+              <div class="spe-cr-toolbar">
+                <button class="spe-cr-btn" type="button" aria-label="Dodaj panel">
+                  <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/></svg>
+                </button>
+                <button class="spe-cr-btn" type="button" aria-label="Duplikuj panel">
+                  <svg viewBox="0 0 24 24"><rect x="8" y="8" width="13" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></svg>
+                </button>
+                <button class="spe-cr-btn" type="button" aria-label="Zaznacz panel">
+                  <svg viewBox="0 0 24 24" stroke-dasharray="4 3"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+                </button>
+                <button class="spe-cr-btn" type="button" aria-label="Usuń panel">
+                  <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 12h8"/></svg>
+                </button>
+                <button class="spe-cr-btn" type="button" aria-label="Usuń wszystko">
+                  <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="m9 9 6 6M15 9l-6 6"/></svg>
+                </button>
+                <span class="spe-cr-tb-gap"></span>
+                <button class="spe-cr-btn" type="button" aria-label="Przesuń w lewo">
+                  <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+                </button>
+                <button class="spe-cr-btn" type="button" aria-label="Przesuń w prawo">
+                  <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                </button>
+              </div>
+
+              <div class="spe-cr-canvas-wrap">
+                <div class="spe-cr-canvas" id="spe-cr-canvas" aria-label="Kanwa komiksu"></div>
+              </div>
+            </div>
+
+            <!-- Prawy pasek narzędzi -->
+            <aside class="spe-cr-rail" aria-label="Biblioteka elementów">
+              <button class="spe-cr-rail-btn" type="button" aria-label="Tła">
+                <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 14l-5-5L5 18"/><path d="M3 21h18"/></svg>
+              </button>
+              <button class="spe-cr-rail-btn" type="button" aria-label="Postacie">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="3"/><path d="M5 22v-3l3-7h8l3 7v3"/><path d="M9 12v10M15 12v10"/></svg>
+              </button>
+              <button class="spe-cr-rail-btn" type="button" aria-label="Zwierzęta">
+                <svg viewBox="0 0 24 24"><path d="M5 12c0-3 3-7 7-7s7 4 7 7v3a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4z"/><path d="M5 7l-2-2M19 7l2-2"/><circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><path d="M11 16h2"/></svg>
+              </button>
+              <button class="spe-cr-rail-btn" type="button" aria-label="Sport">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3v18"/><path d="M5 6c2 2 4 4 7 4s5-2 7-4"/><path d="M5 18c2-2 4-4 7-4s5 2 7 4"/></svg>
+              </button>
+              <button class="spe-cr-rail-btn" type="button" aria-label="Dymki">
+                <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              </button>
+              <span class="spe-cr-rail-spacer"></span>
+              <button class="spe-cr-rail-btn" type="button" aria-label="Notatki / opis">
+                <svg viewBox="0 0 24 24"><rect x="6" y="4" width="12" height="18" rx="2"/><path d="M9 2h6v4H9z"/><path d="M9 12h6M9 16h4"/></svg>
+              </button>
+            </aside>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- IB iframe -->
+    <iframe id="fr-ib" src="ib/ib.html?v=24" title="Książki Interaktywne"></iframe>
+
+    <!-- EX iframe -->
+    <iframe id="fr-ex" src="ex/ex.html?v=46" title="Platforma Egzaminacyjna"></iframe>
+
+    <!-- Frame loader -->
+    <div id="frame-loader"><div class="loader-ring"></div></div>
+
+  </div><!-- /content-area -->
+</div><!-- /shell-right -->
+
+<!-- ═══ BOTTOM NAV ═══ -->
+<nav id="bottom-nav">
+  <button class="bn-item active" id="bn-dashboard" onclick="navTo('dashboard')">
+    <svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-7h-6v7H4a1 1 0 0 1-1-1z"/></svg>
+    <span class="bn-label">Start</span>
+  </button>
+  <button class="bn-item" id="bn-kursy" onclick="navTo('kursy')">
+    <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+    <span class="bn-label">Kursy</span>
+  </button>
+  <button class="bn-item" id="bn-podreczniki" onclick="navTo('podreczniki')">
+    <svg viewBox="0 0 24 24"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+    <span class="bn-label">Książki</span>
+  </button>
+  <button class="bn-item" id="bn-profil" onclick="openProfileAll()">
+    <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    <span class="bn-label">Profil</span>
+  </button>
+</nav>
+
+
+<!-- EMPTY STATE — Rodzic bez dzieci (?mode=empty) -->
+<div id="view-empty">
+  <a class="ve-back" href="index.html"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Wróć</a>
+  <div class="ve-card">
+    <div class="ve-illust"><svg viewBox="0 0 48 48"><circle cx="20" cy="18" r="6"/><path d="M8 40c0-7 5-12 12-12s12 5 12 12"/><circle cx="36" cy="16" r="4" stroke-dasharray="2 2"/><line x1="33" y1="13" x2="39" y2="19"/><line x1="39" y1="13" x2="33" y2="19"/></svg></div>
+    <h2 class="ve-title">Drogi Użytkowniku,<br/>Witamy na platformie!</h2>
+    <p class="ve-desc">Z zakupionych produktów może korzystać wyłącznie uczeń. Jeśli jesteś rodzicem, prosimy o powiązanie z kontem dziecka (lub dzieci) swojego konta w eduVULCAN.</p>
+    <p class="ve-desc">Jeżeli jesteś uczniem, sprawdź ustawienie pola <strong>Rola</strong> w ustawieniach konta eduVULCAN. Aby uzyskać dostęp do zakupionych materiałów, Twoja rola powinna być ustawiona jako <strong>Uczeń</strong>.</p>
+    <div class="ve-actions">
+      <button class="ve-btn ve-btn-primary" type="button" onclick="alert('Otwórz eduVulcan')">Otwórz eduVulcan <svg viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8"/></svg></button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL: wybór ucznia ═══ -->
+<div id="student-modal">
+  <div class="stu-card">
+    <div class="stu-head">
+      <div class="stu-icon">
+        <svg viewBox="0 0 24 24"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg>
+      </div>
+      <h2 id="stu-title">Wybierz dziecko</h2>
+      <p class="stu-sub" id="stu-sub">Zobacz kursy przypisane do konta dziecka</p>
+    </div>
+    <div class="stu-list" id="stu-list">
+      <button class="stu-item" onclick="selectStudent('Anna','3',[])">
+        <div class="stu-av stu-av-a">A</div>
+        <div class="stu-body">
+          <div class="stu-name">Anna Kowalska</div>
+          <div class="stu-klasa">Klasa 3 · 9 lat · brak aktywnych kursów</div>
+        </div>
+        <span class="stu-chev"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></span>
+      </button>
+      <button class="stu-item" onclick="selectStudent('Jakub','7',['math'])">
+        <div class="stu-av stu-av-k">J</div>
+        <div class="stu-body">
+          <div class="stu-name">Jakub Kowalski</div>
+          <div class="stu-klasa">Klasa 7 · 14 lat · Matematyka aktywna</div>
+        </div>
+        <span class="stu-chev"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  try {
+    var m = (new URLSearchParams(location.search)).get('mode');
+    if (m === 'parent' || m === 'empty' || m === 'child' || m === 'full'){
+      document.body.classList.add('mode-' + m);
+    }
+    // Demo: ?books=new (lub reset) — wymusza ponowny jednorazowy ekran wyboru książek
+    var bp = (new URLSearchParams(location.search)).get('books');
+    if (bp === 'new' || bp === 'reset') { try { localStorage.removeItem('eduBooksOnboardingDone'); } catch(e){} }
+  } catch(e) {}
+})();
+</script>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════
+   SHELL LOGIC — zachowane z oryginału + poprawione przejścia
+   ═══════════════════════════════════════════════════════════════════ */
+
+// ── Stan ─────────────────────────────────────────────
+let currentView = 'dashboard';
+let currentSklepTab = 'ksiazki';
+let ibReady = false, exReady = false;
+let pendingIb = [], pendingEx = [];
+
+// ── iframe.onload ────────────────────────────────────
+document.getElementById('fr-ib').addEventListener('load', function() {
+  ibReady = true;
+  var isDark = document.documentElement.classList.contains('dark');
+  if (isDark) _send('ib', {type:'setDark', isDark:true});
+  pendingIb.splice(0).forEach(function(m){ _send('ib', m); });
+});
+document.getElementById('fr-ex').addEventListener('load', function() {
+  exReady = true;
+  var isDark = document.documentElement.classList.contains('dark');
+  if (isDark) _send('ex', {type:'setDark', isDark:true});
+  pendingEx.splice(0).forEach(function(m){ _send('ex', m); });
+});
+
+function _send(mod, msg) {
+  try { document.getElementById('fr-'+mod).contentWindow.postMessage(msg, '*'); } catch(e) {}
+}
+function sendIb(msg) { ibReady ? _send('ib', msg) : pendingIb.push(msg); }
+function sendEx(msg) { exReady ? _send('ex', msg) : pendingEx.push(msg); }
+
+// ── Message listener ─────────────────────────────────
+window.addEventListener('message', function(e) {
+  if (!e.data) return;
+  if (e.data.type === 'ready') {
+    if (e.data.module === 'ib' && !ibReady) {
+      ibReady = true;
+      pendingIb.splice(0).forEach(function(m){ _send('ib', m); });
+    }
+    if (e.data.module === 'ex' && !exReady) {
+      exReady = true;
+      pendingEx.splice(0).forEach(function(m){ _send('ex', m); });
+    }
+  }
+  if (e.data.type === 'darkState') {
+    setDarkIcons(!!e.data.isDark);
+  }
+  if (e.data.type === 'skinChanged') {
+    applyShellSkin(e.data.primary, e.data.col);
+  }
+  if (e.data.type === 'parentNavTo') {
+    navTo(e.data.view);
+  }
+  if (e.data.type === 'booksOnboardingDone') {
+    // Wybór książek zakończony — nie pokazuj już ekranu wyboru
+    try { localStorage.setItem('eduBooksOnboardingDone', '1'); } catch(e){}
+    document.getElementById('module-searchbar').style.visibility = '';
+  }
+});
+
+// ── Shell skin overrides (from IB profile → sync to shell) ───────
+function applyShellSkin(primary, col) {
+  var styleTag = document.getElementById('_shell_skin');
+  if (!styleTag) { styleTag = document.createElement('style'); styleTag.id = '_shell_skin'; document.head.appendChild(styleTag); }
+  // Override ep-primary tokens at root level
+  styleTag.textContent =
+    ':root{' +
+      '--ep-primary:' + col + ';' +
+      '--ep-primary-600:' + col + ';' +
+      '--ep-primary-700:' + primary + ';' +
+    '}' +
+    '.sb-brand-icon{background:linear-gradient(135deg,' + col + ' 0%,' + primary + ' 100%)!important}' +
+    '.bar-avatar-btn{background:linear-gradient(135deg,' + col + ' 0%,' + primary + ' 100%)!important}' +
+    '.sb-footer-avatar{background:linear-gradient(135deg,' + col + ' 0%,' + primary + ' 100%)!important}' +
+    '.sklep-tab.active{color:' + col + '!important;border-bottom-color:' + col + '!important}' +
+    '.mod-search-input:focus{box-shadow:0 0 0 3px ' + primary + '33!important;border-color:' + col + '!important}';
+  try { localStorage.setItem('edu_shell_skin', JSON.stringify({primary: primary, col: col})); } catch(e) {}
+}
+(function() {
+  try {
+    var saved = localStorage.getItem('edu_shell_skin');
+    if (saved) { var s = JSON.parse(saved); applyShellSkin(s.primary, s.col); }
+  } catch(e) {}
+})();
+
+// ── Nawigacja ─────────────────────────────────────────
+var CRUMBS = {
+  dashboard:   {title: 'Dashboard',   module: null},
+  kursy:       {title: 'Kursy',       module: 'Kursy'},
+  podreczniki: {title: 'Podręczniki', module: 'Podręczniki'},
+  spe:         {title: 'Spe',         module: 'Spe'},
+  'spe-detail':{title: 'Spe',         module: 'Spe'},
+  sklep:       {title: 'Sklep',       module: 'Sklep'},
+  profil:      {title: 'Profil',      module: 'Profil'}
+};
+
+function updateCrumbs(view) {
+  var c = CRUMBS[view] || CRUMBS.dashboard;
+  var el = document.getElementById('crumb-title');
+  el.innerHTML = '';
+  // Show pill only when module exists AND it's different from the current title
+  // (avoid "Kursy / Kursy" duplication on module dashboard view)
+  if (c.module && c.module !== c.title) {
+    var pill = document.createElement('span');
+    pill.className = 'crumb-pill';
+    pill.innerHTML = '<span class="dot"></span>' + c.module;
+    el.appendChild(pill);
+    var sep = document.createElement('span');
+    sep.className = 'crumb-sep';
+    sep.innerHTML = '<svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg>';
+    el.appendChild(sep);
+  }
+  var cur = document.createElement('span');
+  cur.className = 'crumb-current'; cur.textContent = c.title;
+  el.appendChild(cur);
+}
+
+function hideAllFrames() {
+  document.getElementById('fr-ib').classList.remove('visible');
+  document.getElementById('fr-ex').classList.remove('visible');
+  document.getElementById('view-dashboard').classList.remove('visible');
+  document.getElementById('view-dashboard').style.display = 'none';
+  var spe = document.getElementById('view-spe');
+  if (spe) { spe.classList.remove('visible'); spe.style.display = 'none'; }
+}
+
+function showFrame(id) {
+  var el = document.getElementById(id);
+  el.style.display = 'block';
+  // double rAF so the opacity transition fires
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){ el.classList.add('visible'); }); });
+}
+
+function navTo(view) {
+  // Aktualizuj sidebar
+  document.querySelectorAll('.sb-item').forEach(b => b.classList.remove('active'));
+  var btn = document.getElementById('nav-' + view);
+  if (btn) btn.classList.add('active');
+  currentView = view;
+
+  // Aktualizuj bottom nav
+  document.querySelectorAll('.bn-item').forEach(b => b.classList.remove('active'));
+  var bnBtn = document.getElementById('bn-' + view);
+  if (bnBtn) bnBtn.classList.add('active');
+
+  // Breadcrumbs
+  updateCrumbs(view);
+
+  // Ukryj wszystko
+  hideAllFrames();
+  document.getElementById('fr-ib').style.display = 'none';
+  document.getElementById('fr-ex').style.display = 'none';
+  document.getElementById('sklep-tabbar').style.display = 'none';
+  document.getElementById('module-searchbar').style.visibility = '';
+  document.getElementById('module-searchbar').style.display =
+    (view === 'dashboard' || view === 'sklep') ? 'none' : 'flex';
+
+  var _dark = document.documentElement.classList.contains('dark');
+
+  switch (view) {
+    case 'dashboard':
+      var d = document.getElementById('view-dashboard');
+      d.style.display = 'flex';
+      requestAnimationFrame(function(){ d.classList.add('visible'); });
+      break;
+
+    case 'podreczniki':
+      showFrame('fr-ib');
+      sendIb({type:'setDark', isDark:_dark});
+      sendIb({type:'hideSidebar'});
+      sendIb({type:'hideModuleHeader'});
+      var _booksDone = false;
+      try { _booksDone = localStorage.getItem('eduBooksOnboardingDone') === '1'; } catch(e){}
+      if (_booksDone) {
+        sendIb({type:'navigate', view:'dashboard'});
+      } else {
+        // Pierwsze wejście po wykupieniu abonamentu — jednorazowy wybór książek
+        sendIb({type:'navigate', view:'catalog'});
+        document.getElementById('module-searchbar').style.visibility = 'hidden';
+      }
+      break;
+
+    case 'kursy':
+      showFrame('fr-ex');
+      sendEx({type:'setDark', isDark:_dark});
+      sendEx({type:'hideSidebar'});
+      sendEx({type:'hideModuleHeader'});
+      if (document.body.classList.contains('mode-parent')) {
+        sendEx({type:'setParentMode', enabled:true, owned: PARENT_OWNED, informational:true});
+      } else if (document.body.classList.contains('mode-full')) {
+        sendEx({type:'setParentMode', enabled:true, owned: ['math'], informational:false});
+      } else if (document.body.classList.contains('mode-child')) {
+        sendEx({type:'setParentMode', enabled:true, owned: ['math'], informational:false, canPurchase:false});
+      }
+      sendEx({type:'navigate', view:'kurs'});
+      break;
+
+    case 'sklep':
+      document.getElementById('sklep-tabbar').style.display = 'flex';
+      switchSklepTab(currentSklepTab, true);
+      break;
+
+    case 'spe':
+      var s = document.getElementById('view-spe');
+      s.removeAttribute('data-mode');
+      s.style.display = 'flex';
+      requestAnimationFrame(function(){ s.classList.add('visible'); });
+      break;
+  }
+}
+
+// ── Sklep tabs ────────────────────────────────────────
+function switchSklepTab(tab, skipHide) {
+  tab = 'ksiazki';
+  currentSklepTab = tab;
+  document.getElementById('stab-ksiazki').classList.toggle('active', tab === 'ksiazki');
+
+  if (!skipHide) {
+    document.getElementById('fr-ib').classList.remove('visible');
+    document.getElementById('fr-ex').classList.remove('visible');
+    document.getElementById('fr-ib').style.display = 'none';
+    document.getElementById('fr-ex').style.display = 'none';
+  }
+
+  var _dark = document.documentElement.classList.contains('dark');
+
+  if (tab === 'ksiazki') {
+    showFrame('fr-ib');
+    sendIb({type:'setDark', isDark:_dark});
+    sendIb({type:'hideSidebar'});
+    sendIb({type:'hideModuleHeader'});
+    sendIb({type:'navigate', view:'catalog'});
+    document.getElementById('module-searchbar').style.visibility = 'hidden';
+    try {
+      var _exItems = JSON.parse(localStorage.getItem('sharedCart_ex') || '[]');
+      if (_exItems.length > 0) sendIb({type:'syncCart', items: _exItems});
+    } catch(e) {}
+  } else {
+    showFrame('fr-ex');
+    sendEx({type:'setDark', isDark:_dark});
+    sendEx({type:'hideSidebar'});
+    sendEx({type:'hideModuleHeader'});
+    sendEx({type:'navigate', view:'sklep'});
+    try {
+      var _ibItems = JSON.parse(localStorage.getItem('sharedCart_ib') || '[]');
+      if (_ibItems.length > 0) sendEx({type:'syncCart', items: _ibItems});
+    } catch(e) {}
+  }
+}
+
+// ── Dark mode ─────────────────────────────────────────
+function setDarkIcons(isDark) {
+  document.getElementById('dm-icon-sun').style.display  = isDark ? 'none' : '';
+  document.getElementById('dm-icon-moon').style.display = isDark ? '' : 'none';
+}
+function toggleDarkAll() {
+  var darkNow = document.documentElement.classList.toggle('dark');
+  setDarkIcons(darkNow);
+  try { localStorage.setItem('edu_dark', darkNow ? '1' : '0'); } catch(e) {}
+  _send('ib', {type:'setDark', isDark: darkNow});
+  _send('ex', {type:'setDark', isDark: darkNow});
+}
+
+// ── Profil ────────────────────────────────────────────
+function openProfileAll() {
+  hideAllFrames();
+  document.getElementById('fr-ex').style.display = 'none';
+  document.getElementById('sklep-tabbar').style.display = 'none';
+  document.getElementById('module-searchbar').style.display = 'flex';
+  document.querySelectorAll('.sb-item').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.bn-item').forEach(b => b.classList.remove('active'));
+  document.getElementById('bn-profil').classList.add('active');
+  var _dp = document.documentElement.classList.contains('dark');
+  showFrame('fr-ib');
+  sendIb({type:'setDark', isDark:_dp});
+  sendIb({type:'hideSidebar'});
+  sendIb({type:'hideModuleHeader'});
+  sendIb({type:'navigate', view:'profile'});
+  updateCrumbs('profil');
+  currentView = 'profil';
+}
+
+// ── Korepetycje ───────────────────────────────────────
+function openKorepetycje() {
+  var a = document.createElement('a');
+  a.href = 'EXTERNAL_PLATFORM_URL';
+  a.target = '_blank'; a.rel = 'noopener noreferrer';
+  a.click();
+}
+
+// ── Topbar menu ──────────────────────────────────────
+function toggleModMenu(e) {
+  e.stopPropagation();
+  document.getElementById('mod-dots-dropdown').classList.toggle('open');
+}
+function closeModMenu() {
+  var d = document.getElementById('mod-dots-dropdown');
+  if (d) d.classList.remove('open');
+}
+document.addEventListener('click', closeModMenu);
+
+// ── Init ──────────────────────────────────────────────
+// Filtry w widoku Spe (segmented chips)
+document.querySelectorAll('[data-spe-filter]').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    document.querySelectorAll('[data-spe-filter]').forEach(function(b){ b.classList.remove('active'); });
+    btn.classList.add('active');
+  });
+});
+// Klawiatura: aktywuj kartę produktu Enter/Spacją
+document.querySelectorAll('.spe-card').forEach(function(card){
+  card.addEventListener('keydown', function(e){
+    if (e.key === 'Enter' || e.key === ' '){
+      e.preventDefault();
+      card.click();
+    }
+  });
+  card.addEventListener('click', function(e){
+    if (e.target.closest('.spe-more')) return; // ⋮ — nie nawiguj
+    if (card.classList.contains('locked')) {
+      navTo('sklep');
+    } else {
+      speOpenPath(card);
+    }
+  });
+});
+
+// Szczegół ścieżki — wejście/wyjście
+function speOpenPath(card){
+  var v = document.getElementById('view-spe');
+  v.setAttribute('data-mode', 'detail');
+  var titleEl = document.getElementById('spe-detail-title');
+  if (titleEl) titleEl.textContent = 'Ścieżka 1';
+  v.scrollTop = 0;
+  updateCrumbs('spe-detail');
+}
+function speBack(){
+  var v = document.getElementById('view-spe');
+  v.removeAttribute('data-mode');
+  v.scrollTop = 0;
+  updateCrumbs('spe');
+}
+
+// ── Wyzwanie (exercise) ──────────────────────────────────────
+var SPE_EX_STATE = { index: 3, total: 6 };
+function speOpenExercise(card){
+  var v = document.getElementById('view-spe');
+  v.setAttribute('data-mode', 'exercise');
+  v.scrollTop = 0;
+  // tytuł z karty zasobu — w pasku górnym i w stopce
+  var titleEl = card && card.querySelector('.spe-res-title');
+  var bottomTitle = document.getElementById('spe-ex-title');
+  var topTitle = document.getElementById('spe-ex-section-title');
+  if (titleEl){
+    var t = titleEl.textContent.trim();
+    if (bottomTitle) bottomTitle.textContent = t;
+    // pasek górny: bez numeru porządkowego
+    if (topTitle) topTitle.textContent = t.replace(/^\d+\.\s*/, '');
+  }
+  document.getElementById('spe-ex-counter').textContent = SPE_EX_STATE.index + '/' + SPE_EX_STATE.total;
+  speExReset();
+}
+function speExitExercise(){
+  var v = document.getElementById('view-spe');
+  v.setAttribute('data-mode', 'detail');
+  v.scrollTop = 0;
+}
+function speExReset(){
+  document.querySelectorAll('.spe-ex-opt').forEach(function(o){
+    o.classList.remove('correct', 'wrong');
+  });
+}
+function speExToggleToc(force){
+  var ex = document.querySelector('.spe-exercise');
+  if (!ex) return;
+  var open = (force === true || force === false) ? force : ex.getAttribute('data-toc') !== 'open';
+  if (open) ex.setAttribute('data-toc', 'open');
+  else ex.removeAttribute('data-toc');
+}
+// Klik w pozycję TOC: zmień aktywną i ustaw licznik
+document.querySelectorAll('.spe-ex-toc-item').forEach(function(it){
+  it.addEventListener('click', function(){
+    document.querySelectorAll('.spe-ex-toc-item').forEach(function(x){ x.classList.remove('active'); });
+    it.classList.add('active');
+    var n = parseInt(it.getAttribute('data-spe-toc'), 10);
+    if (!isNaN(n)){
+      SPE_EX_STATE.index = n;
+      document.getElementById('spe-ex-counter').textContent = n + '/' + SPE_EX_STATE.total;
+      var name = it.querySelector('.spe-ex-toc-name');
+      var foot = document.getElementById('spe-ex-title');
+      var top = document.getElementById('spe-ex-section-title');
+      if (name && foot) foot.textContent = name.textContent.trim();
+      if (name && top)  top.textContent  = name.textContent.replace(/^\d+\.\s*/, '').trim();
+    }
+    speExToggleToc(false);
+    speExReset();
+  });
+});
+function speExFullscreen(){
+  var el = document.getElementById('view-spe');
+  if (!el) return;
+  var native = !!(document.fullscreenElement || document.webkitFullscreenElement);
+  var css = el.classList.contains('spe-fs');
+  if (native || css){
+    // Wyjście
+    if (native){
+      try { (document.exitFullscreen || document.webkitExitFullscreen).call(document); } catch(e){}
+    }
+    el.classList.remove('spe-fs');
+    document.body.classList.remove('spe-fs-lock');
+    speExUpdateFullscreenIcon();
+    return;
+  }
+  // Wejście — nakładka CSS + próba natywnego (jak fail, CSS wystarczy)
+  el.classList.add('spe-fs');
+  document.body.classList.add('spe-fs-lock');
+  try {
+    var req = el.requestFullscreen || el.webkitRequestFullscreen;
+    if (req) {
+      var p = req.call(el);
+      if (p && p.catch) p.catch(function(){ /* fallback CSS już aktywny */ });
+    }
+  } catch(e){ /* fallback CSS aktywny */ }
+  speExUpdateFullscreenIcon();
+}
+function speExUpdateFullscreenIcon(){
+  var btn = document.querySelector('.spe-ex-full');
+  if (!btn) return;
+  var nat = !!(document.fullscreenElement || document.webkitFullscreenElement);
+  var v = document.getElementById('view-spe');
+  var css = v && v.classList.contains('spe-fs');
+  var active = nat || css;
+  btn.setAttribute('aria-label', active ? 'Wyjdź z pełnego ekranu' : 'Pełny ekran');
+  btn.innerHTML = active
+    ? '<svg viewBox="0 0 24 24"><path d="M9 3v6H3"/><path d="M15 3v6h6"/><path d="M9 21v-6H3"/><path d="M15 21v-6h6"/></svg>'
+    : '<svg viewBox="0 0 24 24"><path d="M3 9V3h6"/><path d="M21 9V3h-6"/><path d="M3 15v6h6"/><path d="M21 15v6h-6"/></svg>';
+}
+// Gdy natywny fullscreen wychodzi (np. Esc) — sprzątamy nakładkę CSS i layout aplikacji
+function speExOnFullscreenChange(){
+  var nat = !!(document.fullscreenElement || document.webkitFullscreenElement);
+  if (!nat){
+    var v = document.getElementById('view-spe');
+    if (v) v.classList.remove('spe-fs');
+    document.body.classList.remove('spe-fs-lock');
+  }
+  speExUpdateFullscreenIcon();
+}
+document.addEventListener('fullscreenchange', speExOnFullscreenChange);
+document.addEventListener('webkitfullscreenchange', speExOnFullscreenChange);
+// Esc wychodzi też z CSS fullscreen
+document.addEventListener('keydown', function(e){
+  if (e.key !== 'Escape') return;
+  var v = document.getElementById('view-spe');
+  if (v && v.classList.contains('spe-fs')){
+    v.classList.remove('spe-fs');
+    document.body.classList.remove('spe-fs-lock');
+    speExUpdateFullscreenIcon();
+  }
+});
+document.addEventListener('fullscreenchange', speExUpdateFullscreenIcon);
+document.addEventListener('webkitfullscreenchange', speExUpdateFullscreenIcon);
+function speExToggleMenu(e){
+  if (e) e.stopPropagation();
+  var menu = document.getElementById('spe-ex-menu');
+  if (!menu) return;
+  menu.classList.toggle('open');
+  var btn = menu.querySelector('.spe-ex-collapse');
+  if (btn) btn.setAttribute('aria-expanded', menu.classList.contains('open') ? 'true' : 'false');
+}
+// Zamknij menu po kliknięciu poza nim
+document.addEventListener('click', function(e){
+  var menu = document.getElementById('spe-ex-menu');
+  if (!menu || !menu.classList.contains('open')) return;
+  if (e.target.closest('#spe-ex-menu')) return;
+  menu.classList.remove('open');
+  var btn = menu.querySelector('.spe-ex-collapse');
+  if (btn) btn.setAttribute('aria-expanded', 'false');
+});
+function speExNav(delta){
+  SPE_EX_STATE.index = Math.max(1, Math.min(SPE_EX_STATE.total, SPE_EX_STATE.index + delta));
+  document.getElementById('spe-ex-counter').textContent = SPE_EX_STATE.index + '/' + SPE_EX_STATE.total;
+  speExReset();
+}
+// Sprawdzanie odpowiedzi (correct/wrong)
+document.querySelectorAll('.spe-ex-opt').forEach(function(opt){
+  opt.addEventListener('click', function(){
+    speExReset();
+    var ans = opt.getAttribute('data-spe-answer');
+    opt.classList.add(ans === 'correct' ? 'correct' : 'wrong');
+  });
+});
+// Klik w kartę zasobu w widoku szczegółu → otwiera wyzwanie
+document.querySelectorAll('.spe-res-card').forEach(function(card){
+  card.addEventListener('click', function(e){
+    if (e.target.closest('.spe-more')) return;
+    speOpenExercise(card);
+  });
+  card.addEventListener('keydown', function(e){
+    if (e.key === 'Enter' || e.key === ' '){
+      e.preventDefault();
+      card.click();
+    }
+  });
+});
+// Drzewo kategorii — rozwijanie węzłów
+function speToggleNode(btn){
+  var node = btn.closest('.spe-tree-node');
+  if (!node || node.classList.contains('leaf')) return;
+  node.classList.toggle('open');
+}
+// Tabs + view toggle wewnątrz detalu
+document.querySelectorAll('.spe-tab').forEach(function(t){
+  t.addEventListener('click', function(){
+    document.querySelectorAll('.spe-tab').forEach(function(x){
+      x.classList.remove('active'); x.setAttribute('aria-selected', 'false');
+    });
+    t.classList.add('active'); t.setAttribute('aria-selected', 'true');
+    // "Kreator komiksów" otwiera dedykowany widok
+    if (t.textContent.trim().toLowerCase().indexOf('kreator') !== -1){
+      speOpenCreator();
+    }
+  });
+});
+function speOpenCreator(){
+  var v = document.getElementById('view-spe');
+  v.setAttribute('data-mode', 'creator');
+  v.scrollTop = 0;
+}
+function speExitCreator(){
+  var v = document.getElementById('view-spe');
+  v.setAttribute('data-mode', 'detail');
+  v.scrollTop = 0;
+  // Przywróć aktywną zakładkę "Wyzwania" po powrocie
+  document.querySelectorAll('.spe-tab').forEach(function(x){
+    x.classList.remove('active'); x.setAttribute('aria-selected', 'false');
+  });
+  var first = document.querySelector('.spe-tab');
+  if (first){ first.classList.add('active'); first.setAttribute('aria-selected', 'true'); }
+}
+// Pomocnicze: miniaturki w kreatorze
+document.querySelectorAll('.spe-cr-thumb').forEach(function(th){
+  th.addEventListener('click', function(){
+    document.querySelectorAll('.spe-cr-thumb').forEach(function(x){ x.classList.remove('active'); });
+    th.classList.add('active');
+  });
+});
+// Orientacja: landscape / portrait
+document.querySelectorAll('.spe-cr-orient-btn').forEach(function(b){
+  b.addEventListener('click', function(){
+    document.querySelectorAll('.spe-cr-orient-btn').forEach(function(x){
+      x.classList.remove('active'); x.setAttribute('aria-pressed', 'false');
+    });
+    b.classList.add('active'); b.setAttribute('aria-pressed', 'true');
+  });
+});
+document.querySelectorAll('.spe-view-btn').forEach(function(b){
+  b.addEventListener('click', function(){
+    var group = b.parentElement;
+    group.querySelectorAll('.spe-view-btn').forEach(function(x){ x.classList.remove('active'); });
+    b.classList.add('active');
+  });
+});
+// Aktywacja liścia drzewa (zaznaczenie)
+document.querySelectorAll('.spe-tree-node.leaf .spe-tree-item').forEach(function(it){
+  it.addEventListener('click', function(){
+    document.querySelectorAll('.spe-tree-item.active').forEach(function(x){ x.classList.remove('active'); });
+    it.classList.add('active');
+  });
+});
+updateCrumbs('dashboard');
+var dash = document.getElementById('view-dashboard');
+dash.style.display = 'flex';
+requestAnimationFrame(function(){ dash.classList.add('visible'); });
+// Scenariusz "rodzic" — wstępnie załaduj moduł Kursy (modal wyboru dziecka jest na wierzchu)
+if (document.body.classList.contains('mode-parent')) {
+  setTimeout(function(){ navTo('kursy'); }, 0);
+}
+try {
+  if (localStorage.getItem('edu_dark') === '1') {
+    document.documentElement.classList.add('dark');
+    setDarkIcons(true);
+  }
+} catch(e) {}
+
+// ── Student selector ──────────────────────────────────
+var PARENT_OWNED = [];
+function selectStudent(name, klasa, owned) {
+  try { localStorage.removeItem('sharedCart_ib'); localStorage.removeItem('sharedCart_ex'); } catch(e) {}
+  PARENT_OWNED = Array.isArray(owned) ? owned : [];
+  var modal = document.getElementById('student-modal');
+  modal.style.animation = 'fadeOutModal .2s ease both';
+  setTimeout(function(){
+    modal.style.display = 'none';
+    navTo('kursy');
+  }, 200);
+  var surname = (name === 'Kuba' ? 'Nowak' : (name === 'Jakub' ? 'Kowalski' : 'Kowalska'));
+  document.getElementById('dash-title').textContent = 'Witaj, ' + name + '!';
+  document.getElementById('av-initials').textContent = name.charAt(0);
+  document.getElementById('sb-initials').textContent = name.charAt(0);
+  document.getElementById('sb-name').textContent = name + ' ' + surname;
+  document.getElementById('sb-sub').textContent = 'Klasa ' + klasa;
+}
+
+// ── Mobile sidebar ────────────────────────────────────
+function toggleMobileSidebar() {
+  document.getElementById('sidebar').classList.toggle('mobile-open');
+  document.getElementById('sidebar-backdrop').classList.toggle('visible');
+}
+function closeMobileSidebar() {
+  document.getElementById('sidebar').classList.remove('mobile-open');
+  document.getElementById('sidebar-backdrop').classList.remove('visible');
+}
+document.querySelectorAll('.sb-item').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    if (window.innerWidth <= 768) closeMobileSidebar();
+  });
+});
+</script>
+
+</body>
+</html>

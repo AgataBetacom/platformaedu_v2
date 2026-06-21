@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>O kursie</title>
+<link rel="stylesheet" href="../shared/tokens.css"/>
+<style>
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family:var(--ep-font-sans, 'Inter', system-ui, sans-serif);
+    color:var(--ep-text);
+    background:var(--ep-bg);
+    padding:0 0 48px;
+    line-height:1.55;
+    font-size:14px;
+  }
+  body.dark{ color:#e8eef7; background:#0f1722; }
+
+  /* HERO marketingowy */
+  .mk-hero{
+    position:relative;
+    padding:30px 36px 28px;
+    background:
+      radial-gradient(circle at 88% 20%, rgba(99,102,241,.35), transparent 55%),
+      linear-gradient(135deg, #1E40AF 0%, #3B5BDB 60%, #4f46e5 100%);
+    color:#fff; overflow:hidden;
+  }
+  .mk-hero::after{
+    content:''; position:absolute; right:-60px; bottom:-80px;
+    width:240px; height:240px; border-radius:50%;
+    background:radial-gradient(circle, rgba(255,255,255,.12), transparent 65%);
+  }
+  .mk-eyebrow{
+    display:inline-block; font-size:10.5px; font-weight:800; letter-spacing:.14em;
+    text-transform:uppercase; color:rgba(255,255,255,.85); margin-bottom:8px;
+  }
+  .mk-title{
+    font-family:var(--ep-font-display, 'Nunito', system-ui, sans-serif);
+    font-size:24px; font-weight:900; letter-spacing:-.02em; margin:0 0 8px; color:#fff;
+    position:relative; z-index:1;
+  }
+  .mk-sub{ font-size:13.5px; color:rgba(226,232,240,.92); margin:0; max-width:520px; position:relative; z-index:1; }
+
+  .mk-body{ padding:26px 36px 0; }
+  h2{
+    font-family:var(--ep-font-display, 'Nunito', system-ui, sans-serif);
+    font-size:15px; font-weight:800; letter-spacing:-.01em;
+    margin:26px 0 10px; color:var(--ep-text);
+  }
+  p{ margin:0 0 12px; color:var(--ep-text-2); }
+
+  .mk-points{ list-style:none; margin:0 0 12px; padding:0; display:flex; flex-direction:column; gap:10px; }
+  .mk-points li{ display:flex; align-items:flex-start; gap:10px; color:var(--ep-text-2); }
+  .mk-tick{
+    flex-shrink:0; width:20px; height:20px; border-radius:50%;
+    background:var(--ep-success-100); color:var(--ep-success);
+    display:inline-flex; align-items:center; justify-content:center; margin-top:1px;
+  }
+  .mk-tick svg{ width:12px; height:12px; }
+
+  .mk-stats{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:12px;
+    margin:14px 0 4px;
+  }
+  .mk-stat{
+    background:var(--ep-surface-2); border:1px solid var(--ep-border);
+    border-radius:14px; padding:14px 16px; text-align:center;
+  }
+  .mk-stat-n{
+    font-family:var(--ep-font-display, 'Nunito', system-ui, sans-serif);
+    font-size:22px; font-weight:900; color:var(--ep-primary); line-height:1;
+  }
+  .mk-stat-l{ font-size:11px; font-weight:700; color:var(--ep-text-3); margin-top:5px; letter-spacing:.02em; }
+
+  .mk-quote{
+    border-left:3px solid var(--ep-primary);
+    background:var(--ep-primary-50);
+    border-radius:0 12px 12px 0;
+    padding:14px 18px; margin:14px 0 4px;
+    font-style:italic; color:var(--ep-text-2);
+  }
+  .mk-quote cite{ display:block; margin-top:8px; font-style:normal; font-weight:700; font-size:12px; color:var(--ep-text-3); }
+
+  .mk-note{
+    margin:26px 0 0; padding:13px 16px;
+    background:var(--ep-surface-2); border:1px dashed var(--ep-border-strong);
+    border-radius:12px; color:var(--ep-text-3); font-size:12px;
+  }
+  .mk-note strong{ color:var(--ep-text-2); }
+</style>
+</head>
+<body>
+  <div class="mk-hero">
+    <span class="mk-eyebrow" id="mk-eyebrow">Materiały o kursie</span>
+    <h1 class="mk-title" id="mk-title">Tytuł kursu</h1>
+    <p class="mk-sub" id="mk-sub">Egzamin ósmoklasisty · pełny kurs przygotowujący</p>
+  </div>
+
+  <div class="mk-body">
+    <p>Pełny kurs przygotowujący do egzaminu ósmoklasisty — teoria w mikro-porcjach, filmy z lektorem zatrzymujące się w kluczowych momentach oraz zadania z natychmiastowym feedbackiem.</p>
+
+    <h2>Dlaczego warto</h2>
+    <ul class="mk-points">
+      <li><span class="mk-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></span>Materiał zgodny z aktualną podstawą programową i wymaganiami egzaminacyjnymi.</li>
+      <li><span class="mk-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></span>Nauka we własnym tempie — krok po kroku, z powtórkami i fiszkami.</li>
+      <li><span class="mk-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></span>Arkusze egzaminacyjne z rozwiązaniami i analizą błędów.</li>
+    </ul>
+
+    <h2>Co zawiera kurs</h2>
+    <div class="mk-stats">
+      <div class="mk-stat"><div class="mk-stat-n">4</div><div class="mk-stat-l">DZIAŁY</div></div>
+      <div class="mk-stat"><div class="mk-stat-n">200+</div><div class="mk-stat-l">TEMATÓW</div></div>
+      <div class="mk-stat"><div class="mk-stat-n">1500+</div><div class="mk-stat-l">ZADAŃ</div></div>
+    </div>
+
+    <h2>Opinie rodziców</h2>
+    <div class="mk-quote">
+      „Córka pierwszy raz uczyła się do egzaminu bez stresu. Filmy z lektorem i krótkie porcje teorii zrobiły ogromną różnicę."
+      <cite>— Rodzic ucznia klasy 8</cite>
+    </div>
+
+    <div class="mk-note">
+      <strong>Materiał informacyjny.</strong> W wersji docelowej w tym miejscu wyświetli się treść marketingowa wydawcy (HTML wstrzykiwany analogicznie do informacji o prawach autorskich) — opis, fragment demo i warunki licencji.
+    </div>
+  </div>
+
+<script>
+  window.addEventListener('message', function(e){
+    if (!e.data || typeof e.data !== 'object') return;
+    if (e.data.type === 'info:set') {
+      if (e.data.title)   document.getElementById('mk-title').textContent = e.data.title;
+      if (e.data.eyebrow) document.getElementById('mk-eyebrow').textContent = e.data.eyebrow;
+      if (e.data.sub)     document.getElementById('mk-sub').textContent = e.data.sub;
+    }
+    if (e.data.type === 'setDark') {
+      document.body.classList.toggle('dark', !!e.data.isDark);
+    }
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,1155 @@
+/* ═══════════════════════════════════════════════════════════════════
+   EduPlatforma · Design Tokens
+   Wspólny system dla launcher (index.html), modułu EX i modułu IB.
+   ═══════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── Brand / Primary (indygo, zmiękczone) ─────────────────────── */
+  --ep-primary:      oklch(0.54 0.16 258);    /* główny akcent */
+  --ep-primary-600:  oklch(0.48 0.17 258);    /* hover / press  */
+  --ep-primary-700:  oklch(0.40 0.17 258);    /* deep           */
+  --ep-primary-500:  oklch(0.62 0.15 258);    /* bright         */
+  --ep-primary-400:  oklch(0.72 0.12 258);    /* soft           */
+  --ep-primary-100:  oklch(0.95 0.03 258);    /* tło chip       */
+  --ep-primary-50:   oklch(0.98 0.015 258);   /* tło subtelne   */
+
+  /* ── Akcent ciepły (amber) ────────────────────────────────────── */
+  --ep-accent:       oklch(0.75 0.14 60);
+  --ep-accent-600:   oklch(0.68 0.16 55);
+  --ep-accent-100:   oklch(0.96 0.04 70);
+
+  /* ── Akcent zimny (fiolet — używany dla IB/Podręczniki) ───────── */
+  --ep-violet:       oklch(0.62 0.19 300);
+  --ep-violet-600:   oklch(0.54 0.20 300);
+  --ep-violet-100:   oklch(0.96 0.03 300);
+
+  /* ── Feedback ─────────────────────────────────────────────────── */
+  --ep-success:      oklch(0.68 0.16 155);
+  --ep-success-100:  oklch(0.95 0.05 155);
+  --ep-danger:       oklch(0.62 0.20 25);
+  --ep-danger-100:   oklch(0.96 0.04 25);
+  --ep-warning:      oklch(0.78 0.15 80);
+  --ep-warning-100:  oklch(0.97 0.04 80);
+  --ep-info:         oklch(0.68 0.13 230);
+  --ep-info-100:     oklch(0.95 0.04 230);
+
+  /* ── Neutralne (ciepłe, lekko cool w stronę niebieskiego) ─────── */
+  --ep-bg:           oklch(0.985 0.004 250);   /* tło aplikacji     */
+  --ep-surface:      #ffffff;                  /* karty, modale     */
+  --ep-surface-2:    oklch(0.97 0.005 250);    /* subtelny raised   */
+  --ep-surface-3:    oklch(0.945 0.007 250);   /* hover na liście   */
+
+  --ep-border:       oklch(0.91 0.008 250);    /* domyślna granica  */
+  --ep-border-strong:oklch(0.85 0.01 250);     /* mocniejsza        */
+  --ep-divider:      oklch(0.94 0.005 250);    /* cieniutka linia   */
+
+  --ep-text:         oklch(0.20 0.015 258);    /* główny tekst      */
+  --ep-text-2:       oklch(0.35 0.015 258);    /* tekst pomocniczy  */
+  --ep-text-3:       oklch(0.52 0.012 258);    /* tekst stonowany   */
+  --ep-text-4:       oklch(0.66 0.01 250);     /* placeholder / muted */
+
+  /* ── Typografia ───────────────────────────────────────────────── */
+  --ep-font-sans:    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --ep-font-display: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif;
+  --ep-font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Consolas, monospace;
+
+  /* ── Radius ───────────────────────────────────────────────────── */
+  --ep-r-sm:   8px;
+  --ep-r-md:   12px;
+  --ep-r-lg:   16px;
+  --ep-r-xl:   20px;
+  --ep-r-2xl:  28px;
+  --ep-r-full: 999px;
+
+  /* ── Cienie (wielowarstwowe, miękkie, z tintem primary) ───────── */
+  --ep-shadow-xs:  0 1px 2px 0 oklch(0.20 0.05 258 / 0.05);
+  --ep-shadow-sm:  0 1px 2px oklch(0.20 0.05 258 / 0.04),
+                   0 2px 6px oklch(0.20 0.05 258 / 0.06);
+  --ep-shadow-md:  0 2px 4px oklch(0.20 0.05 258 / 0.04),
+                   0 6px 16px oklch(0.20 0.05 258 / 0.08);
+  --ep-shadow-lg:  0 4px 8px oklch(0.20 0.05 258 / 0.05),
+                   0 12px 32px oklch(0.20 0.05 258 / 0.12);
+  --ep-shadow-xl:  0 8px 16px oklch(0.20 0.05 258 / 0.06),
+                   0 24px 48px oklch(0.20 0.05 258 / 0.16);
+
+  --ep-ring:       0 0 0 3px oklch(0.54 0.16 258 / 0.18);
+  --ep-ring-danger:0 0 0 3px oklch(0.62 0.20 25  / 0.20);
+  --ep-ring-success:0 0 0 3px oklch(0.68 0.16 155 / 0.20);
+
+  /* ── Motion ───────────────────────────────────────────────────── */
+  --ep-ease:       cubic-bezier(0.16, 1, 0.3, 1);       /* exit */
+  --ep-ease-in:    cubic-bezier(0.7, 0, 0.84, 0);       /* enter */
+  --ep-ease-soft:  cubic-bezier(0.32, 0.72, 0, 1);      /* all-purpose */
+  --ep-d-fast:     120ms;
+  --ep-d-base:     200ms;
+  --ep-d-slow:     320ms;
+
+  /* ── Spacing scale ────────────────────────────────────────────── */
+  --ep-s-1: 4px;
+  --ep-s-2: 8px;
+  --ep-s-3: 12px;
+  --ep-s-4: 16px;
+  --ep-s-5: 20px;
+  --ep-s-6: 24px;
+  --ep-s-8: 32px;
+  --ep-s-10: 40px;
+  --ep-s-12: 48px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Dark mode — głęboki indygo, wysokokontrastowy tekst
+   ═══════════════════════════════════════════════════════════════════ */
+html.dark {
+  --ep-primary:      oklch(0.70 0.15 258);
+  --ep-primary-600:  oklch(0.76 0.14 258);
+  --ep-primary-700:  oklch(0.82 0.12 258);
+  --ep-primary-500:  oklch(0.64 0.16 258);
+  --ep-primary-400:  oklch(0.52 0.17 258);
+  --ep-primary-100:  oklch(0.28 0.09 258);
+  --ep-primary-50:   oklch(0.22 0.05 258);
+
+  --ep-accent:       oklch(0.80 0.14 70);
+  --ep-accent-100:   oklch(0.30 0.08 70);
+
+  --ep-violet:       oklch(0.72 0.17 300);
+  --ep-violet-100:   oklch(0.28 0.08 300);
+
+  --ep-success:      oklch(0.76 0.15 155);
+  --ep-success-100:  oklch(0.28 0.07 155);
+  --ep-danger:       oklch(0.72 0.18 25);
+  --ep-danger-100:   oklch(0.30 0.08 25);
+  --ep-warning:      oklch(0.82 0.14 80);
+  --ep-info:         oklch(0.76 0.12 230);
+
+  --ep-bg:           oklch(0.17 0.02 258);
+  --ep-surface:      oklch(0.22 0.025 258);
+  --ep-surface-2:    oklch(0.25 0.025 258);
+  --ep-surface-3:    oklch(0.29 0.025 258);
+
+  --ep-border:       oklch(0.30 0.025 258);
+  --ep-border-strong:oklch(0.38 0.03 258);
+  --ep-divider:      oklch(0.27 0.02 258);
+
+  --ep-text:         oklch(0.97 0.005 250);
+  --ep-text-2:       oklch(0.85 0.01 250);
+  --ep-text-3:       oklch(0.68 0.01 250);
+  --ep-text-4:       oklch(0.52 0.01 250);
+
+  --ep-shadow-xs:  0 1px 2px 0 oklch(0.02 0 0 / 0.25);
+  --ep-shadow-sm:  0 1px 2px oklch(0.02 0 0 / 0.25),
+                   0 2px 6px oklch(0.02 0 0 / 0.35);
+  --ep-shadow-md:  0 2px 4px oklch(0.02 0 0 / 0.25),
+                   0 6px 16px oklch(0.02 0 0 / 0.35);
+  --ep-shadow-lg:  0 4px 8px oklch(0.02 0 0 / 0.30),
+                   0 12px 32px oklch(0.02 0 0 / 0.50);
+  --ep-shadow-xl:  0 8px 16px oklch(0.02 0 0 / 0.35),
+                   0 24px 48px oklch(0.02 0 0 / 0.55);
+
+  --ep-ring:        0 0 0 3px oklch(0.70 0.15 258 / 0.28);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Base reset + typography defaults
+   ═══════════════════════════════════════════════════════════════════ */
+*,*::before,*::after { box-sizing: border-box; }
+
+body {
+  font-family: var(--ep-font-sans);
+  font-feature-settings: 'cv02','cv03','cv04','cv11';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  color: var(--ep-text);
+  background: var(--ep-bg);
+}
+
+/* Focus ring — keyboard only */
+:focus-visible {
+  outline: none;
+  box-shadow: var(--ep-ring);
+  border-radius: var(--ep-r-sm);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Reusable utility primitives (opcjonalne, do przejęcia przez moduły)
+   ═══════════════════════════════════════════════════════════════════ */
+
+.ep-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 8px;
+  font-family: var(--ep-font-sans);
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1;
+  padding: 10px 18px;
+  border-radius: var(--ep-r-md);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background var(--ep-d-fast) var(--ep-ease-soft),
+              color var(--ep-d-fast) var(--ep-ease-soft),
+              border-color var(--ep-d-fast) var(--ep-ease-soft),
+              box-shadow var(--ep-d-fast) var(--ep-ease-soft),
+              transform var(--ep-d-fast) var(--ep-ease-soft);
+}
+.ep-btn:active:not(:disabled) { transform: translateY(1px); }
+.ep-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.ep-btn-primary {
+  background: var(--ep-primary);
+  color: #fff;
+  box-shadow: var(--ep-shadow-sm);
+}
+.ep-btn-primary:hover:not(:disabled) { background: var(--ep-primary-600); box-shadow: var(--ep-shadow-md); }
+.ep-btn-primary:active:not(:disabled) { background: var(--ep-primary-700); }
+
+.ep-btn-ghost {
+  background: transparent;
+  color: var(--ep-text-2);
+}
+.ep-btn-ghost:hover:not(:disabled) { background: var(--ep-surface-3); color: var(--ep-text); }
+
+.ep-btn-outline {
+  background: var(--ep-surface);
+  color: var(--ep-text);
+  border-color: var(--ep-border);
+}
+.ep-btn-outline:hover:not(:disabled) { border-color: var(--ep-primary); color: var(--ep-primary); }
+
+.ep-card {
+  background: var(--ep-surface);
+  border: 1px solid var(--ep-border);
+  border-radius: var(--ep-r-lg);
+  box-shadow: var(--ep-shadow-sm);
+}
+
+.ep-input {
+  width: 100%;
+  font-family: var(--ep-font-sans);
+  font-size: 14px;
+  color: var(--ep-text);
+  background: var(--ep-surface);
+  border: 1px solid var(--ep-border);
+  border-radius: var(--ep-r-md);
+  padding: 10px 14px;
+  transition: border-color var(--ep-d-fast) var(--ep-ease-soft),
+              box-shadow var(--ep-d-fast) var(--ep-ease-soft);
+}
+.ep-input:focus { outline: none; border-color: var(--ep-primary); box-shadow: var(--ep-ring); }
+.ep-input::placeholder { color: var(--ep-text-4); }
+
+/* Subtle scrollbar (opt-in) */
+.ep-scrollbar::-webkit-scrollbar { width: 10px; height: 10px; }
+.ep-scrollbar::-webkit-scrollbar-track { background: transparent; }
+.ep-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--ep-border-strong);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  border-radius: var(--ep-r-full);
+}
+.ep-scrollbar::-webkit-scrollbar-thumb:hover { background: var(--ep-text-4); background-clip: padding-box; }
+
+/* Motion-safe defaults */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PRODUCT CARD · wspólny kafel produktowy (EX sklep, IB katalog)
+   Jednolite rozmiary, rytm i wizualia między modułami.
+   ═══════════════════════════════════════════════════════════════ */
+
+.product-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 18px;
+}
+
+.product-card{
+  position: relative;
+  background: var(--ep-surface);
+  border: 1px solid var(--ep-border);
+  border-radius: var(--ep-r-xl);
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  box-shadow: var(--ep-shadow-xs);
+  transition: transform var(--ep-d-base) var(--ep-ease),
+              box-shadow var(--ep-d-base) var(--ep-ease),
+              border-color var(--ep-d-fast);
+  min-height: 280px;
+}
+.product-card:hover{
+  transform: translateY(-3px);
+  box-shadow: var(--ep-shadow-md);
+  border-color: var(--ep-border-strong);
+}
+.product-card.is-clickable{ cursor: pointer; }
+
+/* Cover */
+.product-card-cover{
+  position: relative;
+  aspect-ratio: 16/9;
+  background: linear-gradient(135deg, var(--cover-a, var(--ep-primary)), var(--cover-b, var(--ep-primary-600)));
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff;
+  flex-shrink: 0;
+}
+.product-card-cover::after{
+  content: '';
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(135deg, rgba(255,255,255,.04) 0 2px, transparent 2px 16px);
+  pointer-events: none;
+}
+.product-card-glyph{
+  position: relative; z-index: 1;
+  width: 52px; height: 52px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,.14);
+  border: 1px solid rgba(255,255,255,.22);
+  border-radius: 13px;
+  backdrop-filter: blur(4px);
+  font-size: 24px; line-height: 1;
+}
+.product-card-glyph svg{ width: 26px; height: 26px; }
+
+/* Badge (top-left) */
+.product-card-badge{
+  position: absolute; top: 10px; left: 10px;
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(255,255,255,.95);
+  color: var(--ep-text);
+  backdrop-filter: blur(8px);
+  padding: 4px 10px; border-radius: 999px;
+  font-family: var(--ep-font-sans);
+  font-size: 11px; font-weight: 700;
+  letter-spacing: -.005em;
+  box-shadow: 0 2px 8px rgba(0,0,0,.08);
+  z-index: 2;
+  white-space: nowrap;
+}
+.product-card-badge--owned{ color: var(--ep-success); }
+.product-card-badge--locked{ color: var(--ep-text-3); }
+.product-card-badge--selected{ color: var(--ep-primary); background: #fff; }
+.product-card-badge .dot{
+  width: 6px; height: 6px; border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 0 3px color-mix(in srgb, currentColor 22%, transparent);
+}
+
+/* Menu (top-right) */
+.product-card-menu{
+  position: absolute; top: 8px; right: 8px; z-index: 3;
+}
+.product-card-menu-btn{
+  width: 28px; height: 28px;
+  border-radius: 8px;
+  background: rgba(255,255,255,.9);
+  border: none;
+  color: var(--ep-text-2);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background var(--ep-d-fast);
+  backdrop-filter: blur(8px);
+  font-size: 14px; font-weight: 800;
+  line-height: 1;
+}
+.product-card-menu-btn:hover{ background: #fff; color: var(--ep-text); }
+
+/* Body */
+.product-card-body{
+  padding: 14px 16px 16px;
+  display: flex; flex-direction: column;
+  gap: 6px; flex: 1;
+}
+.product-card-title{
+  font-family: var(--ep-font-display);
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--ep-text);
+  letter-spacing: -.01em;
+  line-height: 1.25;
+  margin: 0;
+}
+.product-card-sub{
+  font-family: var(--ep-font-sans);
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--ep-text-3);
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* Foot — price + CTA row */
+.product-card-foot{
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 10px; margin-top: auto;
+  padding-top: 12px;
+}
+.product-card-price{
+  display: flex; flex-direction: column; gap: 1px;
+}
+.product-price-v{
+  font-family: var(--ep-font-display);
+  font-size: 18px; font-weight: 800;
+  color: var(--ep-text);
+  line-height: 1;
+  letter-spacing: -.01em;
+}
+.product-price-k{
+  font-family: var(--ep-font-sans);
+  font-size: 10.5px;
+  color: var(--ep-text-3);
+  font-weight: 500;
+}
+.product-card-access{
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--ep-font-sans);
+  font-size: 12px; font-weight: 600;
+  color: var(--ep-success);
+}
+
+/* CTA */
+.product-cta{
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 6px;
+  padding: 9px 14px;
+  border: none;
+  border-radius: var(--ep-r-md);
+  font-family: var(--ep-font-sans);
+  font-size: 12.5px; font-weight: 700;
+  cursor: pointer;
+  transition: background var(--ep-d-fast), color var(--ep-d-fast),
+              box-shadow var(--ep-d-fast), transform var(--ep-d-fast);
+  white-space: nowrap;
+  letter-spacing: -.005em;
+}
+.product-cta:hover{ transform: translateY(-1px); }
+.product-cta:active{ transform: translateY(0); }
+
+.product-cta--primary{
+  background: var(--ep-primary); color: #fff;
+  box-shadow: var(--ep-shadow-sm);
+}
+.product-cta--primary:hover{ background: var(--ep-primary-600); box-shadow: var(--ep-shadow-md); }
+
+.product-cta--dark{
+  background: var(--ep-text); color: var(--ep-surface);
+  box-shadow: var(--ep-shadow-sm);
+}
+.product-cta--dark:hover{ background: var(--ep-text-2); box-shadow: var(--ep-shadow-md); }
+
+.product-cta--selected{
+  background: var(--ep-primary-100);
+  color: var(--ep-primary);
+  box-shadow: none;
+}
+.product-cta--in-cart{
+  background: var(--ep-accent-100);
+  color: var(--ep-accent-600);
+  box-shadow: none;
+}
+.product-cta--in-cart svg{ transform: rotate(45deg); }
+.product-cta--disabled,
+.product-cta:disabled{
+  background: var(--ep-surface-2) !important;
+  color: var(--ep-text-4) !important;
+  box-shadow: none !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+}
+
+.product-cta--full{ width: 100%; }
+
+/* Modifiers for whole card */
+.product-card--selected{
+  border-color: var(--ep-primary) !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ep-primary) 12%, transparent),
+              var(--ep-shadow-md) !important;
+}
+.product-card--in-cart{
+  border-color: var(--ep-accent-600) !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ep-accent-600) 12%, transparent),
+              var(--ep-shadow-md) !important;
+}
+.product-card--unlocked{
+  border-color: var(--ep-success) !important;
+}
+
+/* Dark mode tweaks */
+html.dark .product-card-badge,
+body.dark .product-card-badge{
+  background: rgba(20,28,45,.92);
+  color: var(--ep-text);
+}
+html.dark .product-card-menu-btn,
+body.dark .product-card-menu-btn{ background: rgba(20,28,45,.92); }
+html.dark .product-cta--dark,
+body.dark .product-cta--dark{
+  background: var(--ep-surface-3);
+  color: var(--ep-text);
+}
+
+/* Responsive */
+@media (max-width: 600px){
+  .product-grid{ grid-template-columns: 1fr; gap: 14px; }
+  .product-card-foot{ flex-wrap: wrap; gap: 8px; }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   UNIFIED CARD LAYER · ujednolicenie .kurs-card (EX) i .kurs-card
+   .sklep-book-card (IB) do jednego standardu wizualnego.
+   Zero zmian w HTML/JS — same CSS overrides.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Grid */
+.kurs-card-grid{
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)) !important;
+  gap: 18px !important;
+}
+
+/* Card shell */
+.kurs-card{
+  position: relative !important;
+  background: var(--ep-surface) !important;
+  border: 1px solid var(--ep-border) !important;
+  border-radius: var(--ep-r-xl) !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+  box-shadow: var(--ep-shadow-xs) !important;
+  transition: transform var(--ep-d-base) var(--ep-ease),
+              box-shadow var(--ep-d-base) var(--ep-ease),
+              border-color var(--ep-d-fast) !important;
+  padding: 0 !important;
+  min-height: 300px !important;
+}
+.kurs-card:hover{
+  transform: translateY(-3px) !important;
+  box-shadow: var(--ep-shadow-md) !important;
+  border-color: var(--ep-border-strong) !important;
+}
+
+/* Badges row — nie istnieje w IB, ale jest w EX; utrzymaj ale przeniesiemy
+   go NAD cover żeby badge siedział w covererze. */
+.kurs-card-badges{
+  position: absolute !important;
+  top: 0 !important; left: 0 !important; right: 0 !important;
+  z-index: 5 !important;
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: space-between !important;
+  padding: 10px !important;
+  pointer-events: none !important;
+  background: transparent !important;
+}
+.kurs-card-badges > *{ pointer-events: auto; }
+
+/* Cover — spójny aspect-ratio, bez absolutnych wysokości */
+.kurs-card-cover{
+  position: relative !important;
+  aspect-ratio: 16/10 !important;
+  height: auto !important;
+  min-height: 0 !important;
+  background: linear-gradient(135deg, var(--ep-primary), var(--ep-primary-600));
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: hidden !important;
+  flex-shrink: 0 !important;
+}
+.kurs-card-cover::after{
+  content: '';
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(135deg, rgba(255,255,255,.05) 0 2px, transparent 2px 18px);
+  pointer-events: none;
+}
+.kurs-card-cover-emoji{
+  position: relative; z-index: 1;
+  font-size: 54px !important;
+  line-height: 1 !important;
+  filter: drop-shadow(0 3px 8px rgba(0,0,0,.25));
+}
+/* Ikony z icon-wrap (biblioteka IB) — pokaż jako duży glyph, nie małe boxy */
+.kurs-card-cover .icon-wrap,
+.kurs-card-cover .cover-icon,
+.kurs-card-cover [class*="iconwrap"]{
+  width: auto !important; height: auto !important;
+  background: transparent !important;
+  border: none !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  display: flex; align-items: center; justify-content: center;
+}
+.kurs-card-cover .icon-wrap svg,
+.kurs-card-cover .cover-icon svg,
+.kurs-card-cover [class*="iconwrap"] svg{
+  width: 56px !important; height: 56px !important;
+  color: #fff;
+  filter: drop-shadow(0 3px 8px rgba(0,0,0,.25));
+}
+
+/* Status badge — unified pill (top-left of cover) */
+/* ─── Badges — wypełnione chipy (filled, nie tylko kolorowy tekst) ─── */
+
+/* Default badge base — dark chip na cover'ze */
+.kurs-badge-status,
+.kurs-card .status-chip,
+.kurs-card .library-chip,
+.kurs-card .sklep-cover-badge,
+.kurs-card [class*="book-status"]{
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  background: rgba(15, 23, 42, .78) !important;
+  color: #fff !important;
+  padding: 5px 11px !important;
+  border-radius: 999px !important;
+  font-family: var(--ep-font-sans) !important;
+  font-size: 10.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: .01em !important;
+  text-transform: uppercase !important;
+  box-shadow: 0 2px 6px rgba(0,0,0,.18) !important;
+  white-space: nowrap !important;
+  backdrop-filter: blur(8px) !important;
+  border: none !important;
+  line-height: 1.4 !important;
+  position: static !important;
+  top: auto !important; right: auto !important; bottom: auto !important; left: auto !important;
+}
+
+/* Variants — kolorowe wypełnienia */
+.kurs-badge-active{
+  background: var(--ep-success) !important;
+  color: #fff !important;
+}
+.kurs-badge-locked{
+  background: rgba(15, 23, 42, .62) !important;
+  color: rgba(255,255,255,.92) !important;
+}
+/* Dodatkowy wariant "W toku" (kursy posiadane, nie aktywne) */
+.kurs-card .kurs-badge-progress,
+.kurs-card [class*="badge-reading"],
+.kurs-card [class*="badge-inprogress"]{
+  background: var(--ep-primary) !important;
+  color: #fff !important;
+}
+
+/* Menu button — top-right, unified */
+.kurs-card-menu-btn{
+  width: 30px !important; height: 30px !important;
+  border-radius: 9px !important;
+  background: rgba(255,255,255,.92) !important;
+  border: none !important;
+  color: var(--ep-text-2) !important;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; font-weight: 800;
+  line-height: 1;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 8px rgba(0,0,0,.08);
+  transition: background var(--ep-d-fast), color var(--ep-d-fast);
+  padding: 0 !important;
+}
+.kurs-card-menu-btn:hover{ background: #fff !important; color: var(--ep-text) !important; }
+
+.kurs-card-menu-dropdown{
+  z-index: 50 !important;
+}
+
+/* Body */
+.kurs-card-body{
+  padding: 16px 18px 18px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+  flex: 1 !important;
+}
+.kurs-card-title{
+  font-family: var(--ep-font-display) !important;
+  font-size: 17px !important;
+  font-weight: 800 !important;
+  color: var(--ep-text) !important;
+  letter-spacing: -.015em !important;
+  line-height: 1.25 !important;
+  margin: 0 !important;
+}
+.kurs-card-sub{
+  font-family: var(--ep-font-sans) !important;
+  font-size: 12.5px !important;
+  font-weight: 500 !important;
+  color: var(--ep-text-3) !important;
+  line-height: 1.45 !important;
+  margin: 0 !important;
+}
+
+/* Progress row (kursy + biblioteka) */
+.kurs-progress-row{
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  font-family: var(--ep-font-sans) !important;
+  font-size: 11.5px !important;
+  font-weight: 600 !important;
+  color: var(--ep-text-3) !important;
+  margin-top: 4px !important;
+}
+.kurs-progress-row > span:last-child{
+  font-family: var(--ep-font-display) !important;
+  font-size: 13px !important;
+  font-weight: 800 !important;
+  color: var(--ep-primary) !important;
+}
+.kurs-pb{
+  height: 5px !important;
+  background: var(--ep-surface-3) !important;
+  border-radius: 999px !important;
+  overflow: hidden !important;
+  margin: 0 !important;
+}
+.kurs-pb-fill{
+  height: 100% !important;
+  background: var(--ep-primary) !important;
+  border-radius: 999px !important;
+  transition: width var(--ep-d-slow) var(--ep-ease);
+}
+
+/* Sklep — owned row + price row */
+.sklep-owned-row{
+  font-family: var(--ep-font-sans);
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--ep-text-3);
+  padding: 6px 0;
+}
+.sklep-price-row{
+  display: flex !important;
+  align-items: baseline !important;
+  gap: 6px !important;
+  padding: 2px 0 !important;
+}
+.sklep-price-main{
+  font-family: var(--ep-font-display);
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--ep-primary);
+  letter-spacing: -.01em;
+  line-height: 1;
+}
+.sklep-price-note{
+  font-family: var(--ep-font-sans);
+  font-size: 11.5px;
+  color: var(--ep-text-3);
+  font-weight: 500;
+}
+
+/* CTA — unified pill (default = primary indygo, dla transakcji/zakupu) */
+.kurs-card-btn,
+.kurs-btn-enter,
+.sklep-btn-buy,
+.kurs-card button[class*="cta"]{
+  width: 100% !important;
+  padding: 10px 14px !important;
+  border: none !important;
+  border-radius: var(--ep-r-md) !important;
+  font-family: var(--ep-font-sans) !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+  transition: background var(--ep-d-fast), transform var(--ep-d-fast),
+              box-shadow var(--ep-d-fast) !important;
+  margin-top: auto !important;
+  letter-spacing: -.005em !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  line-height: 1.2 !important;
+  background: var(--ep-primary) !important;
+  color: #fff !important;
+  box-shadow: var(--ep-shadow-sm) !important;
+  text-align: center !important;
+  min-height: 40px !important;
+}
+.kurs-card-btn:hover,
+.sklep-btn-buy:hover{
+  background: var(--ep-primary-600) !important;
+  box-shadow: var(--ep-shadow-md) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* "Otwórz kurs" (owned) — ciemny navy, żeby różnił się od transakcyjnego */
+.kurs-btn-enter{
+  background: oklch(0.22 0.03 258) !important;  /* deep navy */
+  color: #fff !important;
+  box-shadow: var(--ep-shadow-sm) !important;
+}
+.kurs-btn-enter:hover{
+  background: oklch(0.30 0.04 258) !important;
+  box-shadow: var(--ep-shadow-md) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* In-cart / selected state */
+.sklep-btn-buy.in-cart,
+.kurs-card-btn.in-cart{
+  background: var(--ep-success-100) !important;
+  color: var(--ep-success) !important;
+  box-shadow: none !important;
+}
+
+/* Locked (wkrótce) */
+.kurs-btn-locked,
+.kurs-card-btn.kurs-btn-locked{
+  background: var(--ep-surface-3) !important;
+  color: var(--ep-text-4) !important;
+  box-shadow: none !important;
+  cursor: not-allowed !important;
+}
+.kurs-btn-locked:hover{
+  background: var(--ep-surface-3) !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* IB specific — wszystkie sklep/biblioteka buttony → unified primary */
+.kurs-card .add-to-pkg-btn,
+.kurs-card button[onclick*="togglePkg"],
+.kurs-card button[onclick*="toggleExtra"],
+.kurs-card .sklep-pkg-btn,
+.kurs-card .pkg-select-btn,
+.kurs-card .extra-select-btn{
+  background: var(--ep-primary) !important;
+  color: #fff !important;
+  box-shadow: var(--ep-shadow-sm) !important;
+}
+.kurs-card .sklep-pkg-btn:hover,
+.kurs-card .pkg-select-btn:hover,
+.kurs-card .extra-select-btn:hover,
+.kurs-card .add-to-pkg-btn:hover{
+  background: var(--ep-primary-600) !important;
+  box-shadow: var(--ep-shadow-md) !important;
+  transform: translateY(-1px) !important;
+}
+/* Selected state → success chip */
+.kurs-card .add-to-pkg-btn.selected,
+.kurs-card .pkg-selected,
+.kurs-card button.selected,
+.kurs-card .sklep-pkg-btn.selected-pkg,
+.kurs-card .pkg-select-btn.selected-pkg,
+.kurs-card .extra-select-btn.selected-extra{
+  background: var(--ep-success-100) !important;
+  color: var(--ep-success) !important;
+  box-shadow: none !important;
+}
+/* Owned → disabled ghost */
+.kurs-card .sklep-btn-owned{
+  background: var(--ep-surface-3) !important;
+  color: var(--ep-text-4) !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* IB "Czytam" / "Nowa" chip — przyciemnij, zawsze na białym tle badge */
+.kurs-card [class*="status-dot"],
+.kurs-card [class*="reading-status"]{
+  background: rgba(255,255,255,.95) !important;
+  color: var(--ep-text) !important;
+  padding: 4px 10px !important;
+  border-radius: 999px !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  backdrop-filter: blur(8px) !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,.08) !important;
+  border: none !important;
+}
+
+/* Dark mode badge */
+html.dark .kurs-badge-status,
+body.dark .kurs-badge-status,
+html.dark .kurs-card-menu-btn,
+body.dark .kurs-card-menu-btn{
+  background: rgba(20,28,45,.92) !important;
+  color: var(--ep-text) !important;
+}
+
+/* Responsive */
+@media (max-width: 600px){
+  .kurs-card-grid{ grid-template-columns: 1fr !important; gap: 14px !important; }
+  .kurs-card{ min-height: 0 !important; }
+  .kurs-card-cover-emoji{ font-size: 46px !important; }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CATALOG BAR (IB — Katalog książek sticky header)
+   Ujednolicony pasek: filtry + search + licznik abonamentu + CTA + legenda
+   ═══════════════════════════════════════════════════════════════ */
+
+.catalog-bar{
+  background: var(--ep-surface);
+  border: 1px solid var(--ep-border);
+  border-radius: var(--ep-r-xl);
+  padding: 16px 20px 14px;
+  box-shadow: var(--ep-shadow-xs);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Head: title only (count moved down to progress row) */
+.catalog-bar-head{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.catalog-bar-title{
+  font-family: var(--ep-font-display, var(--ep-font-sans));
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--ep-text);
+  letter-spacing: -.01em;
+  margin: 0;
+  line-height: 1.2;
+}
+.catalog-bar-sub-meta{ display: none; }  /* ukryte — metryka przeszła do progress-rowa */
+
+/* Rows — 2-row layout dla responsywności */
+.catalog-bar-row{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Row 1 — filtry + search (full-width) */
+.catalog-filters{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+/* Row 2 — progress + licznik + CTA */
+.catalog-progress-row{
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding-top: 4px;
+  border-top: 1px dashed var(--ep-border);
+  margin-top: 2px;
+}
+
+/* Select wrapper + chevron */
+.cf-select-wrap{
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+.cf-select{
+  appearance: none;
+  -webkit-appearance: none;
+  background: var(--ep-surface);
+  border: 1px solid var(--ep-border);
+  border-radius: var(--ep-r-md);
+  padding: 0 30px 0 12px;
+  height: 36px;
+  font-family: var(--ep-font-sans);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ep-text);
+  cursor: pointer;
+  outline: none;
+  transition: border-color var(--ep-d-fast), box-shadow var(--ep-d-fast), background var(--ep-d-fast);
+  min-width: 160px;
+}
+.cf-select:hover{ border-color: var(--ep-border-strong); background: var(--ep-surface-2); }
+.cf-select:focus-visible{
+  border-color: var(--ep-primary);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--ep-primary) 18%, transparent);
+}
+.cf-chevron{
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--ep-text-3);
+  pointer-events: none;
+}
+
+/* Search */
+.cf-search-wrap{
+  position: relative;
+  flex: 1;
+  min-width: 200px;
+  max-width: none;
+}
+.cf-search-icon{
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--ep-text-3);
+  pointer-events: none;
+}
+.cf-search-input{
+  width: 100%;
+  height: 36px;
+  background: var(--ep-surface);
+  border: 1px solid var(--ep-border);
+  border-radius: var(--ep-r-md);
+  padding: 0 14px 0 34px;
+  font-family: var(--ep-font-sans);
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--ep-text);
+  outline: none;
+  transition: border-color var(--ep-d-fast), box-shadow var(--ep-d-fast);
+}
+.cf-search-input::placeholder{ color: var(--ep-text-4); font-weight: 400; }
+.cf-search-input:hover{ border-color: var(--ep-border-strong); }
+.cf-search-input:focus-visible{
+  border-color: var(--ep-primary);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--ep-primary) 18%, transparent);
+}
+
+/* Progress block — kropki + licznik */
+.catalog-sub-progress{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+.catalog-sub-label-inline{
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--ep-text-3);
+  white-space: nowrap;
+}
+.cf-progress{
+  display: flex;
+  gap: 6px;
+  height: 10px;
+  align-items: center;
+}
+.cf-progress-seg{
+  width: 10px;
+  height: 10px;
+  flex: none;
+  background: var(--ep-surface-3);
+  border-radius: 999px;
+  transition: background var(--ep-d-base) var(--ep-ease), transform var(--ep-d-base) var(--ep-ease);
+}
+.cf-progress-seg.filled{
+  background: var(--ep-primary);
+  transform: scale(1.1);
+}
+.catalog-sub-meta-inline{
+  font-size: 12.5px;
+  color: var(--ep-text-2);
+  font-weight: 500;
+  white-space: nowrap;
+}
+.catalog-sub-meta-inline strong{
+  color: var(--ep-primary);
+  font-weight: 800;
+  font-size: 13.5px;
+}
+.cf-hint{
+  font-size: 11px;
+  color: var(--ep-text-4);
+  font-weight: 500;
+  margin: 0;
+  line-height: 1.2;
+  flex: 1;
+  min-width: 0;
+  padding-left: 8px;
+  border-left: 1px solid var(--ep-border);
+}
+
+/* CTA */
+.cf-cta{
+  height: 36px;
+  padding: 0 16px;
+  border: none;
+  border-radius: var(--ep-r-md);
+  background: var(--ep-primary);
+  color: #fff;
+  font-family: var(--ep-font-sans);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: -.005em;
+  cursor: pointer;
+  transition: background var(--ep-d-fast), box-shadow var(--ep-d-fast), transform var(--ep-d-fast), opacity var(--ep-d-fast);
+  box-shadow: var(--ep-shadow-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.cf-cta:hover:not(:disabled){
+  background: var(--ep-primary-600);
+  box-shadow: var(--ep-shadow-md);
+  transform: translateY(-1px);
+}
+.cf-cta:disabled{
+  background: var(--ep-surface-3);
+  color: var(--ep-text-4);
+  cursor: not-allowed;
+  box-shadow: none;
+  opacity: .7;
+}
+
+/* Legend */
+.catalog-legend{
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 2px 2px 0;
+}
+.cf-legend-item{
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--ep-font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ep-text-3);
+  letter-spacing: -.005em;
+}
+.cf-dot{
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+.cf-dot-sub{ background: var(--ep-primary); }
+.cf-dot-list{ background: var(--ep-text-3); }
+.cf-dot-owned{ background: var(--ep-success); }
+
+/* Responsive */
+@media (max-width: 900px){
+  .catalog-bar{ padding: 14px 16px 12px; }
+  .catalog-filters{ gap: 8px; }
+  .cf-select{ min-width: 0; flex: 1; }
+  .cf-hint{ display: none; }  /* ukryj hint — progress + licznik wystarczy */
+}
+@media (max-width: 680px){
+  .catalog-bar-head{ flex-direction: column; align-items: flex-start; gap: 8px; }
+  .catalog-filters{ width: 100%; }
+  .cf-search-wrap{ width: 100%; min-width: 0; flex-basis: 100%; order: 10; }
+  .catalog-progress-row{ flex-direction: column; align-items: stretch; gap: 10px; }
+  .catalog-sub-progress{ justify-content: space-between; width: 100%; }
+  .cf-cta{ width: 100%; justify-content: center; height: 40px; }
+  .catalog-legend{ gap: 12px; }
+}

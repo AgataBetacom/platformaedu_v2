@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Informacje o produkcie</title>
+<link rel="stylesheet" href="../shared/tokens.css"/>
+<style>
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family:var(--ep-font-sans, 'Inter', system-ui, sans-serif);
+    color:var(--ep-text);
+    background:var(--ep-bg);
+    padding:32px 36px 48px;
+    line-height:1.55;
+    font-size:14px;
+  }
+  body.dark{ color: #e8eef7; background: #0f1722; }
+  .doc-head{
+    border-bottom:1px solid var(--ep-border);
+    padding-bottom:18px;
+    margin-bottom:22px;
+  }
+  .doc-eyebrow{
+    font-size:10.5px;
+    font-weight:800;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--ep-primary);
+    margin-bottom:6px;
+  }
+  .doc-title{
+    font-family:var(--ep-font-display, 'Nunito', system-ui, sans-serif);
+    font-size:22px;
+    font-weight:800;
+    letter-spacing:-.015em;
+    margin:0 0 6px;
+    color:var(--ep-text);
+  }
+  .doc-sub{ color:var(--ep-text-3); font-size:13px; font-weight:600; margin:0; }
+  h2{
+    font-family:var(--ep-font-display, 'Nunito', system-ui, sans-serif);
+    font-size:15px; font-weight:800; letter-spacing:-.01em;
+    margin:24px 0 10px; color:var(--ep-text);
+  }
+  p{ margin:0 0 12px; color:var(--ep-text-2); }
+  ul{ margin:0 0 12px; padding-left:18px; color:var(--ep-text-2); }
+  li{ margin:4px 0; }
+  .meta-grid{
+    display:grid; grid-template-columns:repeat(2, 1fr); gap:12px;
+    background:var(--ep-surface-2); border:1px solid var(--ep-border);
+    border-radius:14px; padding:14px 16px; margin:12px 0 8px;
+  }
+  .meta-item{ display:flex; flex-direction:column; gap:2px; }
+  .meta-label{
+    font-size:10px; font-weight:800; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--ep-text-4);
+  }
+  .meta-val{ font-size:13px; font-weight:700; color:var(--ep-text); }
+  .placeholder-note{
+    margin-top:28px; padding:14px 16px; background:var(--ep-primary-50);
+    border:1px solid var(--ep-primary-200); border-radius:12px;
+    color:var(--ep-text-2); font-size:12.5px;
+  }
+  .placeholder-note strong{ color:var(--ep-primary); }
+</style>
+</head>
+<body>
+  <div class="doc-head">
+    <div class="doc-eyebrow" id="info-eyebrow">Karta produktu</div>
+    <h1 class="doc-title" id="info-title">Tytuł produktu</h1>
+    <p class="doc-sub" id="info-sub">Wydawnictwo · Klasa · Poziom</p>
+  </div>
+
+  <h2>Opis</h2>
+  <p>To jest podgląd karty informacyjnej produktu. W docelowej wersji ten widok będzie ładował realny plik PDF z opisem zawartości, spisem treści, fragmentem demo i specyfikacją techniczną.</p>
+  <p>Aby podpiąć realny PDF, wystarczy zmienić źródło iframe'a na URL pliku PDF — modal jest zaprojektowany tak, by obsługiwać zarówno HTML, jak i natywny renderer PDF przeglądarki.</p>
+
+  <div class="meta-grid">
+    <div class="meta-item"><span class="meta-label">Format</span><span class="meta-val">PDF · 24 strony</span></div>
+    <div class="meta-item"><span class="meta-label">Aktualizacja</span><span class="meta-val">10.2025</span></div>
+    <div class="meta-item"><span class="meta-label">Język</span><span class="meta-val">Polski</span></div>
+    <div class="meta-item"><span class="meta-label">Licencja</span><span class="meta-val">Subskrypcja roczna</span></div>
+  </div>
+
+  <h2>Co znajdziesz w środku</h2>
+  <ul>
+    <li>Pełną specyfikację treści zgodną z podstawą programową</li>
+    <li>Spis działów i tematów wraz z liczbą zadań</li>
+    <li>Przykładowe zadania i odpowiedzi</li>
+    <li>Wymagania techniczne i sposób korzystania</li>
+  </ul>
+
+  <h2>Wymagania</h2>
+  <ul>
+    <li>Aktywne konto na EduPlatformie</li>
+    <li>Przeglądarka z włączoną obsługą JavaScript</li>
+    <li>Połączenie internetowe (możliwość pobrania do trybu offline)</li>
+  </ul>
+
+  <div class="placeholder-note">
+    <strong>Placeholder.</strong> W docelowej wersji w tym miejscu wyświetli się PDF wydawcy z pełnym opisem produktu, spisem treści i fragmentem demonstracyjnym.
+  </div>
+
+<script>
+  // Pozwól rodzicowi (modalowi) ustawić tytuł / podtytuł / eyebrow przez postMessage
+  window.addEventListener('message', function(e){
+    if (!e.data || typeof e.data !== 'object') return;
+    if (e.data.type === 'info:set') {
+      if (e.data.title) document.getElementById('info-title').textContent = e.data.title;
+      if (e.data.sub) document.getElementById('info-sub').textContent = e.data.sub;
+      if (e.data.eyebrow) document.getElementById('info-eyebrow').textContent = e.data.eyebrow;
+    }
+    if (e.data.type === 'setDark') {
+      document.body.classList.toggle('dark', !!e.data.isDark);
+    }
+  });
+</script>
+</body>
+</html>

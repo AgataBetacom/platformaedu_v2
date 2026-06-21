@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>eduPlatform · Wybierz tryb prezentacji</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg: #1E3A8A;
+  --bg-2: #1A2F70;
+  --text: #FFFFFF;
+  --text-dim: #BFDBFE;
+  --accent: #A5B4FC;
+  --primary: #3B5BDB;
+  --font-display: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-sans: 'Inter', system-ui, sans-serif;
+}
+*{ box-sizing: border-box; }
+html, body{ margin: 0; height: 100%; }
+body{
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 0%, rgba(165,180,252,.18) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 90% 100%, rgba(59,91,219,.32) 0%, transparent 60%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+  color: var(--text);
+  font-family: var(--font-sans);
+  display: flex; flex-direction: column; align-items: center;
+  padding: 56px 24px 40px;
+  min-height: 100vh;
+  overflow-y: auto;
+  -webkit-font-smoothing: antialiased;
+}
+
+.brand{
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 36px;
+}
+.brand-icon{
+  width: 48px; height: 48px; border-radius: 14px;
+  background: rgba(255,255,255,.16);
+  border: 1px solid rgba(255,255,255,.22);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 800; font-size: 18px; color: #fff;
+  letter-spacing: -.01em;
+}
+.brand-text{
+  font-family: var(--font-display);
+  font-size: 22px; font-weight: 800; letter-spacing: -.01em;
+}
+
+h1.title{
+  font-family: var(--font-display);
+  font-weight: 800; font-size: clamp(28px, 3vw, 36px);
+  letter-spacing: -.02em; margin: 0 0 10px; text-align: center;
+  text-wrap: balance;
+}
+p.sub{
+  color: var(--text-dim);
+  font-size: 15px; line-height: 1.55;
+  margin: 0 0 40px; text-align: center;
+  max-width: 560px; text-wrap: pretty;
+}
+
+.grid{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(280px, 320px));
+  gap: 20px;
+  width: 100%;
+  max-width: 680px;
+}
+
+.card{
+  background: #fff;
+  border-radius: 18px;
+  padding: 26px 24px 0;
+  text-align: left;
+  cursor: pointer;
+  border: none;
+  font-family: var(--font-sans);
+  color: #0F172A;
+  display: flex; flex-direction: column;
+  position: relative; overflow: hidden;
+  transition: transform .18s ease, box-shadow .18s ease;
+  box-shadow: 0 1px 2px rgba(0,0,0,.04), 0 8px 24px rgba(15,23,42,.18);
+  text-decoration: none;
+  min-height: 220px;
+}
+.card:hover{
+  transform: translateY(-3px);
+  box-shadow: 0 1px 2px rgba(0,0,0,.04), 0 16px 40px rgba(15,23,42,.28);
+}
+.card:focus-visible{
+  outline: 3px solid var(--accent); outline-offset: 3px;
+}
+
+.card-icon{
+  width: 44px; height: 44px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 16px;
+  background: #EEF2FF;
+  color: var(--primary);
+}
+.card-icon svg{
+  width: 22px; height: 22px;
+  fill: none; stroke: currentColor;
+  stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round;
+}
+.card[data-key="parent-empty"] .card-icon{ background: #FEF3C7; color: #B45309; }
+.card[data-key="student-young"] .card-icon{ background: #DCFCE7; color: #15803D; }
+.card[data-key="student-teen"] .card-icon{ background: #F3E8FF; color: #7E22CE; }
+
+.card-title{
+  font-family: var(--font-display);
+  font-weight: 800; font-size: 17px;
+  letter-spacing: -.01em;
+  margin: 0 0 6px;
+}
+.card-desc{
+  color: #475569;
+  font-size: 13px; line-height: 1.55;
+  margin: 0 0 18px;
+}
+.card-foot{
+  margin-top: auto;
+  display: flex; align-items: center; justify-content: space-between;
+  border-top: 1px dashed #E2E8F0;
+  padding: 12px 0 16px;
+  font-size: 11px; color: #64748B;
+}
+.card-foot-lbl{ font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
+.card-foot-val{ color: #0F172A; font-weight: 600; font-size: 12px; }
+
+.card-accent{
+  position: absolute; left: 0; right: 0; bottom: 0;
+  height: 4px; background: var(--primary);
+}
+.card[data-key="parent-empty"] .card-accent{ background: #B45309; }
+.card[data-key="student-young"] .card-accent{ background: #15803D; }
+.card[data-key="student-teen"] .card-accent{ background: #7E22CE; }
+
+.foot{
+  margin-top: 32px;
+  color: var(--text-dim);
+  font-size: 12px; opacity: .75;
+  text-align: center;
+}
+
+@media (max-width: 640px){
+  .grid{ grid-template-columns: 1fr; max-width: 360px; }
+  body{ padding: 32px 20px; }
+}
+</style>
+</head>
+<body>
+
+<div class="brand">
+  <div class="brand-icon">eP</div>
+  <div class="brand-text">eduPlatform</div>
+</div>
+
+<h1 class="title">Wybierz tryb prezentacji</h1>
+<p class="sub">Każdy wariant pokazuje inny scenariusz dostępu do platformy. Aby zmienić scenariusz, wróć na ten ekran.</p>
+
+<div class="grid">
+
+  <a class="card" data-key="parent-children" href="app.html?mode=parent">
+    <div class="card-icon">
+      <svg viewBox="0 0 24 24"><circle cx="9" cy="7" r="2.6"/><path d="M4 18c0-2.4 2.2-4.4 5-4.4s5 2 5 4.4"/><circle cx="17" cy="10" r="2"/><path d="M14 19c0-1.8 1.4-3.2 3-3.2s3 1.4 3 3.2"/></svg>
+    </div>
+    <div class="card-title">Rodzic z dziećmi</div>
+    <div class="card-desc">Wybiera dziecko i kupuje materiały. Konta dzieci powiązane z eduVulcan.</div>
+    <div class="card-foot">
+      <span class="card-foot-lbl">Dostęp</span>
+      <span class="card-foot-val">Sklep</span>
+    </div>
+    <div class="card-accent"></div>
+  </a>
+
+  <a class="card" data-key="parent-empty" href="app.html?mode=empty">
+    <div class="card-icon">
+      <svg viewBox="0 0 24 24"><circle cx="10" cy="8" r="2.8"/><path d="M5 19c0-2.6 2.4-4.6 5-4.6s5 2 5 4.6"/><circle cx="18" cy="8" r="2.2" stroke-dasharray="2 2"/><line x1="16.7" y1="6.7" x2="19.3" y2="9.3"/><line x1="19.3" y1="6.7" x2="16.7" y2="9.3"/></svg>
+    </div>
+    <div class="card-title">Rodzic bez dzieci</div>
+    <div class="card-desc">eduVulcan nie przekazał powiązanych kont. Komunikat o konieczności podpięcia.</div>
+    <div class="card-foot">
+      <span class="card-foot-lbl">Dostęp</span>
+      <span class="card-foot-val">brak</span>
+    </div>
+    <div class="card-accent"></div>
+  </a>
+
+  <a class="card" data-key="student-young" href="app.html?mode=child">
+    <div class="card-icon">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="2.8"/><path d="M6 19c0-2.6 2.6-4.8 6-4.8s6 2.2 6 4.8"/><rect x="8.5" y="11" width="7" height="4.5" rx="1"/><path d="M10 11v-1a2 2 0 0 1 4 0v1"/></svg>
+    </div>
+    <div class="card-title">Uczeń · konto dziecięce</div>
+    <div class="card-desc">Korzysta z platformy bez dostępu do zakupów. Sklep ukryty w nawigacji.</div>
+    <div class="card-foot">
+      <span class="card-foot-lbl">Dostęp</span>
+      <span class="card-foot-val">Dashboard, Kursy, Książki</span>
+    </div>
+    <div class="card-accent"></div>
+  </a>
+
+  <a class="card" data-key="student-teen" href="app.html?mode=full">
+    <div class="card-icon">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3"/><path d="M5.5 19c0-2.8 2.9-5 6.5-5s6.5 2.2 6.5 5"/><path d="M8 6.5a4 4 0 0 1 8 0"/></svg>
+    </div>
+    <div class="card-title">Uczeń · konto pełne</div>
+    <div class="card-desc">Korzysta z platformy bez ograniczeń. Wszystkie zakładki dostępne.</div>
+    <div class="card-foot">
+      <span class="card-foot-lbl">Dostęp</span>
+      <span class="card-foot-val">pełny</span>
+    </div>
+    <div class="card-accent"></div>
+  </a>
+
+</div>
+
+<div class="foot">Tryb prezentacyjny · powrót na ten ekran: <code style="background:rgba(255,255,255,.12);padding:2px 6px;border-radius:4px;">start.html</code></div>
+
+</body>
+</html>
