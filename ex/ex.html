@@ -560,7 +560,7 @@
 <!-- ═══════════════ KURSY — wybór ═══════════════ -->
 <!-- ═══ VIEW: KURSY — wybór ═══ -->
 <div id="view-kurs" class="view hidden">
-  <div class="page-hd"><div><h2>Kursy</h2><p>Wybierz przedmiot i kontynuuj naukę</p></div></div>
+  <div class="page-hd"><div><h2>Exam8</h2><p>Wybierz przedmiot i kontynuuj naukę</p></div></div>
 
   <div class="product-grid">
 
@@ -581,7 +581,6 @@
       </div>
       <div class="product-card-body">
         <h3 class="product-card-title">Matematyka</h3>
-        <p class="product-card-sub">Egzamin ósmoklasisty · Pełny kurs</p>
         <div class="product-card-progress">
           <div class="product-progress-row" style="font-size:12.5px;align-items:center">
             <span class="course-status course-status--inprogress" style="display:inline-flex;align-items:center;gap:6px;color:var(--ep-primary);font-weight:700;text-transform:none;letter-spacing:0"><span style="width:6px;height:6px;border-radius:50%;background:currentColor;display:inline-block"></span>W trakcie</span>
@@ -611,7 +610,6 @@
       </div>
       <div class="product-card-body">
         <h3 class="product-card-title">Język Polski</h3>
-        <p class="product-card-sub">Egzamin ósmoklasisty · Pełny kurs</p>
         <div class="product-card-progress">
           <div class="product-progress-row" style="font-size:12.5px;align-items:center">
             <span class="course-status course-status--new" style="display:inline-flex;align-items:center;gap:6px;color:var(--ep-text-3);font-weight:700;text-transform:none;letter-spacing:0"><span style="width:6px;height:6px;border-radius:50%;background:currentColor;display:inline-block"></span>Nie rozpoczęte</span>
@@ -625,29 +623,6 @@
       </div>
     </article>
 
-    <!-- Język Angielski — wkrótce -->
-    <article class="product-card is-clickable" id="pc-english" onclick="showEnglishComingSoon()">
-      <div class="product-card-cover" style="--cover-a:#0f766e;--cover-b:#14b8a6">
-        <div class="product-card-glyph" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.7 2.6 15.3 0 18M12 3c-2.6 2.7-2.6 15.3 0 18"/></svg>
-        </div>
-        <div class="product-card-badge product-card-badge--new"><span class="dot"></span>Wkrótce</div>
-        <div class="product-card-menu" onclick="event.stopPropagation()">
-          <button class="product-card-menu-btn" onclick="toggleKursMenu('kmenu-english',event)" aria-label="Menu"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="19" cy="12" r="1.7"/></svg></button>
-          <div class="kurs-card-menu-dropdown" id="kmenu-english">
-            <button onclick="event.stopPropagation();openInfoModal('Język Angielski — Egzamin ósmoklasisty','course');closeKursMenus()">Informacje o kursie</button>
-          </div>
-        </div>
-      </div>
-      <div class="product-card-body">
-        <h3 class="product-card-title">Język Angielski</h3>
-        <p class="product-card-sub">Egzamin ósmoklasisty · Pełny kurs</p>
-        <div class="product-card-foot">
-          <button class="product-cta product-cta--dark" onclick="event.stopPropagation();showEnglishComingSoon()" style="opacity:.65;cursor:not-allowed">Wkrótce dostępny</button>
-        </div>
-      </div>
-    </article>
-
   </div>
 </div>
 
@@ -655,7 +630,7 @@
 <!-- ═══════════════ KURS MATEMATYKA — bloki ═══════════════ -->
 <!-- ═══ VIEW: KURS MATEMATYKA — moduły ═══ -->
 <div id="view-kurs-math" class="view hidden">
-  <div class="breadcrumb"><a onclick="goView('kurs')">Kursy</a><span>›</span><span>Matematyka</span></div>
+  <div class="breadcrumb"><a onclick="goView('kurs')">Exam8</a><span>›</span><span>Matematyka</span></div>
   <div class="page-hd">
     <div><h2>📐 Matematyka</h2><p>Wybierz moduł nauki.</p></div>
   </div>
@@ -759,7 +734,7 @@
 <!-- ═══════════════ KURS-MATH BLOKI ═══════════════ -->
 <!-- ═══ VIEW: KURS MATH — bloki/działy ═══ -->
 <div id="view-kurs-math-bloki" class="view hidden">
-  <div class="breadcrumb"><a onclick="goView('kurs')">Kursy</a><span>›</span><span>Matematyka — Pełny kurs</span></div>
+  <div class="breadcrumb"><a onclick="goView('kurs')">Exam8</a><span>›</span><span>Matematyka — Pełny kurs</span></div>
 
   <!-- Kompaktowy header z progresem ogólnym -->
   <div class="course-hero">
@@ -2307,7 +2282,7 @@
 <!-- ARKUSZE — arkusz w trybie nauki (film + zadania) -->
 <!-- ═══ VIEW: ARKUSZE — filmy + zadania ═══ -->
 <div id="view-arkusze-filmy" class="view hidden">
-  <div class="breadcrumb"><a onclick="goView('kurs')">Kursy</a><span>›</span><a onclick="goView('kurs-math')">Matematyka</a><span>›</span><a onclick="goView('arkusze')">Arkusze CKE</a><span>›</span><span>Arkusz 2024</span></div>
+  <div class="breadcrumb"><a onclick="goView('kurs')">Exam8</a><span>›</span><a onclick="goView('kurs-math')">Matematyka</a><span>›</span><a onclick="goView('arkusze')">Arkusze CKE</a><span>›</span><span>Arkusz 2024</span></div>
 
   <!-- Zakładki nawigacyjne arkusza — flow-nav style -->
   <div class="flow-nav" style="grid-template-columns:repeat(2,1fr)">
@@ -2435,7 +2410,7 @@
 <!-- ═══════ ARKUSZ — PLAYER FILMU ═══════ -->
 <!-- ═══ VIEW: ARKUSZ — film player ═══ -->
 <div id="view-arkusz-film-player" class="view hidden">
-  <div class="breadcrumb"><a onclick="goView('kurs')">Kursy</a><span>›</span><a onclick="goView('kurs-math')">Matematyka</a><span>›</span><a onclick="goView('arkusze')">Arkusze CKE</a><span>›</span><a onclick="goView('arkusze-filmy')">Arkusz 2024</a><span>›</span><span id="arkFilmPartLabel">Część 1/3</span></div>
+  <div class="breadcrumb"><a onclick="goView('kurs')">Exam8</a><span>›</span><a onclick="goView('kurs-math')">Matematyka</a><span>›</span><a onclick="goView('arkusze')">Arkusze CKE</a><span>›</span><a onclick="goView('arkusze-filmy')">Arkusz 2024</a><span>›</span><span id="arkFilmPartLabel">Część 1/3</span></div>
 
   <!-- Flow nav (2-pozycyjny, spójny z modułem Filmy) -->
   <div class="flow-nav" style="grid-template-columns:repeat(2,1fr)">
@@ -2568,7 +2543,7 @@
 <!-- ═══════ ARKUSZ — ZADANIA (dedykowany widok z wyborem poziomu) ═══════ -->
 <!-- ═══ VIEW: ARKUSZE — zadania standalone ═══ -->
 <div id="view-arkusze-zadania" class="view hidden">
-  <div class="breadcrumb"><a onclick="goView('kurs')">Kursy</a><span>›</span><a onclick="goView('kurs-math')">Matematyka</a><span>›</span><a onclick="goView('arkusze')">Arkusze CKE</a><span>›</span><a onclick="goView('arkusze-filmy')">Arkusz 2024</a><span>›</span><span>Zadania</span></div>
+  <div class="breadcrumb"><a onclick="goView('kurs')">Exam8</a><span>›</span><a onclick="goView('kurs-math')">Matematyka</a><span>›</span><a onclick="goView('arkusze')">Arkusze CKE</a><span>›</span><a onclick="goView('arkusze-filmy')">Arkusz 2024</a><span>›</span><span>Zadania</span></div>
 
   <!-- Flow nav (2-pozycyjny, spójny z modułem Filmy) -->
   <div class="flow-nav" style="grid-template-columns:repeat(2,1fr)">
@@ -2729,7 +2704,7 @@
 <!-- ARKUSZE — z kursu matematyka -->
 <!-- ═══ VIEW: ARKUSZE MATH — wybór ═══ -->
 <div id="view-arkusze-math" class="view hidden">
-  <div class="breadcrumb"><a onclick="goView('kurs')">Kursy</a><span>›</span><a onclick="goView('kurs-math')">Matematyka</a><span>›</span><span>Arkusze CKE</span></div>
+  <div class="breadcrumb"><a onclick="goView('kurs')">Exam8</a><span>›</span><a onclick="goView('kurs-math')">Matematyka</a><span>›</span><span>Arkusze CKE</span></div>
   <div class="page-hd"><div><h2>Arkusze CKE</h2><p>Prawdziwe arkusze egzaminacyjne — film z lektorem + zadania do samodzielnego rozwiązania.</p></div></div>
   <div class="ark-grid">
     <article class="ark-card ark-card--new" onclick="goView('arkusze-filmy')">
