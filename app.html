@@ -1871,7 +1871,7 @@ body.mode-empty #view-empty{ display: flex; }
       <span class="sb-ico">
         <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
       </span>
-      Kursy
+      Exam8
     </button>
 
     <button class="sb-item" id="nav-podreczniki" onclick="navTo('podreczniki')">
@@ -2011,7 +2011,7 @@ body.mode-empty #view-empty{ display: flex; }
               <span class="tile-badge">Egzamin ósmoklasisty</span>
             </div>
             <div class="tile-body">
-              <div class="tile-name">Kursy</div>
+              <div class="tile-name">Exam8</div>
               <div class="tile-desc">Przygotuj się do egzaminów z matematyki i języka polskiego. Teoria, filmy, zadania.</div>
             </div>
             <div class="tile-foot">
@@ -2941,7 +2941,7 @@ body.mode-empty #view-empty{ display: flex; }
   </button>
   <button class="bn-item" id="bn-kursy" onclick="navTo('kursy')">
     <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-    <span class="bn-label">Kursy</span>
+    <span class="bn-label">Exam8</span>
   </button>
   <button class="bn-item" id="bn-podreczniki" onclick="navTo('podreczniki')">
     <svg viewBox="0 0 24 24"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
@@ -3101,7 +3101,7 @@ function applyShellSkin(primary, col) {
 // ── Nawigacja ─────────────────────────────────────────
 var CRUMBS = {
   dashboard:   {title: 'Dashboard',   module: null},
-  kursy:       {title: 'Kursy',       module: 'Kursy'},
+  kursy:       {title: 'Exam8',       module: 'Exam8'},
   podreczniki: {title: 'Podręczniki', module: 'Podręczniki'},
   spe:         {title: 'Spe',         module: 'Spe'},
   'spe-detail':{title: 'Spe',         module: 'Spe'},
@@ -3168,7 +3168,7 @@ function navTo(view) {
   document.getElementById('sklep-tabbar').style.display = 'none';
   document.getElementById('module-searchbar').style.visibility = '';
   document.getElementById('module-searchbar').style.display =
-    (view === 'dashboard' || view === 'sklep') ? 'none' : 'flex';
+    (view === 'dashboard' || view === 'sklep' || view === 'kursy') ? 'none' : 'flex';
 
   var _dark = document.documentElement.classList.contains('dark');
 
