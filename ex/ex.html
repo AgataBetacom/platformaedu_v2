@@ -10,7 +10,6 @@
 <link rel="stylesheet" href="../shared/tokens.css?v=6"/>
 <link rel="stylesheet" href="../shared/product-card.css?v=6"/>
 <link rel="stylesheet" href="ex.css?v=43"/>
-<link rel="stylesheet" href="ex-refresh.css?v=1"/>
 <style>
 /* ═══ Lista do zakupu — pełny redesign na spójność i wyrazistość ═══ */
 #cartPanel{
@@ -560,9 +559,9 @@
 <!-- ═══════════════ KURSY — wybór ═══════════════ -->
 <!-- ═══ VIEW: KURSY — wybór ═══ -->
 <div id="view-kurs" class="view hidden">
-  <div class="page-hd"><div><h2>Exam8</h2><p>Wybierz przedmiot i kontynuuj naukę</p></div></div>
+  <div class="page-hd" id="kurs-page-hd"><div><h2>Exam8</h2><p>Wybierz przedmiot i kontynuuj naukę</p></div></div>
 
-  <div class="product-grid">
+  <div class="product-grid" id="kurs-product-grid">
 
     <!-- Matematyka -->
     <article class="product-card is-clickable" id="pc-math" data-course="math" onclick="goView('kurs-math')">
@@ -623,6 +622,15 @@
       </div>
     </article>
 
+  </div>
+
+  <!-- Konto dziecięce bez żadnego wykupionego kursu — ekran informacyjny -->
+  <div id="kurs-info-empty" class="kurs-info-empty" style="display:none">
+    <h2 class="kie-title">EGZAMIN8</h2>
+    <p>EGZAMIN8 to materiały przygotowane z myślą o uczniach przygotowujących się do Egzaminu Ósmoklasisty z matematyki i polskiego.</p>
+    <p>Z myślą o nich przygotowaliśmy Kurs + Arkusze Egzaminacyjne.</p>
+    <p>Zapewniamy dzięki temu uczniom: przygotowanie teoretyczne i praktyczne oraz rozwiązywanie kompletnych arkuszy egzaminacyjnych.</p>
+    <p>Ofertę i więcej informacji znajdziesz na stronie <a class="kie-link" href="https://eduvulcan.pl" target="_blank" rel="noopener noreferrer">eduvulcan.pl</a></p>
   </div>
 </div>
 
@@ -3136,18 +3144,8 @@ window.applyParentMode = function(){
         }
       }
     } else if (!canPurchase){
-      // KONTO DZIECIĘCE — bez przycisku KUP, tylko zachęta marketingowa
-      card.onclick = null;
-      card.style.cursor = 'default';
-      if (badge){ badge.className = 'product-card-badge product-card-badge--new'; badge.innerHTML = '<span class="dot"></span>Niedostępny'; }
-      if (foot){
-        foot.style.flexDirection = 'column';
-        foot.style.alignItems = 'stretch';
-        foot.style.gap = '8px';
-        foot.innerHTML =
-          '<div class="child-more">Ten kurs nie jest jeszcze dostępny na Twoim koncie.</div>' +
-          '<button class="product-cta product-cta--selected product-cta--full" onclick="event.stopPropagation();window.openEduVulcanBuy(\'' + course + '\')">Więcej na eduVulcan <span aria-hidden="true">↗</span></button>';
-      }
+      // KONTO DZIECIĘCE — kurs niedostępny (np. język polski): usuwamy kafel w całości
+      card.style.display = 'none';
     } else {
       card.style.cursor = 'pointer';
       card.onclick = function(){ window.openEduVulcanBuy(course); };
@@ -3166,6 +3164,16 @@ window.applyParentMode = function(){
       menu.innerHTML = '<button onclick="event.stopPropagation();openInfoModal(\'' + name + '\',\'course\');closeKursMenus()">O kursie</button>';
     }
   });
+  // KONTO DZIECIĘCE — gdy brak jakiegokolwiek wykupionego kursu, pokaż ekran informacyjny
+  if (!canPurchase){
+    var hasAnyCourse = owned.length > 0;
+    var grid = document.getElementById('kurs-product-grid');
+    var hd = document.getElementById('kurs-page-hd');
+    var info = document.getElementById('kurs-info-empty');
+    if (grid) grid.style.display = hasAnyCourse ? '' : 'none';
+    if (hd) hd.style.display = hasAnyCourse ? '' : 'none';
+    if (info) info.style.display = hasAnyCourse ? 'none' : 'block';
+  }
 };
 if (window.PARENT_MODE) window.applyParentMode();
 </script>
@@ -3180,6 +3188,23 @@ if (window.PARENT_MODE) window.applyParentMode();
 .child-more{ font-family:var(--ep-font-sans); font-size:12.5px; font-weight:600; color:var(--ep-text-3); line-height:1.4; }
 .child-more-cta{ font-family:var(--ep-font-sans); font-size:13.5px; font-weight:700; color:var(--ep-primary); }
 .child-more-cta strong{ font-weight:900; }
+
+/* ─── Konto dziecięce bez kursu — ekran informacyjny ─── */
+.kurs-info-empty{ max-width:620px; }
+.kurs-info-empty .kie-title{
+  font-family:var(--ep-font-display, 'Plus Jakarta Sans', system-ui, sans-serif);
+  font-size:28px; font-weight:800; letter-spacing:-.02em;
+  color:var(--ep-text); margin:4px 0 22px;
+}
+.kurs-info-empty p{
+  font-family:var(--ep-font-sans);
+  font-size:15px; line-height:1.7; font-weight:500;
+  color:var(--ep-text-2); margin:0 0 18px;
+}
+.kurs-info-empty .kie-link{
+  color:var(--ep-primary); font-weight:700; text-decoration:none;
+}
+.kurs-info-empty .kie-link:hover{ text-decoration:underline; }
 </style>
 
 
