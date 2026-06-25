@@ -3142,8 +3142,10 @@ function hideAllFrames() {
 function showFrame(id) {
   var el = document.getElementById(id);
   el.style.display = 'block';
-  // double rAF so the opacity transition fires
+  // double rAF so the opacity transition fires…
   requestAnimationFrame(function(){ requestAnimationFrame(function(){ el.classList.add('visible'); }); });
+  // …plus a guaranteed fallback so the frame can never get stuck transparent (white)
+  setTimeout(function(){ el.classList.add('visible'); }, 80);
 }
 
 function navTo(view) {
@@ -3205,7 +3207,10 @@ function navTo(view) {
       } else if (document.body.classList.contains('mode-full')) {
         sendEx({type:'setParentMode', enabled:true, owned: ['math'], informational:false});
       } else if (document.body.classList.contains('mode-child')) {
-        sendEx({type:'setParentMode', enabled:true, owned: ['math'], informational:false, canPurchase:false});
+        // Konto dziecięce: domyślnie aktywny kurs matematyki.
+        // ?courses=none → brak jakiegokolwiek wykupionego kursu (ekran informacyjny).
+        var _childCourses = ((new URLSearchParams(location.search)).get('courses') === 'none') ? [] : ['math'];
+        sendEx({type:'setParentMode', enabled:true, owned: _childCourses, informational:false, canPurchase:false});
       }
       sendEx({type:'navigate', view:'kurs'});
       break;
